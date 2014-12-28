@@ -1,4 +1,7 @@
 require 'fileutils'
+require 'rubygems'
+require 'zip'
+
 
 # Manage uncompression of archive.
 # The archive contains all computing projects
@@ -28,6 +31,18 @@ class Archiver
 	 	end
 	end
 
+	# Extract the archive into the destination directory
+	def extract
+		ext = File.extname(@src)
+		basename = File.basename(@src, ext)
+		puts " Ficher:\t #{basename}"
+		puts " Extension:\t #{ext}"
+
+		### TODO 
+		### suivant l'extension, utiliser librairie appropriée ..
+	end
+
 end
 
-a = Archiver.new("src","fodler")
+a = Archiver.new("test.zip","fodler")
+a.extract
