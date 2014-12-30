@@ -30,18 +30,32 @@ class Archiver
 	 	end
 	end
 
-	# Extract the archive into the destination directory
-	def extract
-		ext = File.extname(@src)
-		basename = File.basename(@src, ext)
+	# Extract the file into the destination directory
+	# The default file used is the archive used in constructor as well the path destination.
+	def extract(file = @src, destination = @destination)
+		ext = File.extname(file)
+		basename = File.basename(file, ext)
 		### TODO 
 		### suivant l'extension, utiliser librairie appropriée ..		
 	
 		case ext.delete '.'
 		when 'zip'
-			extractor = ZipExtractor.new(@src, @destination).extract
-
+			extractor = ZipExtractor.new(file, destination).extract
 		end
+	
+	end
+
+	def run
+		# Extract the original archive
+		extract
+		
+		# Extract all sub archives
+		entries = Dir.entries(@destination).reject{|entry| entry == "." || entry == ".."}
+		entries.each do |entry|
+			ext = File.extname(entry)
+			basename = File.basename(entry, ext)
+  			extract(File.join(@destination,File.basename(entry)), File.join(@destination,basename))
+  		end
 	
 	end
 
@@ -49,4 +63,4 @@ end
 
 # test.zip contains ONLY zip archives"
 a = Archiver.new("test.zip","projects")
-a.extract
+a.run
