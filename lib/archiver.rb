@@ -1,6 +1,4 @@
 require 'fileutils'
-require 'rubygems'
-require 'zip'
 require_relative 'zipextractor'
 
 
