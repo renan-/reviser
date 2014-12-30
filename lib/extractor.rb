@@ -13,7 +13,6 @@ class Extractor
 	# Extract the archive into the directory.
 	# TO-REVISE
 	def extract
-		FileUtils.mkdir @destination, :mode => 0700 unless Dir.exist?(@destination)
 	end
 
 end
