@@ -55,6 +55,7 @@ class Archiver
 			ext = File.extname(entry)
 			basename = File.basename(entry, ext)
   			extract(File.join(@destination,File.basename(entry)), File.join(@destination,basename))
+			FileUtils.rm(File.join(@destination,entry)
   		end
 	
 	end
