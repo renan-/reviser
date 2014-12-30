@@ -37,10 +37,12 @@ class Archiver
 		basename = File.basename(file, ext)
 		### TODO 
 		### suivant l'extension, utiliser librairie appropriée ..		
-	
-		case ext.delete '.'
+		ext = ext.delete '.'
+		case ext
 		when 'zip'
 			extractor = ZipExtractor.new(file, destination).extract
+		else
+			puts "Format '#{ext}' non supporte"
 		end
 	
 	end
@@ -55,7 +57,7 @@ class Archiver
 			ext = File.extname(entry)
 			basename = File.basename(entry, ext)
   			extract(File.join(@destination,File.basename(entry)), File.join(@destination,basename))
-			FileUtils.rm(File.join(@destination,entry)
+			FileUtils.rm(File.join(@destination,entry))
   		end
 	
 	end
