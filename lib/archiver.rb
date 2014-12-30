@@ -1,6 +1,7 @@
 require 'fileutils'
 require 'rubygems'
 require 'zip'
+require_relative 'zipextractor'
 
 
 # Manage uncompression of archive.
@@ -35,16 +36,19 @@ class Archiver
 	def extract
 		ext = File.extname(@src)
 		basename = File.basename(@src, ext)
-		puts " Ficher:\t #{basename}"
-		puts " Extension:\t #{ext}"
-
 		### TODO 
 		### suivant l'extension, utiliser librairie appropriée ..		
-	end
+	
+		case ext.delete '.'
+		when 'zip'
+			extractor = ZipExtractor.new(@src, @destination).extract
 
+		end
+	
+	end
 
 end
 
-a = Archiver.new("test.zip","fodler")
-FileUtils.rm_rf "fodler"
+# test.zip contains ONLY zip archives"
+a = Archiver.new("test.zip","projects")
 a.extract
