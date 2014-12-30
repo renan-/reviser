@@ -39,17 +39,7 @@ class Archiver
 		puts " Extension:\t #{ext}"
 
 		### TODO 
-		### suivant l'extension, utiliser librairie appropriée ..
-
-		Zip::File.open(@src) do |zip_file|
-		  	zip_file.each do |entry|
-		  		#FileUtils.mkdir(File.join(@destination, basename), :mode => 0700)
-
-		  		path = File.join(@destination, entry.name)
-    			entry.extract(path)
-    			content = entry.get_input_stream.read
-  			end
-		end
+		### suivant l'extension, utiliser librairie appropriée ..		
 	end
 
 
