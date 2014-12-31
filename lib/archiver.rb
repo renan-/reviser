@@ -1,5 +1,5 @@
 require 'fileutils'
-require_relative 'zipextractor'
+require_relative 'extractor'
 
 
 # Manage uncompression of archive.
@@ -18,7 +18,9 @@ class Archiver
 			# Raise exception if the archive doesn't exist
 			raise "L'archive '#{@src}' n'existe pas." unless File.exists? @src
 			# Create directory
+			FileUtils.rm_rf(@destination) if Dir.exists? @destination
 			FileUtils.mkdir @destination, :mode => 0700
+
 			
 			# Exception when the directory already exists
 			rescue Errno::EEXIST => e
@@ -29,6 +31,7 @@ class Archiver
 				puts e.message
 	 	end
 	end
+	
 
 	# Extract the file into the destination directory
 	# The default file used is the archive used in constructor as well the path destination.
@@ -38,9 +41,10 @@ class Archiver
 		### TODO 
 		### suivant l'extension, utiliser librairie appropriée ..		
 		ext = ext.delete '.'
-		case ext
-		when 'zip'
-			extractor = ZipExtractor.new(file, destination).extract
+		# Check if file can be uncompressed
+		if(Extractor.respond_to?(ext))
+			#Call method which have the name of extension
+			Extractor.send(ext,file, destination)
 		else
 			puts "Format '#{ext}' non supporte"
 		end
@@ -59,9 +63,8 @@ class Archiver
   			extract(File.join(@destination,File.basename(entry)), File.join(@destination,basename))
 			FileUtils.rm(File.join(@destination,entry))
   		end
-	
 	end
-
+	
 end
 
 # test.zip contains ONLY zip archives"
