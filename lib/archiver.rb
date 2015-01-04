@@ -3,10 +3,10 @@ require_relative 'extractor'
 
 
 # Manage uncompression of archive.
-# The archive contains all computing projects
+# The archive contains all computing projects.
 #
 # Author::	Yann Prono
-
+#
 class Archiver
 	
 	# Get archive to use and the path directory.
@@ -67,6 +67,6 @@ class Archiver
 	
 end
 
-# test.zip contains ONLY zip archives"
+
 a = Archiver.new("test.zip","projects")
 a.run
