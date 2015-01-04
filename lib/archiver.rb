@@ -23,7 +23,7 @@ class Archiver
 
 			
 			# Exception when the directory already exists
-			rescue Errno::EEXIST => e
+			rescue Errno::EEXIST
 				puts "Le dossier '#{@destination}' existe deja."
 			
 			# Exception when the archive doesn't exist
@@ -37,9 +37,6 @@ class Archiver
 	# The default file used is the archive used in constructor as well the path destination.
 	def extract(file = @src, destination = @destination)
 		ext = File.extname(file)
-		basename = File.basename(file, ext)
-		### TODO 
-		### suivant l'extension, utiliser librairie appropriée ..		
 		ext = ext.delete '.'
 		# Check if file can be uncompressed
 		if(Extractor.respond_to?(ext))

@@ -12,9 +12,9 @@ class Organiser
 
 	# Rename directories more clearly
 	def renameDirectories
-		# If the regex doesn"t match
-		count = 0;
-		
+		# If the regex doesn't match
+		count = 0
+
 		# get all entries of projects folder
 		entries = Dir.entries(@directory).reject{|entry| entry == '.' || entry == '..'}
 		entries.each do |entry|			
