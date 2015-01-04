@@ -10,13 +10,13 @@ class Organiser
 		@directory = directory_working
 	end
 
-	# Method which renames project's folder.
-	def run
+	# Rename directories more clearly
+	def renameDirectories
 		# If the regex doesn"t match
 		count = 0;
 		
 		# get all entries of projects folder
-		entries = Dir.entries(@directory).reject{|entry| entry == "." || entry == ".."}
+		entries = Dir.entries(@directory).reject{|entry| entry == '.' || entry == '..'}
 		entries.each do |entry|			
 
 			#apply regex and take first match
@@ -29,8 +29,50 @@ class Organiser
 				name = File.join(@directory, "#{count}")
 				count+= 1
   			end
-  			FileUtils.mv(entry, name)
+  			if(entry != name)
+  				FileUtils.mv(entry, name)
+  			end
   		end
 	end
 
+	# Method which moves project's directories in order to
+	# have the same hierarchy for all.
+	def structure
+		# get all entries of projects folder
+		entries = Dir.entries(@directory).reject{|entry| entry == "." || entry == ".."}
+		entries.each do |entry|
+			path = File.join(@directory, entry)
+			level = 0
+			directories = Dir.entries(path).reject{|entry| entry == "." || entry == ".."}
+
+			# directory to delete if the project directory is not structured
+			rm = directories.first if directories.size == 1
+			# Loop to find the core of project
+			while(directories.size == 1)
+				level += 1
+				path = File.join(path, directories.first )
+				directories = Dir.entries(path).reject{|entry| entry == "." || entry == ".."}
+			end
+			# If the core of project is not at the root of directory ...
+			if(level >= 1)
+				Dir.glob(File.join(path,'*')).each do |file|
+					FileUtils.mv(file,File.join(@directory, entry))
+				end
+				puts File.join(@directory, entry, rm)
+				FileUtils.rm_rf(File.join(@directory, entry, rm))
+			end
+
+		end
+	end
+
+
+	# Method which run the organiser
+	def run
+		renameDirectories
+		structure
+	end
+
 end
+
+org = Organiser.new('projects')
+org.run
