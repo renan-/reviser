@@ -1,0 +1,9 @@
+---
+language: C
+src: test.zip
+dest: test
+expected_files:
+- Main.c
+- .
+- ..
+expected_output: Hello World !\n

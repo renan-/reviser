@@ -1,5 +1,6 @@
 require 'fileutils'
 require_relative 'extractor'
+require_relative 'component'
 
 
 # Manage uncompression of archive.
@@ -7,12 +8,14 @@ require_relative 'extractor'
 #
 # Author::	Yann Prono
 
-class Archiver
+class Archiver < Component
 	
 	# Get archive to use and the path directory.
-	def initialize(archive,path_dir)
-		@src = archive
-		@destination = path_dir
+	def initialize
+		super
+
+		@src = @Cfg[:src]
+		@destination = @Cfg[:dest]
 
 		begin
 			# Raise exception if the archive doesn't exist
@@ -60,13 +63,10 @@ class Archiver
 		entries.each do |entry|
 			ext = File.extname(entry)
 			basename = File.basename(entry, ext)
+			puts "Extraction de #{File.join(@destination,File.basename(entry))} vers #{File.join(@destination,basename)}"
   			extract(File.join(@destination,File.basename(entry)), File.join(@destination,basename))
 			FileUtils.rm(File.join(@destination,entry))
   		end
 	end
 	
 end
-
-# test.zip contains ONLY zip archives"
-a = Archiver.new("test.zip","projects")
-a.run
