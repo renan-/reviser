@@ -4,12 +4,11 @@ require_relative 'component'
 
 
 # Manage uncompression of archive.
-# The archive contains all computing projects
+# The archive contains all computing projects.
 #
 # Author::	Yann Prono
 
 class Archiver < Component
-	
 	# Get archive to use and the path directory.
 	def initialize
 		super
@@ -26,7 +25,7 @@ class Archiver < Component
 
 			
 			# Exception when the directory already exists
-			rescue Errno::EEXIST => e
+			rescue Errno::EEXIST
 				puts "Le dossier '#{@destination}' existe deja."
 			
 			# Exception when the archive doesn't exist
@@ -40,9 +39,6 @@ class Archiver < Component
 	# The default file used is the archive used in constructor as well the path destination.
 	def extract(file = @src, destination = @destination)
 		ext = File.extname(file)
-		basename = File.basename(file, ext)
-		### TODO 
-		### suivant l'extension, utiliser librairie appropriée ..		
 		ext = ext.delete '.'
 		# Check if file can be uncompressed
 		if(Extractor.respond_to?(ext))
@@ -68,5 +64,3 @@ class Archiver < Component
 			FileUtils.rm(File.join(@destination,entry))
   		end
 	end
-	
-end
