@@ -59,7 +59,7 @@ class Archiver < Component
 		entries.each do |entry|
 			ext = File.extname(entry)
 			basename = File.basename(entry, ext)
-			puts "Extraction de #{File.join(@destination,File.basename(entry))} vers #{File.join(@destination,basename)}"
+
   			extract(File.join(@destination,File.basename(entry)), File.join(@destination,basename))
 			FileUtils.rm(File.join(@destination,entry))
   		end
