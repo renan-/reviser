@@ -1,11 +1,6 @@
 require_relative 'lib/component'
 
-def run(config_file)
-	Component::setup config_file
+Component::setup 'config.yml'
+Component::load  'archiver'
 
-	Component::load 'archiver'
-
-	Component::run
-end
-
-run 'config.yml'
+Component::run
