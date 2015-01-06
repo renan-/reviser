@@ -9,8 +9,5 @@ class MyComponent < Component
 	def run
 		puts "MyComponent running..."
 		puts "Got this data : #{@data}"
-		puts "Returning 'Hello World!' to the next component that will be executed"
-
-		return 'Hello World!'
 	end
 end
