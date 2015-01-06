@@ -3,11 +3,13 @@ require 'fileutils'
 # Class which organizes all directories to simplify project's analysis.
 #
 # Author::	Yann Prono
-class Organiser
+class Organiser < Component
 
 	# initialize tool
-	def initialize(directory_working)
-		@directory = directory_working
+	def initialize(data)
+		super data
+
+		@directory = @Cfg[:dest]
 	end
 
 	# Rename directories more clearly
@@ -58,7 +60,6 @@ class Organiser
 				Dir.glob(File.join(path,'*')).each do |file|
 					FileUtils.mv(file,File.join(@directory, entry))
 				end
-				puts File.join(@directory, entry, rm)
 				FileUtils.rm_rf(File.join(@directory, entry, rm))
 			end
 
@@ -73,6 +74,3 @@ class Organiser
 	end
 
 end
-
-org = Organiser.new('projects')
-org.run

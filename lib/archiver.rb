@@ -10,8 +10,8 @@ require_relative 'component'
 
 class Archiver < Component
 	# Get archive to use and the path directory.
-	def initialize
-		super
+	def initialize(data)
+		super data
 
 		@src = @Cfg[:src]
 		@destination = @Cfg[:dest]

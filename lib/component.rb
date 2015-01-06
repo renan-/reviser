@@ -9,25 +9,14 @@ class Component
 	# config file.
 	#
 	def self.setup(config_file)
-		@@loadedComponents = []
 		@@configFile = config_file
 	end
 
-	def self.load(component)
-		@@loadedComponents << component
+	def run
+		
 	end
 
-	def self.run
-		#files = Dir[File.dirname(__FILE__) + '*.rb'] 
-		@@loadedComponents.each do |comp|
-			puts "Running component #{Component.titleize comp}"
-
-			require_relative "#{comp}"
-			eval "c = #{Component.titleize comp}.new; c.run"
-		end
-	end
-
-	def initialize
+	def initialize(data)
 		@Cfg = {}
 
 		generateProperties(YAML.load(File.read(@@configFile)))
@@ -45,10 +34,5 @@ class Component
 
 			eval cmd
 		end
-	end
-
-
-	def self.titleize(str)
-	  str.split(/ |\_/).map(&:capitalize).join("")
 	end
 end
