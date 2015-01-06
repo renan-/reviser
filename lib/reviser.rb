@@ -27,13 +27,13 @@ class Reviser
 	#
 	def self.run
 		@@loadedComponents.each do |comp, conf|
-			puts "Reviser is now running #{Reviser.titleize comp}"
+			puts "Reviser is now running #{Reviser.titleize comp}..."
 
 			require_relative "#{comp}"
 			c = eval("#{Reviser.titleize comp}").new ((conf[:inputFrom] != nil) && @@loadedComponents[conf[:inputFrom]][:data]) || nil
 
 			@@loadedComponents[comp][:data] = c.run
-			puts
+			puts "Done"
 		end
 	end
 
