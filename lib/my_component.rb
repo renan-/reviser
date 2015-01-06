@@ -8,6 +8,7 @@ class MyComponent < Component
 
 	def run
 		puts "MyComponent running..."
-		puts "Got this data : #{@data}"
+		puts "Got this config : #{@Cfg}"
+		puts "Got this data   : #{@data}"
 	end
 end
