@@ -1,8 +1,8 @@
 class Reviser
 	@@loadedComponents = {}
 
-	def self.load(component, inputFrom = nil)
-		@@loadedComponents[component] = {inputFrom: inputFrom, data: nil}
+	def self.load(data)
+		@@loadedComponents[data[:component]] = {inputFrom: data[:inputFrom], data: nil}
 	end
 
 	def self.run
@@ -13,6 +13,7 @@ class Reviser
 			c = eval("#{Reviser.titleize comp}").new ((conf[:inputFrom] != nil) && @@loadedComponents[conf[:inputFrom]][:data]) || nil
 
 			@@loadedComponents[comp][:data] = c.run
+			puts
 		end
 	end
 

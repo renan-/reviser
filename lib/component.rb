@@ -17,6 +17,7 @@ class Component
 	end
 
 	def initialize(data)
+		@data = data
 		@Cfg = {}
 
 		generateProperties(YAML.load(File.read(@@configFile)))

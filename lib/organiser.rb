@@ -69,6 +69,7 @@ class Organiser < Component
 
 	# Method which run the organiser
 	def run
+		puts "[Organiser] Got this data => #{@data}"
 		renameDirectories
 		structure
 	end
