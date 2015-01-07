@@ -1,0 +1,4 @@
+---
+extension: .c
+build_command: gcc -o prog %s 
+exec_command: ./prog

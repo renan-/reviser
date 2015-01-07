@@ -1,0 +1,4 @@
+---
+extension: .java
+build_command: javac %s
+exec_command: java %s
