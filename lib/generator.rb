@@ -21,6 +21,6 @@ class Generator < Component
 	# Quite handy
 	#
 	def self.titleize(str)
-		str.split(/ |\_/).map(&:capitalize).join(" ")
+		str.split(/\_/).join(" ").capitalize
 	end
 end

@@ -1,6 +1,10 @@
 #
 # Author:: Renan Strauss
 #
+# TODO
+# Organise the checker around modules for
+# each group of criterias (code, compilation, execution, and so on)
+#
 
 class Checker < Component
 	def initialize(data)
@@ -16,8 +20,19 @@ class Checker < Component
 			# which contains all the project folders.
 			@data.each do |proj|
 				Dir.chdir proj do
-					@results[proj] = { :fichiers => Dir.glob('*').select { |f| File.file?(f) } }
-					@results[proj][:nombre_lignes] = @results[proj][:fichiers].inject(0) { |sum, f| sum + File.open(f).readlines.size }
+					files = Dir.glob('*').select { |f| (File.file?(f)) }
+					src_files = files.select { |f| @Cfg[:extension].include? File.extname(f) }
+
+					@results[proj] = {
+						:fichiers => files.join("\r"),
+						:fichiers_sources => src_files.join("\r"),
+						:nombre_total_de_lignes_de_code => files.inject(0) { |sum, f|
+							sum + File.open(f).readlines.select { |l| (!l.chomp.empty?) && (l.scrub !~ @Cfg[:regex_comments])  }.size 
+						},
+						:nombre_de_commentaires => src_files.inject(0) { |sum, f|
+							sum + File.read(f).scrub.scan(@Cfg[:regex_comments]).size
+						}
+					}
 				end
 			end
 		end
