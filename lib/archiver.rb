@@ -65,5 +65,5 @@ class Archiver
 end
 
 
-a = Archiver.new("test.zip","projects")
+a = Archiver.new("cours.tar","projects")
 a.run

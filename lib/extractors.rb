@@ -1,5 +1,8 @@
 require 'rubygems'
+require 'rubygems/package'
 require 'zip'
+require 'zlib'
+require 'FileUtils'
 
 # The module contains all methods to uncompress a archive 
 # regardless the format.
@@ -41,5 +44,36 @@ module Extractors
   			end
 		end
 	end
+
+	# Method which ungzip a file
+	# gzip format
+	def gzip (tarfile)
+      z = Zlib::GzipReader.new(tarfile)
+      unzipped = StringIO.new(z.read)
+      z.close
+      unzipped
+    end
+
+	# Method which untar a file
+	# tar format
+    def tar (src,destination)
+    	Gem::Package::TarReader.new src do |tar|
+	        tar.each do |tarfile|
+	          destination_file = File.join destination, tarfile.full_name
+	          
+	          if tarfile.directory?
+	            FileUtils.mkdir_p destination_file
+		          else
+		            destination_directory = File.dirname(destination_file)
+		            FileUtils.mkdir_p destination_directory unless File.directory?(destination_directory)
+		            File.open destination_file, "wb" do |f|
+		              f.print tarfile.read
+		          	end
+	     		 end
+	  		end
+  		end
+ 	 end
+    
+
 
 end
