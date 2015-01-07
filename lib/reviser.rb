@@ -41,6 +41,6 @@ class Reviser
 	# Quite handy
 	#
 	def self.titleize(str)
-	  str.split(/ |\_/).map(&:capitalize).join("")
+		str.split(/ |\_/).map(&:capitalize).join("")
 	end
 end

@@ -16,7 +16,8 @@ class Checker < Component
 			# which contains all the project folders.
 			@data.each do |proj|
 				Dir.chdir proj do
-					@results[proj] = { :files => Dir.glob('*') }
+					@results[proj] = { :fichiers => Dir.glob('*').select { |f| File.file?(f) } }
+					@results[proj][:nombre_lignes] = @results[proj][:fichiers].inject(0) { |sum, f| sum + File.open(f).readlines.size }
 				end
 			end
 		end

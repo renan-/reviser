@@ -8,12 +8,19 @@ class Generator < Component
 	def run
 		CSV.open(@Cfg[:results], 'wb') do |f|
 			# Criterias as columns
-			f << @data.values.first.keys.unshift("Projet")
+			f << @data.values.first.keys.unshift("projet").map! { |cri| Generator.titleize(cri.to_s) }
 
 			# Values for each project as rows
 			@data.keys.each do |proj|
 				f << @data[proj].values.unshift(proj)
 			end
 		end
+	end
+
+	#
+	# Quite handy
+	#
+	def self.titleize(str)
+		str.split(/ |\_/).map(&:capitalize).join(" ")
 	end
 end
