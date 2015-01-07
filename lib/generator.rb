@@ -7,19 +7,12 @@ class Generator < Component
 
 	def run
 		CSV.open(@Cfg[:results], 'wb') do |f|
-			f << @data.keys.unshift(" ")
-			#
-			# There may be a better way than looping
-			# through each project's results to get
-			# all the values
-			#
-			@data.values.first.keys.each do |crit|
-				vals = []
-				@data.each do |proj, res|
-					vals << res[crit]
-				end
+			# Criterias as columns
+			f << @data.values.first.keys.unshift("Projet")
 
-				f << vals.unshift(crit.to_s)
+			# Values for each project as rows
+			@data.keys.each do |proj|
+				f << @data[proj].values.unshift(proj)
 			end
 		end
 	end
