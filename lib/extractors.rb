@@ -47,17 +47,19 @@ module Extractors
 
 	# Method which ungzip a file
 	# gzip format
-	def gzip (tarfile)
-      z = Zlib::GzipReader.new(tarfile)
+	def gz (tarfile,destination)
+      z = Zlib::GzipReader.open(tarfile)
       unzipped = StringIO.new(z.read)
       z.close
-      unzipped
+      tar(unzipped, destination)
     end
 
 	# Method which untar a file
 	# tar format
     def tar (src,destination)
-    	Gem::Package::TarReader.new src do |tar|
+    	file = nil
+    	file = src
+    	Gem::Package::TarReader.new(file) do |tar|
 	        tar.each do |tarfile|
 	          destination_file = File.join destination, tarfile.full_name
 	          
