@@ -22,9 +22,12 @@ require 'fileutils'
 # 		end
 #
 module Extractors
+	
 
+	#
 	# Method which unzip a file.
 	# ZIP format
+	#
 	def zip (src, destination)
 		# Config the gem
 		Zip.on_exists_proc = true
@@ -36,7 +39,7 @@ module Extractors
   				#Create filepath
  				filepath = File.join(destination, entry.name)
 	  			# Check if it doesn't exist because of directories (overwrite)
-  				if(!File.exist?(filepath))
+  				if !File.exist?(filepath)
   					# Create directories to access file
  					FileUtils.mkdir_p(File.dirname(filepath))
    					entry.extract(filepath) 
@@ -44,38 +47,45 @@ module Extractors
   			end
 		end
 	end
-
+	
+	#
 	# Method which ungzip a file
 	# gzip format
+	#
 	def gz (tarfile,destination)
-      z = Zlib::GzipReader.open(tarfile)
-      unzipped = StringIO.new(z.read)
-      z.close
-      tar(unzipped, destination)
+      	z = Zlib::GzipReader.open(tarfile)
+      	unzipped = StringIO.new(z.read)
+      	z.close
+      	tar(unzipped, destination)
     end
-
+    
+    #
 	# Method which untar a file
 	# tar format
+	#
     def tar (src,destination)
-    	file = nil
-    	file = src
-    	Gem::Package::TarReader.new(file) do |tar|
+    	# test if src is String (filename) or IO stream
+    	if src.is_a? String
+    		stream = File.open(src)
+    	else
+    		stream = src
+    	end
+
+    	Gem::Package::TarReader.new(stream) do |tar|
 	        tar.each do |tarfile|
-	          destination_file = File.join destination, tarfile.full_name
-	          
-	          if tarfile.directory?
-	            FileUtils.mkdir_p destination_file
-		          else
+	          	destination_file = File.join destination, tarfile.full_name
+	          	if tarfile.directory?
+	            	FileUtils.mkdir_p destination_file
+				else
 		            destination_directory = File.dirname(destination_file)
 		            FileUtils.mkdir_p destination_directory unless File.directory?(destination_directory)
-		            File.open destination_file, "wb" do |f|
-		              f.print tarfile.read
+		            File.open destination_file, 'wb' do |f|
+		              	f.print tarfile.read
 		          	end
-	     		 end
+	     		end
 	  		end
   		end
- 	 end
-    
+ 	end
 
 
 end
