@@ -2,7 +2,7 @@ require 'rubygems'
 require 'rubygems/package'
 require 'zip'
 require 'zlib'
-require 'FileUtils'
+require 'fileutils'
 
 # The module contains all methods to uncompress a archive 
 # regardless the format.

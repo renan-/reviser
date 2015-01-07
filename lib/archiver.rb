@@ -64,3 +64,4 @@ class Archiver < Component
 			FileUtils.rm(File.join(@destination,entry))
   		end
 	end
+end
