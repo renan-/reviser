@@ -1,0 +1,5 @@
+---
+language: C
+src: test.zip
+dest: projects
+results: results.csv
