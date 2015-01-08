@@ -23,7 +23,10 @@ class Component
 		@Cfg = {}
 
 		populate YAML.load(File.read(@@configFile))
-		populate YAML.load(File.read("lang/#{@Cfg[:language]}.yml"))
+		# Multiline instruction
+		file_language = File.join(File.dirname(File.dirname(__FILE__)),
+			'lang',"#{@Cfg[:language]}.yml")
+		populate YAML.load(File.read(file_language))
 	end
 
 	#
