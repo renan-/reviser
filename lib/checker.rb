@@ -45,17 +45,4 @@ class Checker < Component
 
 		return @results
 	end
-
-	def commentsCount(files)
-		comms = []
-		files.each { |f| comms << IO.read(f).scrub.scan(@Cfg[:regex_comments]) }
-
-		str = comms.inject("") { |s, comm|
-			s << comm.inject("") { |t, l|
-				t << (l.size > 3 && l[3] + "\n") || ""
-			}
-		}
-
-		str.split("\n").size
-	end
 end
