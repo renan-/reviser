@@ -2,3 +2,6 @@
 *.zip
 *.tar.gz
 *.rar
+projects/
+.yardoc/
+results.csv
