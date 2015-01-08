@@ -6,12 +6,10 @@ require_relative 'component'
 # Manage uncompression of archive.
 # The archive contains all computing projects.
 #
-# The simple way to extract a compressed file is 
-# to use the +extract+ class method : 
-#
+# @example The simple way to extract a compressed file is : 
 # 		Archiver.extract(myFile, myDirectory)
 #
-# Author::	Yann Prono
+# @Author	Yann Prono
 #
 class Archiver < Component
 
@@ -30,7 +28,11 @@ class Archiver < Component
 		FileUtils.mkdir @destination, :mode => 0700
 	end
 	
+	#
 	# Extract the file into the destination directory.
+	# @param file_name [String] the name of the archive.
+	# @param destination [String] the destination directory.
+	#
 	def self.extract(file_name, destination)
 		raise Errno::ENOENT unless File.exists?(file_name)
 		ext = File.extname(file_name)
@@ -51,16 +53,8 @@ class Archiver < Component
 	#
 	# Method which extract an archive
 	# which contains all computing projects.
-	# The name archive and the directory destination are included in +@data.
 	# This method extract in first time the archive
 	# and after all extracted files.
-	#
-	# The structure of the archive is : 
-	# 	- archive.zip
-	#		- project_1.tar.gz
-	#		- project_2.zip
-	# 		- project_3.rar 
-	# 		- project_...
 	#
 	def run
 		# Extract the original archive
