@@ -15,6 +15,8 @@ require_relative 'component'
 #
 class Archiver < Component
 
+	attr_reader :src, :destination
+
 	
 	# Get archive to use and the path directory.
 	def initialize(data)
