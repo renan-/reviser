@@ -27,16 +27,35 @@ class Checker < Component
 						:fichiers => files.join("\r"),
 						:fichiers_sources => src_files.join("\r"),
 						:nombre_total_de_lignes_de_code => files.inject(0) { |sum, f|
-							sum + File.open(f).readlines.select { |l| (!l.chomp.empty?) && (l.scrub !~ @Cfg[:regex_comments])  }.size 
+							sum + File.open(f).readlines.select { |l| 
+								(!l.chomp.empty?) && (l.scrub !~ @Cfg[:regex_comments])  
+							}.size 
 						},
-						:nombre_de_commentaires => src_files.inject(0) { |sum, f|
-							sum + File.read(f).scrub.scan(@Cfg[:regex_comments]).size
-						}
+						:nombre_de_commentaires => 	src_files.inject([]) { |tab, f|
+								tab << IO.read(f).scrub.scan(@Cfg[:regex_comments])
+							}.inject("") { |s, comm|
+								s << comm.inject("") { |t, l|
+									t << (l.size > 3 && l[3] + "\n") || ""
+								}
+							}.split("\n").size
 					}
 				end
 			end
 		end
 
 		return @results
+	end
+
+	def commentsCount(files)
+		comms = []
+		files.each { |f| comms << IO.read(f).scrub.scan(@Cfg[:regex_comments]) }
+
+		str = comms.inject("") { |s, comm|
+			s << comm.inject("") { |t, l|
+				t << (l.size > 3 && l[3] + "\n") || ""
+			}
+		}
+
+		str.split("\n").size
 	end
 end
