@@ -31,7 +31,7 @@ class Checker < Component
 								(!l.chomp.empty?) && (l.scrub !~ @Cfg[:regex_comments])  
 							}.size 
 						},
-						:nombre_de_commentaires => 	src_files.inject([]) { |tab, f|
+						:nombre_de_lignes_de_commentaires => src_files.inject([]) { |tab, f|
 								tab << IO.read(f).scrub.scan(@Cfg[:regex_comments])
 							}.inject("") { |s, comm|
 								s << comm.inject("") { |t, l|
