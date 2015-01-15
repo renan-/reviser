@@ -20,8 +20,8 @@ class Archiver < Component
 	def initialize(data)
 		super data
 
-		@src = @Cfg[:src]
-		@destination = @Cfg[:dest] 
+		@src = @cfg[:src]
+		@destination = @cfg[:dest] 
 
 		# Create directory
 		FileUtils.rm_rf(@destination) if Dir.exists? @destination

@@ -6,7 +6,7 @@ class Generator < Component
 	end
 
 	def run
-		CSV.open(@Cfg[:results], 'wb') do |f|
+		CSV.open(@cfg[:results], 'wb') do |f|
 			# Criterias as columns
 			f << @data.values.first.keys.unshift("projet").map! { |cri| Generator.titleize(cri.to_s) }
 

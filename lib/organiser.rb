@@ -9,7 +9,7 @@ class Organiser < Component
 	def initialize(data)
 		super data
 
-		@directory = @Cfg[:dest]
+		@directory = @cfg[:dest]
 	end
 
 	# Rename directories more clearly

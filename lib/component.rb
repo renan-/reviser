@@ -20,11 +20,11 @@ class Component
 	#
 	def initialize(data)
 		@data = data
-		@Cfg = {}
+		@cfg = {}
 
 		populate YAML.load(File.read(@@configFile))
 		populate YAML.load(File.read(File.join(File.dirname(File.dirname(__FILE__)),
-			'lang',"#{@Cfg[:language]}.yml")))
+			'lang',"#{@cfg[:language]}.yml")))
 	end
 
 	#
@@ -32,6 +32,6 @@ class Component
 	# read from config file to symbols
 	#
 	def populate(hash)
-		hash.each { |k, v| @Cfg[k.to_sym] = v}
+		hash.each { |k, v| @cfg[k.to_sym] = v}
 	end
 end
