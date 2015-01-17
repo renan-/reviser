@@ -22,8 +22,9 @@ require 'fileutils'
 # 		end
 #
 module Extractors
-	
 
+
+		
 	#
 	# Method which unzip a file.
 	# ZIP format
@@ -58,6 +59,10 @@ module Extractors
       	z.close
       	tar(unzipped, destination)
     end
+
+	# Alias for format shortcut
+	## cc Dominique Colnet
+	alias :tgz :gz 
     
     #
 	# Method which untar a file
@@ -87,5 +92,10 @@ module Extractors
   		end
  	end
 
+ 	# Uncompress rar format
+ 	# if it is possible.
+ 	def rar(src,destination)
+ 		exec('echo coucou');
+ 	end
 
 end
