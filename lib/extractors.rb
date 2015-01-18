@@ -99,13 +99,9 @@ module Extractors
 	def rar(src,destination)
  		`which unrar`
  		if($?.success?)
- 			thread = Thread.new do
- 				src = Shellwords.escape(src)
- 				destination = Shellwords.escape(destination)
- 				`unrar e #{src} #{destination}`
- 			end
- 			#Let the thread finishs before
- 			thread.join
+ 			src = Shellwords.escape(src)
+ 			destination = Shellwords.escape(destination)
+ 			`unrar e #{src} #{destination}`
 		else
 			puts "Please install unrar : sudo apt-get install unrar"
 		end
