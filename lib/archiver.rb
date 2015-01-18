@@ -23,7 +23,7 @@ class Archiver < Component
 		@src = @cfg[:src]
 		@destination = @cfg[:dest] 
 
-		self::directory @destination		
+		Archiver::destination? @destination		
 	end
 
 	#
@@ -31,8 +31,8 @@ class Archiver < Component
 	# else create it.
 	# For the moment, if the directory exists, it is deleted (avoid conflicts) then created.
 	# @param destination [String] the destination directory
+	#
 	def self.destination?(destination)
-		# Create directory
 		FileUtils.rm_rf(destination) if Dir.exists? destination
 		FileUtils.mkdir destination, :mode => 0700
 	end
@@ -58,7 +58,7 @@ class Archiver < Component
 		end
 
 		rescue Errno::ENOENT
-			puts "# File '#{file_name}'' not found. Check if the file exists."
+			puts "# File #{file_name} not found. Check if the file exists."
 	end
 
 	#
@@ -84,5 +84,3 @@ class Archiver < Component
 
 
 end
-
-Archiver::extract('test.rar','folder')

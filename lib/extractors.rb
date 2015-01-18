@@ -23,7 +23,6 @@ require 'fileutils'
 #
 module Extractors
 
-
 		
 	#
 	# Method which unzip a file.
@@ -92,10 +91,22 @@ module Extractors
   		end
  	end
 
+ 	#
  	# Uncompress rar format
  	# if it is possible.
+ 	#
  	def rar(src,destination)
- 		exec('echo coucou');
- 	end
+ 		`which unrar`
+ 		if($?.success?)
+ 			thread = Thread.new do
+ 				`unrar e #{src} #{destination}`
+ 			end
+ 			#Let the thread finishs before
+ 			thread.join
+		else
+			puts "Please install unrar : sudo apt-get install unrar"
+		end
+	end
+
 
 end
