@@ -45,7 +45,7 @@ class Organiser < Component
 		entries.each do |entry|
 			path = File.join(@directory, entry)
 			level = 0
-			directories = Dir.entries(path).reject{|entry| entry == "." || entry == ".."}
+			directories = Dir.entries(path).reject{|entry| entry == "." || entry == ".." || entry == "__MACOSX"}
 
 			# directory to delete if the project directory is not structured
 			rm = directories.first if directories.size == 1
@@ -53,7 +53,7 @@ class Organiser < Component
 			while(directories.size == 1)
 				level += 1
 				path = File.join(path, directories.first )
-				directories = Dir.entries(path).reject{|entry| entry == "." || entry == ".."}
+				directories = Dir.entries(path).reject{|entry| entry == "." || entry == ".." || entry == "__MACOSX"}
 			end
 			# If the core of project is not at the root of directory ...
 			if(level >= 1)
