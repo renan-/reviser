@@ -3,6 +3,7 @@ require 'rubygems/package'
 require 'zip'
 require 'zlib'
 require 'fileutils'
+require 'shellwords'
 
 # The module contains all methods to uncompress a archive 
 # regardless the format.
@@ -95,10 +96,12 @@ module Extractors
  	# Uncompress rar format
  	# if it is possible.
  	#
- 	def rar(src,destination)
+	def rar(src,destination)
  		`which unrar`
  		if($?.success?)
  			thread = Thread.new do
+ 				src = Shellwords.escape(src)
+ 				destination = Shellwords.escape(destination)
  				`unrar e #{src} #{destination}`
  			end
  			#Let the thread finishs before
