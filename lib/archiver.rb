@@ -31,7 +31,7 @@ class Archiver < Component
 	# @param destination [String] the destination directory
 	#
 	def self.destination?(destination)
-		FileUtils.rm_rf(destination) if Dir.exists? destination
+		FileUtils.rm_rf(destination)
 		FileUtils.mkdir destination, :mode => 0700
 	end
 	
@@ -54,9 +54,6 @@ class Archiver < Component
 		else
 			puts "Format '#{ext}' non supporte"
 		end
-
-		rescue Errno::ENOENT
-			puts "# File #{file_name} not found. Check if the file exists."
 	end
 
 	#

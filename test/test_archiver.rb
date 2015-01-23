@@ -16,32 +16,43 @@ class TestArchiver < Test::Unit::TestCase
 		@archiver = Archiver.new(nil)
 		@file = @archiver.src
 		@dest = @archiver.destination
-		@nb_projects = 15
+		@nb_projects = 18
 	end
 
 	def teardown 
 		FileUtils.rm_rf(@dest)
 	end
 
-	# Verify constructor
-	def test_initialize
-		assert(Dir.exists?(@dest), "The directory #{@dest} should exist")
+
+	# Case when the directory doesn't exist
+	def test_destination?()
+		dir = "Jim Weirich"
+		Archiver::destination?(dir)
+		assert(Dir.exists?(dir), "The directory #{dir} should exist")
+		FileUtils.rm_rf dir
+	end
+
+	# Case when the directory already exists
+	def test_destination_exist()
+		dir = "Jim Weirich"
+		FileUtils.mkdir dir, :mode => 0700
+		filepath = File.join(dir,'testFile')
+		FileUtils.touch filepath
+		Archiver::destination?(dir)
+		assert(Dir.exists?(dir), "The directory #{dir} should exist")
+		assert(!File.exists?(filepath), "The directory shouldn't contain any files")
+		FileUtils.rm_rf dir
 	end
 
 	# Normal case
 	def test_extract
 		Archiver.extract(@file, @dest)
-		entries = Dir.entries(@dest).reject{|entry| entry == '.' || entry == '..'}
 		assert(entries.size >= 1, "the extraction should extract some entries")
 	end
 
 	# File not found
-	# TODO find how to test exception
-	def test_extract_no_file
-		raise = false
-		Archiver.extract("coucou.zip", @dest)
-		assert_raise Errno::ENOENT do
-		end
+	def test_extract_no_file		
+		assert_raise(Errno::ENOENT) {Archiver.extract("coucou.zip", @dest)}
 	end
 
 	

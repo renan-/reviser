@@ -5,6 +5,9 @@ require 'fileutils'
 # Author::	Yann Prono
 class Organiser < Component
 
+	# All entries to ignore during sort and organization
+	$rejectedEntries = ['.', '..', '__MACOSX']
+
 	# initialize tool
 	def initialize(data)
 		super data
@@ -18,7 +21,7 @@ class Organiser < Component
 		count = 0
 
 		# get all entries of projects folder
-		entries = Dir.entries(@directory).reject{|entry| entry == '.' || entry == '..'}
+		entries = (Dir.entries(@directory) - $rejectedEntries)
 		entries.each do |entry|			
 
 			#apply regex and take first match
@@ -41,11 +44,11 @@ class Organiser < Component
 	# have the same hierarchy for all.
 	def structure
 		# get all entries of projects folder
-		entries = Dir.entries(@directory).reject{|entry| entry == "." || entry == ".."}
+		entries = (Dir.entries(@directory) - $rejectedEntries)
 		entries.each do |entry|
 			path = File.join(@directory, entry)
 			level = 0
-			directories = Dir.entries(path).reject{|entry| entry == "." || entry == ".." || entry == "__MACOSX"}
+			directories = (Dir.entries(path) - $rejectedEntries)
 
 			# directory to delete if the project directory is not structured
 			rm = directories.first if directories.size == 1
@@ -53,7 +56,7 @@ class Organiser < Component
 			while(directories.size == 1)
 				level += 1
 				path = File.join(path, directories.first )
-				directories = Dir.entries(path).reject{|entry| entry == "." || entry == ".." || entry == "__MACOSX"}
+				directories = (Dir.entries(path) - $rejectedEntries)
 			end
 			# If the core of project is not at the root of directory ...
 			if(level >= 1)
