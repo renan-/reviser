@@ -6,4 +6,4 @@ results: results.csv
 
 
 ## Convention name of projects for rennaming folder
-projects_names: !ruby/regexp '/^[a-zA-Z]+/'
+projects_names: !ruby/regexp '/^[a-zA-Z]+[ ]+[a-zA-Z]+/'

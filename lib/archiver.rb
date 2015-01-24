@@ -73,5 +73,3 @@ class Archiver < Component
 
 
 end
-
-Archiver.extract('lib.cpio', 'coucou')
