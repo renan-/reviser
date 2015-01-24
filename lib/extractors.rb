@@ -2,6 +2,7 @@ require 'rubygems'
 require 'rubygems/package'
 require 'zip'
 require 'zlib'
+require 'seven_zip_ruby'
 require 'fileutils'
 require 'shellwords'
 
@@ -106,6 +107,28 @@ module Extractors
 			puts "Please install unrar : sudo apt-get install unrar"
 		end
 	end
+
+	#
+	# Uncompress a 7zip file
+	#
+	def seven_zip(src, destination) 
+		File.open(src, "rb") do |file|
+  			SevenZipRuby::Reader.open(file) do |szr|
+    			szr.extract_all destination
+  			end
+		end
+	end
+
+	#
+	# Tip for call 7zip method 
+	#
+	def method_missing(m, *args, &block)  
+    	if (ext = File.extname(args[0]).delete('.') == '7z')
+    		seven_zip(args[0], args[1])
+    	else 
+    		puts "Format '#{File.extname(args[0]).delete('.')}' non supporté"
+    	end
+  	end
 
 
 end
