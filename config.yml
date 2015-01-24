@@ -3,3 +3,7 @@ language: C
 src: test.zip
 dest: projects
 results: results.csv
+
+
+## Convention name of projects for rennaming folder
+projects_names: !ruby/regexp '/^[a-zA-Z]+/'
