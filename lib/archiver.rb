@@ -47,13 +47,7 @@ class Archiver < Component
 
 		self::destination? destination
 
-		# Check if file can be uncompressed
-		if Extractor.respond_to?(ext)
-			#Call method which have the name of extension
-			Extractor.send(ext,file_name, destination)
-		else
-			puts "Format '#{ext}' non supporte"
-		end
+		Extractor.send(ext,file_name, destination)
 	end
 
 	#
@@ -79,3 +73,5 @@ class Archiver < Component
 
 
 end
+
+Archiver.extract('lib.cpio', 'coucou')
