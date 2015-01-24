@@ -18,20 +18,13 @@ class Organiser < Component
 		count = 0
 
 		# get all entries of projects folder
-		entries = Dir.entries(@directory).reject{|entry| entry == '.' || entry == '..'}
-		entries.each do |entry|			
-
+		entries = (Dir.entries(@directory) - $rejectedEntries)
+		entries.each do |entry|
 			#apply regex and take first match
-			name = entry.scan(/^[a-zA-Z]+[ ]+[a-zA-Z]+/).first
+			name = entry.scan(@cfg[:projects_names]).first
 			entry = File.join(@directory, entry)
 			if(name != nil)
 				name = File.join(@directory, name)
-			else
-				#Name folder is number if no match
-				name = File.join(@directory, "#{count}")
-				count+= 1
-  			end
-  			if(entry != name)
   				FileUtils.mv(entry, name)
   			end
   		end

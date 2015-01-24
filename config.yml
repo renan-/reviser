@@ -15,3 +15,6 @@ dest: projects
 
 # The result file to be generated
 out: results.csv
+
+## Projects naming, useful to rename folders
+projects_names: !ruby/regexp '/^[a-zA-Z]+/'
