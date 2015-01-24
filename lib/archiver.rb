@@ -70,8 +70,4 @@ class Archiver < Component
 			FileUtils.rm(File.join(@destination,entry))
   		end
 	end
-
-
 end
-
-Archiver.extract('lib.cpio', 'coucou')
