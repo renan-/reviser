@@ -67,7 +67,7 @@ class Archiver < Component
 			basename = File.basename(entry, ext)
 
   			Archiver.extract(File.join(@destination,File.basename(entry)), File.join(@destination,basename))
-			FileUtils.rm(File.join(@destination,entry))
+			FileUtils.rm_rf(File.join(@destination,entry))
   		end
 	end
 end
