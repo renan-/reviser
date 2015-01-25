@@ -1,6 +1,6 @@
-require_relative "../lib/archiver"
-require_relative "../lib/component"
-require_relative "../lib/reviser"
+²require_relative "../../lib/archiver"
+require_relative "../../lib/component"
+require_relative "../../lib/reviser"
 require "test/unit"
 require "fileutils"
 
@@ -49,6 +49,6 @@ class TestArchiver < Test::Unit::TestCase
 		@archiver.run
 		entries = Dir.entries(@dest).reject{|entry| entry == '.' || entry == '..'}
 		assert_equal(@nb_projects, entries.size, "the directory was expected to contain #{@nb_projects} directories.")
-	end
+		end
 
 end
