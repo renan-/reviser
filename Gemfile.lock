@@ -4,10 +4,12 @@ GEM
     redcarpet (3.2.2)
     rubyzip (1.1.6)
     seven_zip_ruby (1.2.4)
+    seven_zip_ruby (1.2.4-x64-mingw32)
     yard (0.8.7.6)
 
 PLATFORMS
   ruby
+  x64-mingw32
 
 DEPENDENCIES
   redcarpet (~> 3.2.2)
