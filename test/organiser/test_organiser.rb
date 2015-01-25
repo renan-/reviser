@@ -43,7 +43,7 @@ class TestOrganiser < Test::Unit::TestCase
 		errors = Array.new
 		entries.each do |entry|
 			tmp = Dir.entries(File.join(@dest, entry)) - $rejected
-			errors << entry if tmp.size <= 1
+			errors << entry if tmp.size == 1
 		end
 
 		assert_equal(0, errors.size,"Some directories are not structured #{errors}")
