@@ -1,6 +1,7 @@
 require 'fileutils'
 require_relative 'extractor'
 require_relative 'component'
+require_relative 'generator_log'
 
 #
 # Manage uncompression of archive.
@@ -15,13 +16,16 @@ class Archiver < Component
 
 	attr_reader :src, :destination
 
-	
+	# Logger of the archiver
+	$logger
+
 	# Get archive to use and the path directory.
 	def initialize(data)
 		super data
 
 		@src = @cfg[:src]
 		@destination = @cfg[:dest]
+		$logger = GeneratorLog.new('archiver.txt')
 	end
 
 	#
@@ -48,6 +52,7 @@ class Archiver < Component
 		self::destination? destination
 
 		Extractor.send(ext,file_name, destination)
+		$logger.log "extract #{file_name} to #{destination}" if $Logger
 	end
 
 	#
@@ -57,18 +62,23 @@ class Archiver < Component
 	# and after all extracted files.
 	#
 	def run
+		$logger.title ("#{Archiver.name}")
 		# Extract the original archive
 		Archiver.extract(@src, @destination)
 		
 		# Extract all sub archives
 		entries = Dir.entries(@destination).reject{|entry| entry == '.' || entry == '..'}
+		extracted = 0
 		entries.each do |entry|
 			ext = File.extname(entry)
 			basename = File.basename(entry, ext)
 
   			Archiver.extract(File.join(@destination,File.basename(entry)), File.join(@destination,basename))
+
 			FileUtils.rm_rf(File.join(@destination,entry))
+			extracted += 1
   		end
+  		$logger.footer("#{extracted} projects are been uncompressed", true)
 	end
 
 
