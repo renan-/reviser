@@ -52,7 +52,7 @@ class Archiver < Component
 		self::destination? destination
 
 		Extractor.send(ext,file_name, destination)
-		$logger.log "extract #{file_name} to #{destination}" if $Logger
+		$logger.log "extract #{file_name} to #{destination}" if $logger
 	end
 
 	#
