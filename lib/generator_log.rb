@@ -29,13 +29,18 @@ class GeneratorLog < Generator
 	def title(title)
 		@fopen.print("\t\t","=" * (title.length+2),"\n")
 		@fopen.print("\t\t"," #{title}","\n")
-		@fopen.print("\t\t","=" * (title.length+2),"\n\n")
+		@fopen.print("\t\t","=" * (title.length+2),"\n")
+	end
+
+	def subtitle(title)
+		@fopen.print("\n\n\t","** #{title} **","\n\n")
 	end
 
 	# Adds a log.
 	# @param msg [String] Log to add
-	def log(msg)		
-		@fopen.puts("= #{msg}")
+	def log(msg, error = false)
+		msg = error ? "### #{msg}" : "= #{msg}"
+		@fopen.puts("#{msg}")
 	end
 
 	# Close the current log file

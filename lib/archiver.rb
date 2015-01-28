@@ -63,8 +63,11 @@ class Archiver < Component
 	#
 	def run
 		$logger.title ("#{Archiver.name}")
+
+		$logger.subtitle ("First extraction ")
 		# Extract the original archive
 		Archiver.extract(@src, @destination)
+		$logger.subtitle ("Extraction of sub archives")
 		
 		# Extract all sub archives
 		entries = Dir.entries(@destination).reject{|entry| entry == '.' || entry == '..'}
