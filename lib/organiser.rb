@@ -36,7 +36,7 @@ class Organiser < Component
   				FileUtils.mv(entry, name)
   				$logger.log("rename #{File.basename(entry)} to #{File.basename(name)}")
   			else 
-  				$logger.log("can't rename #{File.basename(entry)} (no matches with regex of #{Component.configFile} ", true)
+  				$logger.log("can't rename #{File.basename(entry)} (no matches with regex of config.yml)", true)
   			end
   		end
 	end
