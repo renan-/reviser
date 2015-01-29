@@ -11,6 +11,10 @@ class Checker < Component
 		super data
 
 		@results = {}
+
+		if @cfg[:compiled]
+			extend CompilationTools
+		end
 	end
 
 	def run
@@ -21,7 +25,7 @@ class Checker < Component
 			@data.each { |proj| Dir.chdir(proj) { check proj } }
 		end
 
-		return @results
+		@results
 	end
 
 	def check(proj)
@@ -44,5 +48,11 @@ class Checker < Component
 						}
 				}.split("\n").size
 		}
+
+		if @cfg[:compiled]
+			@results[:resultats_compilation] = compile proj
+		end
+
+		@results
 	end
 end

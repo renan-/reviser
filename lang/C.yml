@@ -1,9 +1,16 @@
 ---
+# C language
+
+# List of source files extensions
 extension:
 - .c
 - .h
 
-build_command: gcc
-exec_command: ./a.out
+# Whether it's a compiled or an interpreted language
+compiled: true
 
+# Fallback if no command is specified in project type
+build_command: gcc -ansi -pedantic -Wall -g
+
+# Ruby regex to find C-style comments
 regex_comments: !ruby/regexp '/(\/\/(.*?)^)|(\/\*(.*?)\*\/)/m'

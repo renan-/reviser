@@ -1,5 +1,17 @@
 ---
-language: C
-src: test.zip
+# Reviser config
+
+# The target language
+lang: C
+
+# The type of project (<sort>.yml must exists)
+sort: CProject
+
+# The source archive containing all projects
+src: projects.zip
+
+# The destination directory for these projects
 dest: projects
-results: results.csv
+
+# The result file to be generated
+out: results.csv

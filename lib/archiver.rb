@@ -21,7 +21,7 @@ class Archiver < Component
 		super data
 
 		@src = @cfg[:src]
-		@destination = @cfg[:dest]
+		@destination = @cfg[:out]
 	end
 
 	#
