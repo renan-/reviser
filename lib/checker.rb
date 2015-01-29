@@ -5,6 +5,7 @@
 # Organise the checker around modules for
 # each group of criterias (code, compilation, execution, and so on)
 #
+require_relative 'compilation_tools'
 
 class Checker < Component
 	def initialize(data)
@@ -49,9 +50,7 @@ class Checker < Component
 				}.split("\n").size
 		}
 
-		if @cfg[:compiled]
-			@results[:resultats_compilation] = compile proj
-		end
+		@results[proj][@cfg[:compiled] ? :resultats_compilation : :fichiers_manquants] = compile proj
 
 		@results
 	end

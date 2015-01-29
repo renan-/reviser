@@ -18,7 +18,7 @@ class Organiser < Component
 		count = 0
 
 		# get all entries of projects folder
-		entries = (Dir.entries(@directory) - $rejectedEntries)
+		entries = Dir.entries(@directory)
 		entries.each do |entry|
 			#apply regex and take first match
 			name = entry.scan(@cfg[:projects_names]).first

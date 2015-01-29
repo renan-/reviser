@@ -21,7 +21,7 @@ class Archiver < Component
 		super data
 
 		@src = @cfg[:src]
-		@destination = @cfg[:out]
+		@destination = @cfg[:dest]
 	end
 
 	#
@@ -67,7 +67,11 @@ class Archiver < Component
 			basename = File.basename(entry, ext)
 
   			Archiver.extract(File.join(@destination,File.basename(entry)), File.join(@destination,basename))
-			FileUtils.rm_rf(File.join(@destination,entry))
+			
+			begin
+				FileUtils.rm(File.join(@destination,entry))
+  			rescue
+  			end
   		end
 	end
 end

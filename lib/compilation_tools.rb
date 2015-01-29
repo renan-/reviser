@@ -14,9 +14,9 @@ module CompilationTools
 	#
 	# @param proj Path to project's dir
 	#
-	def compile
+	def compile(proj)
 		check = checkForRequiredFiles
-		if check.respond_to! 'each'
+		if !check.respond_to? 'each'
 			stdout, stderr, status = Open3.capture3("#{@cfg[:build_command]}")
 			status.exitstatus ? 'OK' : "#{stdout}\n#{stderr}"
 		else
@@ -26,6 +26,6 @@ module CompilationTools
 
 	def checkForRequiredFiles
 		diff = @cfg[:required_files] - Dir.glob('*')
-		diff.respond_to! 'each' ? diff : true
+		!diff.respond_to?('each') ? diff : true
 	end
 end
