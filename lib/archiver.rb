@@ -33,9 +33,9 @@ class Archiver < Component
 	# @param destination [String] the destination directory
 	#
 	def self.destination?(destination)
-		if !$rejected.include? destination
+		if !$rejected.include? File.basename destination
 			FileUtils.rm_rf(destination) if Dir.exists? destination
-			FileUtils.mkdir destination, :mode => 0700
+		 	FileUtils.mkdir destination, :mode => 0700
 		end
 	end
 	
@@ -44,7 +44,7 @@ class Archiver < Component
 	# @param file_name [String] the name of the archive.
 	# @param destination [String] the destination directory.
 	#
-	def self.extract(file_name, destination)
+	def self.extract(file_name, destination = '.')
 		raise Errno::ENOENT unless File.exists?(file_name)
 		ext = File.extname(file_name)
 		ext = ext.delete '.'
@@ -78,4 +78,7 @@ class Archiver < Component
   			end
   		end
 	end
+
 end
+
+Archiver.extract('tolo.xz')
