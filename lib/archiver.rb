@@ -15,6 +15,8 @@ class Archiver < Component
 
 	attr_reader :src, :destination
 
+	$rejected = ['.','..']
+
 	
 	# Get archive to use and the path directory.
 	def initialize(data)
@@ -31,8 +33,10 @@ class Archiver < Component
 	# @param destination [String] the destination directory
 	#
 	def self.destination?(destination)
-		FileUtils.rm_rf(destination) if Dir.exists? destination
-		FileUtils.mkdir destination, :mode => 0700
+		if !$rejected.include? destination
+			FileUtils.rm_rf(destination) if Dir.exists? destination
+			FileUtils.mkdir destination, :mode => 0700
+		end
 	end
 	
 	#
