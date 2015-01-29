@@ -10,7 +10,7 @@ require_relative 'generator_log'
 # @example The simple way to extract a compressed file is : 
 # 		Archiver.extract(myFile, myDirectory)
 #
-# @Author	Yann Prono
+# @author	Yann Prono
 #
 class Archiver < Component
 

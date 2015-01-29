@@ -3,7 +3,8 @@ extension:
 - .c
 - .h
 
-build_command: gcc
+build_command: make
+
 exec_command: ./a.out
 
 regex_comments: !ruby/regexp '/(\/\/(.*?)^)|(\/\*(.*?)\*\/)/m'
