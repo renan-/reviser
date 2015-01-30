@@ -31,4 +31,3 @@ required_files:
 # will be replaced by its size
 execution_value:
 - ../../res/labys/labfich11.txt
-- ../../res/labys/test.txt

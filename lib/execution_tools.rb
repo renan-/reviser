@@ -62,7 +62,7 @@ module ExecutionTools
 			cmd = "#{(@cfg.has_key? :execute_command) ? @cfg[:execute_command] : ''} #{program} #{argument}"
 			out = exec_with_timeout cmd
 
-			cmd + ' => ' + ((out[:exitstatus] == exit_status) ? out[:exitstatus].to_s : ((out[:output].length <= 20) ? out[:output] : "#{out[:output][0...20]}..."))
+			"> #{cmd}" + "\r" + ((out[:exitstatus] == exit_status) ? out[:exitstatus].to_s : out[:output])
 		end
 
 		def find_executable
