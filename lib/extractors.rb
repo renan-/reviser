@@ -126,7 +126,7 @@ module Extractors
     	if (ext = File.extname(args[0]).delete('.') == '7z')
     		seven_zip(args[0], args[1])
     	else 
-    		puts "Format '#{File.extname(args[0]).delete('.')}' non supporté"
+    		raise "Format '#{File.extname(args[0]).delete('.')}' not supported"
     	end
   	end
 

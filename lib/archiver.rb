@@ -4,7 +4,7 @@ require_relative 'component'
 require_relative 'generator_log'
 
 #
-# Manage uncompression of archive.
+# Manages uncompression of archive.
 # The archive contains all computing projects.
 #
 # @example The simple way to extract a compressed file is : 
@@ -67,12 +67,12 @@ class Archiver < Component
 	# and after all extracted files.
 	#
 	def run
-		$logger.title ("#{Archiver.name}")
+		$logger.title "#{Archiver.name}"
 
-		$logger.subtitle ("First extraction ")
+		$logger.subtitle "First extraction "
 		# Extract the original archive
 		Archiver.extract(@src, @destination)
-		$logger.subtitle ("Extraction of sub archives")
+		$logger.subtitle "Extraction of sub archives"
 		
 		# Extract all sub archives
 		entries = Dir.entries(@destination) - $rejected
@@ -80,17 +80,18 @@ class Archiver < Component
 		entries.each do |entry|
 			ext = File.extname(entry)
 			basename = File.basename(entry, ext)
-
-  			Archiver.extract(File.join(@destination,File.basename(entry)), File.join(@destination,basename))
-
-			FileUtils.rm_rf(File.join(@destination,entry))
-			extracted += 1
 			
 			begin
-				FileUtils.rm(File.join(@destination,entry))
-  			rescue
+  				Archiver.extract(File.join(@destination,File.basename(entry)), File.join(@destination,basename))
+				FileUtils.rm_rf(File.join(@destination,entry))
+				extracted += 1
+
+			# In case of it can't extract 
+  			rescue => e
+  				$logger.log("Can't extract #{entry}: #{e.message}", true)
   			end
   		end
-  		$logger.footer("#{extracted} projects are been uncompressed", true)
+  		$logger.footer("[#{extracted}/#{entries.size}] projects are been uncompressed", true)
 	end
+
 end
