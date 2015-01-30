@@ -10,8 +10,6 @@ class Generator < Component
 	end
 
 	def run
-		prepare
-
 		begin
 			send @cfg[:out_format].to_sym
 		rescue

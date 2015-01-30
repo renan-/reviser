@@ -1,18 +1,15 @@
-#
-# @Author Renan Strauss
-#
-# The intermediate (or final,
-# it depends of the config)
-# CSV file is needed
-#
 require 'csv'
 require 'spreadsheet'
 
+# Module containing all methods
+# for writing results.
+# @author Renan Strauss
+# @author Yann Prono
+#
 module Generators
-	#
+	
 	# Generates the CSV file
-	#
-	def prepare
+	def csv
 		CSV.open(@cfg[:out] + '.csv', 'wb') do |f|
 			# Criterias as columns
 			f << (criterias).unshift("projet")
@@ -24,10 +21,7 @@ module Generators
 		end
 	end
 
-	# Does nothing
-	def csv
-	end
-
+	# Generates a Excel file
 	def xls
 		Spreadsheet.client_encoding = 'UTF-8'
 		book = Spreadsheet::Workbook.new
@@ -51,30 +45,33 @@ module Generators
 		book.write @cfg[:out] + '.' + @cfg[:out_format]
 	end
 
-	#
-	# Generates an HTML file from
-	# the CSV one
-	#
+	# Generates an HTML file 
 	def html(ext = '.html')
 		out = "<!DOCTYPE html><html><head>"
 		out += "<link rel=\"stylesheet\" href=\"#{@cfg[:res_dir]}/css/component.css\" />"
 		out += "<link rel=\"stylesheet\" href=\"#{@cfg[:res_dir]}/css/normalize.css\" />"
 		out += '<script src="res/js/component.css"></script>'
-		out += "</head><body><table><thead>"
+		out += '<title>Resultas</title>'
+		out += "</head>\n<body><table><thead>"
+		out += "  <tr>"
 
-		src = File.readlines(@cfg[:out] + '.csv')
-		out += "  <tr><th>" + src.shift.strip.gsub(/\"/,"").gsub(/,$/,"").gsub(/,/,"</th><th>") + "</th></tr>\n"
-		out += "</thead><tbody>"
-		src.each do |line|
-			out += "  <tr><td>" + line.strip.gsub(/\"/,"").gsub(/,$/,"").gsub(/,/,"</td><td>") + "</td></tr>\n"
+		criterias.unshift("Projets").each { |crit|out += "<th>#{crit}</th>" }
+		
+		out += "</tr></thead><tbody>"
+ 		# Values for each project as rows
+		@data.keys.each do |proj|
+			out += "<tr>"
+			(@data[proj].values.unshift(proj)).each {|r| out += "<td>#{r}</td>"}
+			out += "</tr>"
 		end
+
 		out += "</tbody></table>"
 
 		out += '<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>'
 		out += '<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>'
 		out += "<script src=\"#{@cfg[:res_dir]}/js/jquery.stickyheader.js\"></script>"
 
-		out += "</body></html>"
+		out += "</body></html>"		
 
 		File.open(@cfg[:out] + ext, 'w') { |f| f.write(out) }
 	end
