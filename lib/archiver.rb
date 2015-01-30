@@ -1,6 +1,7 @@
 require 'fileutils'
 require_relative 'extractor'
 require_relative 'component'
+require_relative 'generator_log'
 
 #
 # Manage uncompression of archive.
@@ -9,19 +10,22 @@ require_relative 'component'
 # @example The simple way to extract a compressed file is : 
 # 		Archiver.extract(myFile, myDirectory)
 #
-# @Author	Yann Prono
+# @author	Yann Prono
 #
 class Archiver < Component
 
 	attr_reader :src, :destination
 
-	
+	# Logger of the archiver
+	$logger
+
 	# Get archive to use and the path directory.
 	def initialize(data)
 		super data
 
 		@src = @cfg[:src]
 		@destination = @cfg[:dest]
+		$logger = GeneratorLog.new('archiver.txt')
 	end
 
 	#
@@ -31,7 +35,7 @@ class Archiver < Component
 	# @param destination [String] the destination directory
 	#
 	def self.destination?(destination)
-		FileUtils.rm_rf(destination) if Dir.exists? destination
+		FileUtils.rm_rf(destination)
 		FileUtils.mkdir destination, :mode => 0700
 	end
 	
@@ -48,6 +52,10 @@ class Archiver < Component
 		self::destination? destination
 
 		Extractor.send(ext,file_name, destination)
+<<<<<<< HEAD
+=======
+		$logger.log "extract #{file_name} to #{destination}" if $logger
+>>>>>>> FETCH_HEAD
 	end
 
 	#
@@ -57,21 +65,25 @@ class Archiver < Component
 	# and after all extracted files.
 	#
 	def run
+		$logger.title ("#{Archiver.name}")
+
+		$logger.subtitle ("First extraction ")
 		# Extract the original archive
 		Archiver.extract(@src, @destination)
+		$logger.subtitle ("Extraction of sub archives")
 		
 		# Extract all sub archives
 		entries = Dir.entries(@destination).reject{|entry| entry == '.' || entry == '..'}
+		extracted = 0
 		entries.each do |entry|
 			ext = File.extname(entry)
 			basename = File.basename(entry, ext)
 
   			Archiver.extract(File.join(@destination,File.basename(entry)), File.join(@destination,basename))
-			
-			begin
-				FileUtils.rm(File.join(@destination,entry))
-  			rescue
-  			end
+
+			FileUtils.rm_rf(File.join(@destination,entry))
+			extracted += 1
   		end
+  		$logger.footer("#{extracted} projects are been uncompressed", true)
 	end
 end
