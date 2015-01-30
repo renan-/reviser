@@ -38,9 +38,9 @@ class Archiver < Component
 	# @param destination [String] the destination directory
 	#
 	def self.destination?(destination)
-		if !$rejected.include? File.basename destination
+		unless $rejected.include? File.basename destination
 			FileUtils.rm_rf(destination) if Dir.exists? destination
-		 	FileUtils.mkdir destination, :mode => 0700
+			FileUtils.mkdir destination, :mode => 0700
 		end
 	end
 	
@@ -69,10 +69,10 @@ class Archiver < Component
 	def run
 		$logger.title "#{Archiver.name}"
 
-		$logger.subtitle "First extraction "
+		$logger.subtitle 'First extraction '
 		# Extract the original archive
 		Archiver.extract(@src, @destination)
-		$logger.subtitle "Extraction of sub archives"
+		$logger.subtitle 'Extraction of sub archives'
 		
 		# Extract all sub archives
 		entries = Dir.entries(@destination) - $rejected
