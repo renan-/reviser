@@ -80,5 +80,3 @@ class Archiver < Component
 	end
 
 end
-
-Archiver.extract('tolo.xz')
