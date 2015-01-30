@@ -52,11 +52,12 @@ module ExecutionTools
 
 		def exec(param = nil)
 			program = (@cfg.has_key? :executable_name) ? @cfg[:executable_name] : findExecutable
-			program = "./#{program}"
-			argument = (param == nil) ? '' : param
 			
 			return 'Program not found' unless program != nil
 
+			program = "#{@cfg[:program_prefix]}#{program}"
+			argument = (param == nil) ? '' : param
+			
 			cmd = "#{(@cfg.has_key? :execute_command) ? @cfg[:execute_command] : ''} #{program} #{argument}"
 			begin
 				output = Timeout.timeout(@cfg[:timeout]) do
