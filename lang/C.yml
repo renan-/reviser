@@ -9,6 +9,12 @@ extension:
 # Whether it's a compiled or an interpreted language
 compiled: true
 
+# Program prefix, needed especially for C
+# The execution command will look like this :
+# [execute_command=(java, ruby, python, ...)] [program_prefix]<program> [args]
+# [] are optionals, whereas <> mandatory
+program_prefix: ./
+
 # Fallback if no command is specified in project type
 build_command: gcc -ansi -pedantic -Wall -g *.c
 

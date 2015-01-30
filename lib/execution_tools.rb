@@ -55,7 +55,7 @@ module ExecutionTools
 			
 			return 'Program not found' unless program != nil
 
-			program = "./#{program}"
+			program = "#{@cfg[:program_prefix]}#{program}"
 			argument = (param == nil) ? '' : param
 			
 			cmd = "#{(@cfg.has_key? :execute_command) ? @cfg[:execute_command] : ''} #{program} #{argument}"
