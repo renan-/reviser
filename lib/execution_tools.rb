@@ -54,8 +54,6 @@ module ExecutionTools
 			program = (@cfg.has_key? :executable_name) ? @cfg[:executable_name] : findExecutable
 			program = "./#{program}"
 			argument = (param == nil) ? '' : param
-
-			puts FileUtils.pwd
 			
 			return 'Program not found' unless program != nil
 
