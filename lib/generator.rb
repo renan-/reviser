@@ -1,19 +1,21 @@
-require 'csv'
+
+require_relative 'component'
+require_relative 'generators'
 
 class Generator < Component
+	include Generators
+
 	def initialize(data)
 		super data
 	end
 
 	def run
-		CSV.open(@cfg[:results], 'wb') do |f|
-			# Criterias as columns
-			f << @data.values.first.keys.unshift("projet").map! { |cri| Generator.titleize(cri.to_s) }
+		prepare
 
-			# Values for each project as rows
-			@data.keys.each do |proj|
-				f << @data[proj].values.unshift(proj)
-			end
+		begin
+			send @cfg[:out_format].to_sym
+		rescue
+			'Wrong format'
 		end
 	end
 
@@ -24,3 +26,7 @@ class Generator < Component
 		str.split(/\_/).join(" ").capitalize
 	end
 end
+
+#Component::setup '../config.yml'
+#g = Generator.new nil
+#Dir.chdir('../') {g.html}

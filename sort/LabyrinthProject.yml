@@ -1,0 +1,34 @@
+---
+# Labyrinthe
+# (test data we got)
+
+language: C
+
+# Overrides C@buildCommand
+build_command: make
+
+# Required files
+# Here, it's only the Makefile
+required_files:
+- Makefile
+
+# For interpreted languages
+# execute_command: 
+
+# If not specified, the first
+# executable file found will be executed
+# executable_name:
+
+# Number of times to execute
+# (not needed here, as explained below)
+# execution_count:
+
+# One arg per execution,
+# only one value will be passed
+# execution_count times to the
+# program.
+# But if it's a list, execution_count
+# will be replaced by its size
+execution_value:
+- ../../res/labys/labfich11.txt
+- ../../res/labys/test.txt

@@ -19,6 +19,9 @@ class Archiver < Component
 	# Logger of the archiver
 	$logger
 
+	$rejected = ['.','..']
+
+	
 	# Get archive to use and the path directory.
 	def initialize(data)
 		super data
@@ -35,8 +38,10 @@ class Archiver < Component
 	# @param destination [String] the destination directory
 	#
 	def self.destination?(destination)
-		FileUtils.rm_rf(destination)
-		FileUtils.mkdir destination, :mode => 0700
+		if !$rejected.include? File.basename destination
+			FileUtils.rm_rf(destination) if Dir.exists? destination
+		 	FileUtils.mkdir destination, :mode => 0700
+		end
 	end
 	
 	#
@@ -44,7 +49,7 @@ class Archiver < Component
 	# @param file_name [String] the name of the archive.
 	# @param destination [String] the destination directory.
 	#
-	def self.extract(file_name, destination)
+	def self.extract(file_name, destination = '.')
 		raise Errno::ENOENT unless File.exists?(file_name)
 		ext = File.extname(file_name)
 		ext = ext.delete '.'
@@ -70,7 +75,7 @@ class Archiver < Component
 		$logger.subtitle ("Extraction of sub archives")
 		
 		# Extract all sub archives
-		entries = Dir.entries(@destination).reject{|entry| entry == '.' || entry == '..'}
+		entries = Dir.entries(@destination) - $rejected
 		extracted = 0
 		entries.each do |entry|
 			ext = File.extname(entry)
@@ -80,9 +85,12 @@ class Archiver < Component
 
 			FileUtils.rm_rf(File.join(@destination,entry))
 			extracted += 1
+			
+			begin
+				FileUtils.rm(File.join(@destination,entry))
+  			rescue
+  			end
   		end
   		$logger.footer("#{extracted} projects are been uncompressed", true)
 	end
-
-
 end

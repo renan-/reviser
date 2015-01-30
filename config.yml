@@ -1,9 +1,28 @@
 ---
-language: C
-src: test.zip
+# Reviser config
+
+# The type of project (<sort>.yml must exists)
+sort: LabyrinthProject
+
+# The source archive containing all projects
+src: projects.zip
+
+# The destination directory for these projects
 dest: projects
-results: results.csv
 
+# The result file to be generated
+out: results
 
-## Convention name of projects for rennaming folder
+# The type of file (currently supported: csv, html)
+out_format: html
+
+# Ressources directory
+# (needed for html format)
+res_dir: res
+
+# Default timeout
+# shall be overriden in sorts
+timeout: 5
+
+## Projects naming, useful to rename folders
 projects_names: !ruby/regexp '/^[a-zA-Z]+[ ]+[a-zA-Z]+/'

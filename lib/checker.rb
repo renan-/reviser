@@ -10,12 +10,20 @@ require 'open3'
 # Organise the checker around modules for
 # each group of criterias (code, compilation, execution, and so on)
 #
+require_relative 'compilation_tools'
+require_relative 'execution_tools'
 
 class Checker < Component
+	include ExecutionTools
+
 	def initialize(data)
 		super data
 
 		@results = {}
+
+		if @cfg[:compiled]
+			extend CompilationTools
+		end
 	end
 
 	def run
@@ -26,7 +34,7 @@ class Checker < Component
 			@data.each { |proj| Dir.chdir(proj) { check proj } }
 		end
 
-		return @results
+		@results
 	end
 
 	def check(proj)
@@ -51,6 +59,11 @@ class Checker < Component
 			
 			:compilation =>	build(proj)
 		}
+
+		@results[proj][@cfg[:compiled] ? :resultats_compilation : :fichiers_manquants] = compile
+		@results[proj][:resultats_execution] = execute
+
+		@results
 	end
 
 	# Build the current project

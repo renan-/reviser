@@ -1,0 +1,34 @@
+---
+# C Project sort
+
+language: C
+
+# Overrides C@buildCommand
+build_command: make
+
+# Required files
+# Here, it's only the Makefile
+required_files:
+- Makefile
+
+# For interpreted languages
+# execute_command: 
+
+# If not specified, the first
+# executable file found will be executed
+# executable_name:
+
+# Number of times to run execute_command
+# (not needed here, as explained below)
+# execution_count: 3
+
+# One arg per execution,
+# only one value will be passed
+# execution_count times to the
+# program.
+# But if it's a list, execution_count
+# will be replaced by its size
+execution_value:
+- ../../res/yoda.txt
+- ../../res/labfich11.txt
+- ../../res/test.txt

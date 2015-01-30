@@ -1,6 +1,15 @@
 ---
-extension: .java
-build_command: javac %s
-exec_command: java %s
+# Java language
 
+# List of source files extensions
+extension:
+- .java
+
+# Whether it's a compiled or an interpreted language
+compiled: true
+
+# Fallback if no command is specified in project type
+build_command: javac
+
+# Ruby regex to find C-style comments
 regex_comments: !ruby/regexp '/(\/\/(.*?)^)|(\/\*(.*?)\*\/)/m'
