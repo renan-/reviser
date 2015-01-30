@@ -19,7 +19,7 @@ module CompilationTools
 			return "Exit status: #{out[:exitstatus]}"  unless (out[:exitstatus] == exit_status)
 
 			if @cfg.has_key? :preferred_build_command
-				out = exec_with_timeout "#{@cfg[:default_build_command]} 2>&amp;1"
+				out = exec_with_timeout "#{@cfg[:default_build_command]}"
 			end
 
 			"#{(out[:exitstatus] == exit_status) ? "OK\rexit status: #{out[:exitstatus]}" : out[:output].to_s}"
