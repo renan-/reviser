@@ -27,11 +27,15 @@ class Checker < Component
 	end
 
 	def run
+
 		# We'll work in the dest directory
 		Dir.chdir @cfg[:dest] do
 			# The data we got from Organiser is a tab
 			# which contains all the project folders.
-			@data.each { |proj| Dir.chdir(proj) { check proj } }
+			@data.each_with_index { |proj, i| 
+				puts "\t[#{i+1}/#{@data.size}]\t#{proj}"
+				Dir.chdir(proj) { check proj } 
+			}
 		end
 
 		@results
