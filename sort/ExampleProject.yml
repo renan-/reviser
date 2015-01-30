@@ -1,15 +1,17 @@
 ---
-# C Project sort
+# Example Project sort
+# to show every possibility
 
+# The target language
 language: C
 
-# Overrides C@buildCommand
+# Overrides language@buildCommand
 build_command: make
 
 # Required files
-# Here, it's only the Makefile
 required_files:
 - Makefile
+- README
 
 # For interpreted languages
 # execute_command: 
@@ -28,7 +30,4 @@ required_files:
 # program.
 # But if it's a list, execution_count
 # will be replaced by its size
-execution_value:
-- ../../res/yoda.txt
-- ../../res/labfich11.txt
-- ../../res/test.txt
+execution_value: 0

@@ -23,12 +23,14 @@ class Component
 		@cfg = {}
 
 		populate YAML.load(File.read(@@configFile))
+		sort_cfg = YAML.load(File.read(File.join(File.dirname(File.dirname(__FILE__)),
+			'sort',"#{@cfg[:sort]}.yml")))
+
 		populate YAML.load(File.read(File.join(File.dirname(File.dirname(__FILE__)),
-			'lang',"#{@cfg[:lang]}.yml")))
+			'lang',"#{sort_cfg['language']}.yml")))
 		# So that project's type config overrides
 		# lang config
-		populate YAML.load(File.read(File.join(File.dirname(File.dirname(__FILE__)),
-			'sort',"#{@cfg[:sort]}.yml")))
+		populate sort_cfg
 	end
 
 	#

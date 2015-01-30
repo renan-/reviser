@@ -11,10 +11,8 @@ require 'open3'
 
 module CompilationTools
 	protected
-	#
-	# @param proj Path to project's dir
-	#
-	def compile(proj)
+
+	def compile
 		check = checkForRequiredFiles
 		if !check.respond_to? 'each'
 			stdout, stderr, status = Open3.capture3("#{@cfg[:build_command]}")

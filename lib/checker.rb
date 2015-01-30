@@ -6,8 +6,11 @@
 # each group of criterias (code, compilation, execution, and so on)
 #
 require_relative 'compilation_tools'
+require_relative 'execution_tools'
 
 class Checker < Component
+	include ExecutionTools
+
 	def initialize(data)
 		super data
 
@@ -50,7 +53,8 @@ class Checker < Component
 				}.split("\n").size
 		}
 
-		@results[proj][@cfg[:compiled] ? :resultats_compilation : :fichiers_manquants] = compile proj
+		@results[proj][@cfg[:compiled] ? :resultats_compilation : :fichiers_manquants] = compile
+		@results[proj][:resultats_execution] = execute
 
 		@results
 	end
