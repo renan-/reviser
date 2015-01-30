@@ -41,6 +41,10 @@ class Checker < Component
 		@results
 	end
 
+	# For interpreted languages
+	def compile
+	end
+
 	def check(proj)
 		files = Dir.glob('*').select { |f| (File.file?(f)) }
 		src_files = files.select { |f| @cfg[:extension].include? File.extname(f) }
@@ -60,8 +64,6 @@ class Checker < Component
 							t << (l.size > 3 && l[3] + "\n") || ""
 						}
 				}.split("\n").size,
-			
-			:compilation =>	build(proj)
 		}
 
 		@results[proj][@cfg[:compiled] ? :resultats_compilation : :fichiers_manquants] = compile
@@ -70,29 +72,21 @@ class Checker < Component
 		@results
 	end
 
-	# Build the current project
-	# @param current_proj [String] the current project
-	# This currently works for only C.
-	#
-	def build(current_proj)
-		results = ''
-		# Check if a makefile exists
-		makefile = Dir.glob('?akefile').first
-		
-		if(makefile)
-			# Launch make and capture output, errors and exist status
-			stdout, stderr, status = Open3.capture3("#{@cfg[:build_command]}") 
-			results =  status.exitstatus ? 'Build ok' : 'build problems (see logs)'
-			# log stdout and stderr into file
-			log = File.open('build_output.txt', "w")
-			log << stdout
-			log << stderr
-			log.close
-		else
-			results = 'No makefile'
+	def exec_with_timeout(cmd, timeout = @cfg[:timeout])
+		begin
+			success = Timeout.timeout(@cfg[:timeout]) do
+				{
+					:output => `#{cmd}`,
+					:exitstatus => $?.exitstatus
+				}
+			end
+		rescue Timeout::Error
+			return {
+				:output => 'Timeout::Error',
+				:exitstatus => -1
+			}
 		end
-		
-		return results
-	end
 
+		success
+	end
 end

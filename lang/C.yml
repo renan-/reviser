@@ -16,7 +16,7 @@ compiled: true
 program_prefix: ./
 
 # Fallback if no command is specified in project type
-build_command: gcc -ansi -pedantic -Wall -g *.c
+default_build_command: gcc -ansi -pedantic -Wall -g *.c
 
 # Ruby regex to find C-style comments
 regex_comments: !ruby/regexp '/(\/\/(.*?)^)|(\/\*(.*?)\*\/)/m'

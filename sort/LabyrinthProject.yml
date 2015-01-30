@@ -4,8 +4,8 @@
 
 language: C
 
-# Overrides C@buildCommand
-build_command: make
+# The first command to try
+preferred_build_command: make
 
 # Required files
 # Here, it's only the Makefile
