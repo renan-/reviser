@@ -29,7 +29,6 @@ table {
 td, th {
     padding: 0.75em 1.5em;
     text-align: left;
-    white-space: pre;
 }
 	td.err {
 		background-color: #e992b9;
@@ -102,3 +101,11 @@ td.user-name {
 	max-height: 50vh;
 }
 
+.console {
+	font-family:Courier;
+	white-space: pre;
+	color: #CCCCCC;
+	background: #000000;
+	border: 3px double #CCCCCC;
+	padding: 10px;
+}

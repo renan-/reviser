@@ -51,26 +51,21 @@ module ExecutionTools
 	private
 
 		def exec(param = nil)
-			program = (@cfg.has_key? :executable_name) ? @cfg[:executable_name] : findExecutable
+			program = (@cfg.has_key? :executable_name) ? @cfg[:executable_name] : find_executable
 			
 			return 'Program not found' unless program != nil
 
 			program = "#{@cfg[:program_prefix]}#{program}"
 			argument = (param == nil) ? '' : param
-			
-			cmd = "#{(@cfg.has_key? :execute_command) ? @cfg[:execute_command] : ''} #{program} #{argument}"
-			begin
-				output = Timeout.timeout(@cfg[:timeout]) do
-					Thread.new { `#{cmd}`; $?.exitstatus }.value
-				end
-			rescue Timeout::Error
-				output = 'Timeout'
-			end
+			exit_status = @cfg.has_key? :execution_exit_status ? @cfg[:execution_exit_status] : 0
 
-			cmd + ' => ' + output.to_s
+			cmd = "#{(@cfg.has_key? :execute_command) ? @cfg[:execute_command] : ''} #{program} #{argument}"
+			out = exec_with_timeout cmd
+
+			"> #{cmd}" + "\r" + ((out[:exitstatus] == exit_status) ? out[:exitstatus].to_s : out[:output])
 		end
 
-		def findExecutable
+		def find_executable
 			Dir.glob('*').select {|f| File.executable?(f) && !File.directory?(f)}.first
 		end
 end

@@ -3,8 +3,8 @@
 
 language: C
 
-# Overrides C@buildCommand
-build_command: make
+# The first command to try
+preferred_build_command: make
 
 # Required files
 # Here, it's only the Makefile
@@ -32,3 +32,17 @@ execution_value:
 - ../../res/yoda.txt
 - ../../res/labfich11.txt
 - ../../res/test.txt
+
+
+#
+# The required exit status of compilation
+# step
+# (default 0)
+#
+compilation_exit_status: 0
+
+#
+# The required exit status of execution
+# (default 0)
+#
+execution_exit_status: 0

@@ -51,17 +51,24 @@ module Generators
 		out += "<link rel=\"stylesheet\" href=\"#{@cfg[:res_dir]}/css/component.css\" />"
 		out += "<link rel=\"stylesheet\" href=\"#{@cfg[:res_dir]}/css/normalize.css\" />"
 		out += '<script src="res/js/component.css"></script>'
-		out += '<title>Resultas</title>'
+		out += '<title>Results</title>'
 		out += "</head>\n<body><table><thead>"
 		out += "  <tr>"
 
-		criterias.unshift("Projets").each { |crit|out += "<th>#{crit}</th>" }
+		criterias.unshift("Projet").each { |crit| out += "<th>#{crit}</th>" }
 		
 		out += "</tr></thead><tbody>"
  		# Values for each project as rows
 		@data.keys.each do |proj|
-			out += "<tr>"
-			(@data[proj].values.unshift(proj)).each {|r| out += "<td>#{r}</td>"}
+			out += "<tr><th>#{proj}</th>"
+			@data[proj].each do |k, v|
+				if k.to_s[/(compilation|execution)/]
+					out += '<td class="console">'
+				else 
+					out += '<td>'
+				end
+				out += "#{v}</td>"
+			end
 			out += "</tr>"
 		end
 

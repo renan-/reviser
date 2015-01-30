@@ -4,8 +4,8 @@
 
 language: C
 
-# Overrides C@buildCommand
-build_command: make
+# The first command to try
+preferred_build_command: make
 
 # Required files
 # Here, it's only the Makefile
@@ -31,4 +31,3 @@ required_files:
 # will be replaced by its size
 execution_value:
 - ../../res/labys/labfich11.txt
-- ../../res/labys/test.txt

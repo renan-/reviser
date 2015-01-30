@@ -9,7 +9,7 @@ extension:
 compiled: true
 
 # Fallback if no command is specified in project type
-build_command: javac
+default_build_command: javac
 
 # Ruby regex to find C-style comments
 regex_comments: !ruby/regexp '/(\/\/(.*?)^)|(\/\*(.*?)\*\/)/m'

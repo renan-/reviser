@@ -6,7 +6,7 @@
 language: C
 
 # Overrides language@buildCommand
-build_command: make
+preferred_build_command: make
 
 # Required files
 required_files:
