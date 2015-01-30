@@ -1,5 +1,6 @@
 ---
-# C Project sort
+# Labyrinthe
+# (test data we got)
 
 language: C
 
@@ -18,9 +19,9 @@ required_files:
 # executable file found will be executed
 # executable_name:
 
-# Number of times to run execute_command
+# Number of times to execute
 # (not needed here, as explained below)
-# execution_count: 3
+# execution_count:
 
 # One arg per execution,
 # only one value will be passed
@@ -29,20 +30,4 @@ required_files:
 # But if it's a list, execution_count
 # will be replaced by its size
 execution_value:
-- ../../res/yoda.txt
-- ../../res/labfich11.txt
-- ../../res/test.txt
-
-
-#
-# The required exit status of compilation
-# step
-# (default 0)
-#
-compilation_exit_status: 0
-
-#
-# The required exit status of execution
-# (default 0)
-#
-execution_exit_status: 0
+- ../../res/labys/labfich11.txt

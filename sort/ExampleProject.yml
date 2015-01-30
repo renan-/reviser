@@ -1,15 +1,17 @@
 ---
-# C Project sort
+# Example Project sort
+# to show every possibility
 
+# The target language
 language: C
 
-# The first command to try
+# Overrides language@buildCommand
 preferred_build_command: make
 
 # Required files
-# Here, it's only the Makefile
 required_files:
 - Makefile
+- README
 
 # For interpreted languages
 # execute_command: 
@@ -28,21 +30,4 @@ required_files:
 # program.
 # But if it's a list, execution_count
 # will be replaced by its size
-execution_value:
-- ../../res/yoda.txt
-- ../../res/labfich11.txt
-- ../../res/test.txt
-
-
-#
-# The required exit status of compilation
-# step
-# (default 0)
-#
-compilation_exit_status: 0
-
-#
-# The required exit status of execution
-# (default 0)
-#
-execution_exit_status: 0
+execution_value: 0

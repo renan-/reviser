@@ -2,13 +2,13 @@ GEM
   remote: http://rubygems.org/
   specs:
     redcarpet (3.2.2)
+    ruby-ole (1.2.11.8)
     rubyzip (1.1.6)
     seven_zip_ruby (1.2.4)
     seven_zip_ruby (1.2.4-x64-mingw32)
-<<<<<<< HEAD
     seven_zip_ruby (1.2.4-x86-mingw32)
-=======
->>>>>>> FETCH_HEAD
+    spreadsheet (1.0.1)
+    ruby-ole (>= 1.0)
     yard (0.8.7.6)
 
 PLATFORMS
@@ -20,4 +20,5 @@ DEPENDENCIES
   redcarpet (~> 3.2.2)
   rubyzip (~> 1.1.6)
   seven_zip_ruby (~> 1.2.4)
+  spreadsheet (~> 1.0.1)
   yard (~> 0.8.7.6)

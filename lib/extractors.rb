@@ -41,11 +41,11 @@ module Extractors
   				#Create filepath
  				filepath = File.join(destination, entry.name)
 	  			# Check if it doesn't exist because of directories (overwrite)
-  				if !File.exist?(filepath)
-  					# Create directories to access file
- 					FileUtils.mkdir_p(File.dirname(filepath))
-   					entry.extract(filepath) 
-    			end
+				unless File.exist?(filepath)
+					# Create directories to access file
+					FileUtils.mkdir_p(File.dirname(filepath))
+					entry.extract(filepath)
+				end
   			end
 		end
 	end
@@ -99,12 +99,12 @@ module Extractors
  	#
 	def rar(src,destination)
  		`which unrar`
- 		if($?.success?)
+ 		if $?.success?
  			src = Shellwords.escape(src)
  			destination = Shellwords.escape(destination)
  			`unrar e #{src} #{destination}`
 		else
-			puts "Please install unrar : sudo apt-get install unrar"
+			puts 'Please install unrar : sudo apt-get install unrar'
 		end
 	end
 
@@ -112,7 +112,7 @@ module Extractors
 	# Uncompress a 7zip file
 	#
 	def seven_zip(src, destination) 
-		File.open(src, "rb") do |file|
+		File.open(src, 'rb') do |file|
   			SevenZipRuby::Reader.open(file) do |szr|
     			szr.extract_all destination
   			end
@@ -126,7 +126,7 @@ module Extractors
     	if (ext = File.extname(args[0]).delete('.') == '7z')
     		seven_zip(args[0], args[1])
     	else 
-    		puts "Format '#{File.extname(args[0]).delete('.')}' non supporté"
+    		raise "Format '#{ext.delete('.')}' not supported"
     	end
   	end
 
