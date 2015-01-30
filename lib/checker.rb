@@ -34,7 +34,7 @@ class Checker < Component
 			# which contains all the project folders.
 			@data.each_with_index { |proj, i| 
 				puts "\t[#{i+1}/#{@data.size}]\t#{proj}"
-				Dir.chdir(proj) { check proj } 
+				Dir.chdir(proj) { check proj }
 			}
 		end
 

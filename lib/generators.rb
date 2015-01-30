@@ -6,6 +6,8 @@
 # CSV file is needed
 #
 require 'csv'
+# Gem for creating excel files
+require 'spreadsheet'
 
 module Generators
 	#
@@ -25,6 +27,14 @@ module Generators
 
 	# Does nothing
 	def csv
+	end
+
+	def xls
+		Spreadsheet.client_encoding = 'UTF-8'
+		book = Spreadsheet::Workbook.new
+		sheet = book.create_worksheet :name => 'Results'
+		sheet.row(0).concat @data.values.keys
+		book.write @cfg[:out] + '.' + @cfg[:out_format]
 	end
 
 	#
