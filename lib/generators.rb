@@ -55,7 +55,7 @@ module Generators
 		out += "</head>\n<body><table><thead>"
 		out += "  <tr>"
 
-		criterias.unshift("Projets").each { |crit| out += "<th>#{crit}</th>" }
+		criterias.unshift("Projet").each { |crit| out += "<th>#{crit}</th>" }
 		
 		out += "</tr></thead><tbody>"
  		# Values for each project as rows
