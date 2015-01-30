@@ -78,5 +78,4 @@ class Archiver < Component
   			end
   		end
 	end
-
 end
