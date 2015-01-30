@@ -6,7 +6,6 @@
 # CSV file is needed
 #
 require 'csv'
-# Gem for creating excel files
 require 'spreadsheet'
 
 module Generators
@@ -16,7 +15,7 @@ module Generators
 	def prepare
 		CSV.open(@cfg[:out] + '.csv', 'wb') do |f|
 			# Criterias as columns
-			f << @data.values.first.keys.unshift("projet").map! { |cri| Generator.titleize(cri.to_s) }
+			f << (criterias).unshift("projet")
 
 			# Values for each project as rows
 			@data.keys.each do |proj|
@@ -33,7 +32,22 @@ module Generators
 		Spreadsheet.client_encoding = 'UTF-8'
 		book = Spreadsheet::Workbook.new
 		sheet = book.create_worksheet :name => 'Results'
-		sheet.row(0).concat @data.values.keys
+
+		# header
+		format = Spreadsheet::Format.new :weight => :bold, :size => 14 , 
+		:horizontal_align => :center
+
+		(criterias.unshift("Projets")).each_with_index do |crit, i|
+			sheet[0,i] = crit
+			sheet.column(i).width = (crit.size * format.font.size/10) + 5
+		end
+		sheet.row(0).default_format = format
+		sheet.row(0).height = 18
+
+		# Values for each project as rows
+		@data.keys.each_with_index do |proj, i|
+			sheet.insert_row(i+1,@data[proj].values.unshift(proj))
+		end
 		book.write @cfg[:out] + '.' + @cfg[:out_format]
 	end
 

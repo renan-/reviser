@@ -19,12 +19,21 @@ class Generator < Component
 		end
 	end
 
+	# Get all criterias of marking
+	# used to display informations in documents 
+	# @return [Array] Array with all criterias.
+	def criterias
+		@data.values.first.keys.unshift.map! { |cri| Generator.titleize(cri.to_s) }
+	end
+
 	#
 	# Quite handy
 	#
 	def self.titleize(str)
 		str.split(/\_/).join(" ").capitalize
 	end
+
+	
 end
 
 #Component::setup '../config.yml'
