@@ -44,7 +44,8 @@ class Checker < Component
 	end
 
 	def check(proj)
-		files = Dir.glob('*').select { |f| (File.file?(f)) }
+		# for all files#
+		files = Dir.glob("**/*").select { |f| (File.file?(f)) }
 		src_files = files.select { |f| @cfg[:extension].include? File.extname(f) }
 
 		@results[proj] = {
