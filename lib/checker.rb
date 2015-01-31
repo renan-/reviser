@@ -1,8 +1,3 @@
-require_relative 'component'
-require 'fileutils'
-require 'shellwords'
-require 'open3'
-
 #
 # Author:: Renan Strauss
 #
@@ -10,7 +5,12 @@ require 'open3'
 # Organise the checker around modules for
 # each group of criterias (code, compilation, execution, and so on)
 #
+require 'fileutils'
+require 'shellwords'
+require 'open3'
+
 require_relative 'compilation_tools'
+require_relative 'component'
 require_relative 'execution_tools'
 
 class Checker < Component
@@ -73,20 +73,35 @@ class Checker < Component
 	end
 
 	def exec_with_timeout(cmd, timeout = @cfg[:timeout])
+		stdin, stdout, stderr, wait_thr = Open3.popen3(cmd)
+		exitstatus = -1
+
 		begin
-			success = Timeout.timeout(@cfg[:timeout]) do
-				{
-					:output => `#{cmd}`,
-					:exitstatus => $?.exitstatus
-				}
+			Timeout.timeout(@cfg[:timeout]) do
+				exitstatus = wait_thr.value
 			end
 		rescue Timeout::Error
-			return {
-				:output => 'Timeout::Error',
-				:exitstatus => -1
-			}
+			$stdout << 'Timeout'
+			begin
+				Process.kill('KILL', wait_thr[:pid])
+			rescue Object => e
+				$stderr << "Unable to kill process : #{e.to_s}"
+			end
 		end
 
-		success
+		return { :stdout => 'Timeout', :success => false} unless exitstatus != -1
+		
+		result = {
+			:stdout => stdout.read,
+			:stderr => stderr.read,
+			:status => exitstatus,
+			:success => exitstatus.success?
+		}
+
+		stdin.close  # stdin, stdout and stderr should be closed explicitly in this form.
+		stdout.close
+		stderr.close
+
+		return result
 	end
 end

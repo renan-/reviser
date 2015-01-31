@@ -15,14 +15,13 @@ module CompilationTools
 			cmd = "#{@cfg[@cfg.has_key?(:preferred_build_command) ? :preferred_build_command : :default_build_command]}"
 			out = exec_with_timeout "#{cmd}"
 			
-			exit_status = @cfg.has_key? :compilation_exit_status ? @cfg[:compilation_exit_status] : 0
-			return "Exit status: #{out[:exitstatus]}"  unless (out[:exitstatus] == exit_status)
+			return "Exit status: #{out[:exitstatus]}" unless out[:success]
 
 			if @cfg.has_key? :preferred_build_command
 				out = exec_with_timeout "#{@cfg[:default_build_command]}"
 			end
 
-			"#{(out[:exitstatus] == exit_status) ? "OK\rexit status: #{out[:exitstatus]}" : out[:output].to_s}"
+			out[:success] ? "Exit status: #{out[:status].exitstatus}" : "#{out[:stdout]}\r#{out[:stderr]}"
 		else
 			"Missing file(s) : #{check}"
 		end

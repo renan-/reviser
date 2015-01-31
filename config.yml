@@ -22,7 +22,7 @@ res_dir: res
 
 # Default timeout
 # shall be overriden in sorts
-timeout: 5
+timeout: 7
 
 # Options of all components
 # For the moment, there is just verbose option (txt file)
