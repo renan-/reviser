@@ -75,7 +75,7 @@ class Checker < Component
 		process_status = -1
 
 		begin
-			Timeout.timeout(@cfg[:timeout]) do
+			Timeout.timeout(timeout) do
 				process_status = wait_thr.value
 			end
 		rescue Timeout::Error
