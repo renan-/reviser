@@ -1,3 +1,5 @@
+require 'fileutils'
+
 #
 # GeneratorLog is a generator whichs logs
 # actions of this program (archiver, organiser ...)
@@ -5,11 +7,12 @@
 # @author Yann Prono
 #
 class Logger
-	@@out_dir = 'log'
+	@@out_dir = 'logs'
 
 	# Create and open the file
 	# @param file_log [String] The file name of the file log
 	def initialize(file_log)
+		FileUtils.mkdir @@out_dir unless Dir.exists? @@out_dir
 		@fopen = File.open("#{File.join(@@out_dir, file_log)}", "w")
 	end
 
