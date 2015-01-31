@@ -21,7 +21,7 @@ module CompilationTools
 				out = exec_with_timeout "#{@cfg[:default_build_command]}"
 			end
 
-			out[:success] ? "Exit status: #{out[:status].exitstatus}" : "#{out[:stdout]}\r#{out[:stderr]}"
+			out[:success] ? "Exit status: #{out[:process_status].exitstatus}" : "#{out[:stdout]}\r#{out[:stderr]}"
 		else
 			"Missing file(s) : #{check}"
 		end

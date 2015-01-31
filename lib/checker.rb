@@ -5,8 +5,6 @@
 # Organise the checker around modules for
 # each group of criterias (code, compilation, execution, and so on)
 #
-require 'fileutils'
-require 'shellwords'
 require 'open3'
 
 require_relative 'compilation_tools'
@@ -74,11 +72,11 @@ class Checker < Component
 
 	def exec_with_timeout(cmd, timeout = @cfg[:timeout])
 		stdin, stdout, stderr, wait_thr = Open3.popen3(cmd)
-		exitstatus = -1
+		process_status = -1
 
 		begin
 			Timeout.timeout(@cfg[:timeout]) do
-				exitstatus = wait_thr.value
+				process_status = wait_thr.value
 			end
 		rescue Timeout::Error
 			$stdout << 'Timeout'
@@ -89,13 +87,13 @@ class Checker < Component
 			end
 		end
 
-		return { :stdout => 'Timeout', :success => false} unless exitstatus != -1
+		return { :stdout => 'Timeout', :success => false} unless process_status != -1
 		
 		result = {
 			:stdout => stdout.read,
 			:stderr => stderr.read,
-			:status => exitstatus,
-			:success => exitstatus.success?
+			:process_status => process_status,
+			:success => process_status.success?
 		}
 
 		stdin.close  # stdin, stdout and stderr should be closed explicitly in this form.
