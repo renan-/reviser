@@ -7,7 +7,9 @@
 # The main idea is that the user should not
 # instantiate components himself, nor worry
 # about the data these components exchange.
-# 
+#
+require_relative 'logger'
+
 class Reviser
 	@@loadedComponents = {}
 
@@ -29,10 +31,15 @@ class Reviser
 		@@loadedComponents.each do |comp, conf|
 			puts "Reviser is now running #{Reviser.titleize comp}..."
 
+			$logger = Logger.new("#{Reviser.titleize comp}.txt")
+			$logger.title "#{Reviser.titleize comp}"
+
 			require_relative "#{comp}"
 			c = eval("#{Reviser.titleize comp}").new ((conf[:inputFrom] != nil) && @@loadedComponents[conf[:inputFrom]][:data]) || nil
 
 			@@loadedComponents[comp][:data] = c.run
+			
+			$logger.close
 			puts "Done"
 		end
 	end

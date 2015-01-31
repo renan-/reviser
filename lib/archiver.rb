@@ -1,7 +1,6 @@
 require 'fileutils'
 require_relative 'extractor'
 require_relative 'component'
-require_relative 'generator_log'
 
 #
 # Manages uncompression of archive.
@@ -52,8 +51,6 @@ class Archiver < Component
 		self::destination? destination
 
 		Extractor.send(ext,file_name, destination)
-
-		$logger.log "extract #{file_name} to #{destination}" if $logger
 	end
 
 	#
@@ -63,10 +60,7 @@ class Archiver < Component
 	# and after all extracted files.
 	# Options are for the moment options[:verbose]
 	#
-	def run(options = getOptions)
-		$logger = GeneratorLog.new('archiver.txt') if options[:verbose]
-		$logger.title "#{Archiver.name}" if options[:verbose]
-
+	def run
 		$logger.subtitle 'First extraction ' if options[:verbose]
 		# Extract the original archive
 		Archiver.extract(@src, @destination)
@@ -79,10 +73,14 @@ class Archiver < Component
 			ext = File.extname(entry)
 			basename = File.basename(entry, ext)
 			begin
-  				Archiver.extract(File.join(@destination,File.basename(entry)), File.join(@destination,basename))
+				file_name = File.join(@destination,File.basename(entry))
+				destination = File.join(@destination,basename)
+
+  				Archiver.extract(file_name, destination)
 				FileUtils.rm_rf(File.join(@destination,entry))
 				extracted += 1
 
+				$logger.log "extract #{file_name} to #{destination}" if options[:verbose]
 			# In case of it can't extract 
   			rescue => e
   				$logger.log("Can't extract #{entry}: #{e.message}", true) if options[:verbose]

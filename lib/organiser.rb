@@ -1,5 +1,4 @@
 require 'fileutils'
-require_relative 'generator_log'
 
 # Class which organizes all directories to simplify projects' analysis.
 #
@@ -30,9 +29,9 @@ class Organiser < Component
 			if(name != nil)
 				name = File.join(@directory, name)
   				FileUtils.mv(entry, name)
-  				$logger.log("rename #{File.basename(entry)} to #{File.basename(name)}") if $logger
+  				$logger.log("rename #{File.basename(entry)} to #{File.basename(name)}") if options[:verbose]
   			else 
-  				$logger.log("can't rename #{File.basename(entry)} (no matches with regex of config.yml)", true) if $logger
+  				$logger.log("can't rename #{File.basename(entry)} (no matches with regex of config.yml)", true) if options[:verbose]
   			end
   		end
 	end
@@ -60,7 +59,7 @@ class Organiser < Component
 				Dir.glob(File.join(path,'*')).each do |file|
 					FileUtils.mv(file,File.join(@directory, entry))
 				end
-				$logger.log("Structure #{File.join(path)}") if $logger
+				$logger.log("Structure #{File.join(path)}") if options[:verbose]
 				FileUtils.rm_rf(File.join(@directory, entry, rm))
 			end
 
@@ -69,12 +68,11 @@ class Organiser < Component
 
 
 	# Method which run the organiser
-	def run (options = getOptions)
-		$logger = GeneratorLog.new('organiser.txt') if options[:verbose]
-		$logger.title ("#{Organiser.name}") if options[:verbose]
-		$logger.subtitle ("Rename directories") if options[:verbose]
+	def run
+		$logger.subtitle "Rename directories" if options[:verbose]
 		renameDirectories
-		$logger.subtitle ("Structure projects") if options[:verbose]
+
+		$logger.subtitle "Structure projects" if options[:verbose]
 		structure 
 	end
 

@@ -4,7 +4,6 @@
 require 'yaml'
 
 class Component
-
 	# Each component has a logger (currently a txt file)
 	$logger
 	
@@ -45,11 +44,10 @@ class Component
 		hash.each { |k, v| @cfg[k.to_sym] = v}
 	end
 
-
-	# 
+protected
+	#
 	# @return all options for all components if they exist in config file.
-	def getOptions
-		@cfg[:options] ? @cfg[:options] : {}
+	def options
+		@cfg.has_key?(:options) ? @cfg[:options] : { :verbose => false }
 	end
-
 end
