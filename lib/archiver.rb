@@ -27,8 +27,7 @@ class Archiver < Component
 		super data
 
 		@src = @cfg[:src]
-		@destination = @cfg[:dest]
-		$logger = GeneratorLog.new('archiver.txt')
+		@destination = @cfg[:dest]		
 	end
 
 	#
@@ -66,14 +65,16 @@ class Archiver < Component
 	# which contains all computing projects.
 	# This method extract in first time the archive
 	# and after all extracted files.
+	# Options are for the moment options[:verbose]
 	#
-	def run
-		$logger.title "#{Archiver.name}"
+	def run(options = {})
+		$logger = GeneratorLog.new('archiver.txt') if options[:verbose]
+		$logger.title "#{Archiver.name}" if options[:verbose]
 
-		$logger.subtitle 'First extraction '
+		$logger.subtitle 'First extraction ' if options[:verbose]
 		# Extract the original archive
 		Archiver.extract(@src, @destination)
-		$logger.subtitle 'Extraction of sub archives'
+		$logger.subtitle 'Extraction of sub archives' if options[:verbose]
 		
 		# Extract all sub archives
 		entries = Dir.entries(@destination) - $rejected
@@ -88,10 +89,10 @@ class Archiver < Component
 
 			# In case of it can't extract 
   			rescue => e
-  				$logger.log("Can't extract #{entry}: #{e.message}", true)
+  				$logger.log("Can't extract #{entry}: #{e.message}", true) if options[:verbose]
   			end
   		end
-  		$logger.footer("[#{extracted}/#{entries.size}] projects are been uncompressed", true)
+  		$logger.footer("[#{extracted}/#{entries.size}] projects are been uncompressed", true) if options[:verbose]
 	end
 
 end
