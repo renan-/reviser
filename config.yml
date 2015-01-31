@@ -2,7 +2,7 @@
 # Reviser config
 
 # The type of project (<sort>.yml must exists)
-sort: Pendu
+sort: LabyrinthProject
 
 # The source archive containing all projects
 src: projects.zip

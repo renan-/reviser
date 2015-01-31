@@ -3,10 +3,7 @@
 
 language: Java
 
-# Required files
-# Here, it's only the Makefile
-required_files:
-- Makefile
+preferred_build_command: javac src/*/*.java
 
 # For interpreted languages
 execute_command: java

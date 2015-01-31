@@ -61,7 +61,7 @@ module ExecutionTools
 			cmd = "#{(@cfg.has_key? :execute_command) ? @cfg[:execute_command] : ''} #{program} #{argument}"
 			out = exec_with_timeout cmd
 
-			"$ #{cmd}\r#{out[:stdout]}"
+			"$ #{cmd}\r#{out[:stdout]}\r#{out[:stderr]}"
 		end
 
 		def find_executable

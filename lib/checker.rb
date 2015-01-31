@@ -80,6 +80,8 @@ class Checker < Component
 				process_status = wait_thr.value
 			end
 		rescue Timeout::Error
+			return { :stdout => 'Timeout', :success => false} unless process_status != -1
+			
 			$stdout << 'Timeout'
 			begin
 				Process.kill('KILL', wait_thr[:pid])
@@ -87,14 +89,11 @@ class Checker < Component
 				$stderr << "Unable to kill process : #{e.to_s}"
 			end
 		end
-
-		return { :stdout => 'Timeout', :success => false} unless process_status != -1
 		
 		result = {
 			:stdout => stdout.read,
 			:stderr => stderr.read,
-			:process_status => process_status,
-			:success => process_status.success?
+			:process_status => process_status
 		}
 
 		stdin.close  # stdin, stdout and stderr should be closed explicitly in this form.
