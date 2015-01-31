@@ -10,6 +10,7 @@ class Generator < Component
 	end
 
 	def run
+		# TODO : Add multiple formats
 		begin
 			send @cfg[:out_format].to_sym
 		rescue

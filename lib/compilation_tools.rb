@@ -14,10 +14,13 @@ module CompilationTools
 		if !check.respond_to? 'each'
 			cmd = "#{@cfg[@cfg.has_key?(:preferred_build_command) ? :preferred_build_command : :default_build_command]}"
 			out = exec_with_timeout "#{cmd}"
-			
-			return "Exit status: 0\r#{out[:stdout]}" unless out[:process_status].exitstatus != 0
+
+			if out.has_key? :process_status
+				return "Exit status: 0\r#{out[:stdout]}" unless out[:process_status].exitstatus != 0
+			end
 
 			if @cfg.has_key? :preferred_build_command
+				puts "FALLBACK\n#{@cfg[:default_build_command]}"
 				out = exec_with_timeout "#{@cfg[:default_build_command]}"
 			end
 
@@ -28,7 +31,11 @@ module CompilationTools
 	end
 
 	def check_for_required_files
+		if !@cfg.has_key? :required_files
+			return true
+		end
+
 		diff = @cfg[:required_files] - Dir.glob('*')
-		!diff.respond_to?('each') ? diff : true
+		diff.empty? && true || diff
 	end
 end

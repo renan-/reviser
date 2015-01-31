@@ -60,11 +60,11 @@ class Checker < Component
 					tab << IO.read(f).scrub.scan(@cfg[:regex_comments])
 				}.inject("") { |s, comm|
 						s << comm.inject("") { |t, l|
-							t << (l.size > 3 && l[3] + "\n") || ""
+							t << l.select { |a| (a != nil) && !a.empty? }.join
 						}
 				}.split("\n").size,
 		}
-
+		
 		@results[proj][@cfg[:compiled] ? :resultats_compilation : :fichiers_manquants] = compile
 		@results[proj][:resultats_execution] = execute
 
@@ -75,6 +75,7 @@ class Checker < Component
 		stdin, stdout, stderr, wait_thr = Open3.popen3(cmd)
 		process_status = -1
 
+		stdin.close
 		begin
 			Timeout.timeout(timeout) do
 				process_status = wait_thr.value
@@ -96,7 +97,6 @@ class Checker < Component
 			:process_status => process_status
 		}
 
-		stdin.close  # stdin, stdout and stderr should be closed explicitly in this form.
 		stdout.close
 		stderr.close
 
