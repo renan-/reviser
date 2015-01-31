@@ -1,15 +1,13 @@
 require 'fileutils'
 require_relative 'generator_log'
 
-# Class which organizes all directories to simplify project's analysis.
+# Class which organizes all directories to simplify projects' analysis.
 #
 # Author::	Yann Prono
 class Organiser < Component
 
 	# All entries to ignore during sort and organization
 	$rejectedEntries = ['.', '..', '__MACOSX']
-
-	$logger;
 
 	# initialize tool
 	def initialize(data)
@@ -32,9 +30,9 @@ class Organiser < Component
 			if(name != nil)
 				name = File.join(@directory, name)
   				FileUtils.mv(entry, name)
-  				$logger.log("rename #{File.basename(entry)} to #{File.basename(name)}")
+  				$logger.log("rename #{File.basename(entry)} to #{File.basename(name)}") if $logger
   			else 
-  				$logger.log("can't rename #{File.basename(entry)} (no matches with regex of config.yml)", true)
+  				$logger.log("can't rename #{File.basename(entry)} (no matches with regex of config.yml)", true) if $logger
   			end
   		end
 	end
@@ -62,7 +60,7 @@ class Organiser < Component
 				Dir.glob(File.join(path,'*')).each do |file|
 					FileUtils.mv(file,File.join(@directory, entry))
 				end
-				$logger.log("Structure #{File.join(path)}")
+				$logger.log("Structure #{File.join(path)}") if $logger
 				FileUtils.rm_rf(File.join(@directory, entry, rm))
 			end
 

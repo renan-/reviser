@@ -4,6 +4,10 @@
 require 'yaml'
 
 class Component
+
+	# Each component has a logger (currently a txt file)
+	$logger
+	
 	#
 	# Sets the config file to read from
 	# when initializing a component

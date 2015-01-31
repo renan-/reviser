@@ -10,8 +10,6 @@ src: projects.zip
 # The destination directory for these projects
 dest: projects
 
-
-
 # The result file to be generated
 out: results
 
@@ -25,6 +23,11 @@ res_dir: res
 # Default timeout
 # shall be overriden in sorts
 timeout: 5
+
+# Options of all components
+# For the moment, there is just verbose option (txt file)
+options: 
+  :verbose: true
 
 ## Projects naming, useful to rename folders
 projects_names: !ruby/regexp '/^[a-zA-Z]+[ ]+[a-zA-Z]+/'

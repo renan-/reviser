@@ -16,11 +16,7 @@ class Archiver < Component
 
 	attr_reader :src, :destination
 
-	# Logger of the archiver
-	$logger
-
 	$rejected = ['.','..']
-
 	
 	# Get archive to use and the path directory.
 	def initialize(data)
