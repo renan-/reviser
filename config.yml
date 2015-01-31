@@ -14,7 +14,9 @@ dest: projects
 out: results
 
 # The type of file (currently supported: csv, html, xls)
-out_format: html
+out_format:
+- csv
+- html
 
 # Ressources directory
 # (needed for html format)

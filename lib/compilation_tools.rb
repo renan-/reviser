@@ -20,7 +20,6 @@ module CompilationTools
 			end
 
 			if @cfg.has_key? :preferred_build_command
-				puts "FALLBACK\n#{@cfg[:default_build_command]}"
 				out = exec_with_timeout "#{@cfg[:default_build_command]}"
 			end
 

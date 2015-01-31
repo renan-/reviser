@@ -10,9 +10,12 @@ class Generator < Component
 	end
 
 	def run
-		# TODO : Add multiple formats
 		begin
-			send @cfg[:out_format].to_sym
+			if @cfg[:out_format].respond_to? 'each'
+				@cfg[:out_format].each { |f| send f.to_sym }
+			else
+				send @cfg[:out_format].to_sym
+			end
 		rescue
 			'Wrong format'
 		end
