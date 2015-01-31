@@ -40,4 +40,12 @@ class Component
 	def populate(hash)
 		hash.each { |k, v| @cfg[k.to_sym] = v}
 	end
+
+
+	# 
+	# @return all options for all components if they exist in config file.
+	def getOptions
+		@cfg[:options] ? @cfg[:options] : {}
+	end
+
 end

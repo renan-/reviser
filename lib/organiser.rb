@@ -15,9 +15,7 @@ class Organiser < Component
 	def initialize(data)
 		super data
 
-		@directory = @cfg[:dest]
-
-		$logger = GeneratorLog.new('organiser.txt')
+		@directory = @cfg[:dest]		
 	end
 
 	# Rename directories more clearly
@@ -73,12 +71,13 @@ class Organiser < Component
 
 
 	# Method which run the organiser
-	def run
-		$logger.title ("#{Organiser.name}")
-		$logger.subtitle ("Rename directories")
+	def run (options = getOptions)
+		$logger = GeneratorLog.new('organiser.txt') if options[:verbose]
+		$logger.title ("#{Organiser.name}") if options[:verbose]
+		$logger.subtitle ("Rename directories") if options[:verbose]
 		renameDirectories
-		$logger.subtitle ("Structure projects")
-		structure
+		$logger.subtitle ("Structure projects") if options[:verbose]
+		structure 
 	end
 
 end

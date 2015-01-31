@@ -27,7 +27,7 @@ class Archiver < Component
 		super data
 
 		@src = @cfg[:src]
-		@destination = @cfg[:dest]		
+		@destination = @cfg[:dest]
 	end
 
 	#
@@ -67,7 +67,7 @@ class Archiver < Component
 	# and after all extracted files.
 	# Options are for the moment options[:verbose]
 	#
-	def run(options = {})
+	def run(options = getOptions)
 		$logger = GeneratorLog.new('archiver.txt') if options[:verbose]
 		$logger.title "#{Archiver.name}" if options[:verbose]
 
