@@ -1,0 +1,21 @@
+---
+# Java Project sort
+
+language: Java
+
+# Required files
+# Here, it's only the Makefile
+required_files:
+- Principale.java
+
+# For interpreted languages
+execute_command: java
+
+preferred_build_command: javac src/*/*.java
+
+# If not specified, the first
+# executable file found will be executed
+executable_name: Principale
+
+# Number of times to run execute_command
+execution_count: 1

@@ -1,7 +1,7 @@
 require 'fileutils'
 
 #
-# GeneratorLog is a generator whichs logs
+# Logger is a generator whichs logs
 # actions of this program (archiver, organiser ...)
 #
 # @author Yann Prono
