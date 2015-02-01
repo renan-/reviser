@@ -45,8 +45,6 @@ class Organiser < Component
 			path = File.join(@directory, entry)
 			level = 0
 			directories = (Dir.entries(path) - $rejectedEntries)
-			# To make sure it's ONLY directories
-			directories.select! { |e| File.directory? File.join(path, e) }
 
 			# directory to delete if the project directory is not structured
 			rm = directories.first if directories.size == 1
@@ -56,12 +54,11 @@ class Organiser < Component
 			# in the project (not likely to happen though)
 			# Still need to think about exceptions, and
 			# how to handle them
-			while (directories.size == 1)
+			while directories.size == directories.select { |e| File.directory? File.join(path, e) }.size
 				level += 1
 				path = File.join(path, directories.first)
 
 				directories = (Dir.entries(path) - $rejectedEntries)
-				directories.select! { |e| File.directory? File.join(path, e) }
 			end
 			# If the core of project is not at the root of directory ...
 			if(level >= 1)
