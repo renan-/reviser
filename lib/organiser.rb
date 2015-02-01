@@ -49,6 +49,12 @@ class Organiser < Component
 			# directory to delete if the project directory is not structured
 			rm = directories.first if directories.size == 1
 			# Loop to find the core of project
+			#
+			# Here's the bug :
+			# 	dir1/dir2/main.rb
+			#   with only main.rb in it : size == 1
+			#   but it's the core of the project
+			#
 			while(directories.size == 1)
 				level += 1
 				path = File.join(path, directories.first )

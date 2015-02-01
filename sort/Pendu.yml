@@ -8,9 +8,12 @@ preferred_build_command: javac src/tp_note/*.java
 # For interpreted languages
 execute_command: java -cp src/
 
-# If not specified, the first
-# executable file found will be executed
-executable_name: tp_note.Principale
+# In Java, the prefix is <pkg>.
+program_prefix: tp_note.
+
+# In Java, program_name is the
+# main class name
+program_name: Principale
 
 # Because it's a GUI app
 timeout: 0

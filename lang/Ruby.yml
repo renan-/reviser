@@ -1,0 +1,26 @@
+---
+# Ruby language
+
+# List of source files extensions
+extension:
+- .rb
+
+# Whether it's a compiled or an interpreted language
+compiled: false
+
+# Program prefix, needed especially for C
+# The execution command will look like this :
+# [execute_command=(java, ruby, python, ...)] [program_prefix]<program> [args]
+# [] are optionals, whereas <> mandatory
+# program_prefix:
+
+# For interpreted languages
+execute_command: ruby
+
+# If not specified, the first
+# executable file found will be executed
+program_name: main.rb
+
+regex_comments: !ruby/regexp '/#[^{].*$/'
+
+timeout: 1

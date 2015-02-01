@@ -8,7 +8,7 @@ preferred_build_command: javac src/*/*.java
 # For interpreted languages
 execute_command: java -cp src/
 
-executable_name: pkg.Principale
+program_name: pkg.Principale
 
 # Uncomment if it's a GUI app
 # timeout: 0

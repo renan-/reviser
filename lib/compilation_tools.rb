@@ -29,24 +29,4 @@ module CompilationTools
 			"Missing file(s) : #{check}"
 		end
 	end
-
-	def check_for_required_files
-		if !@cfg.has_key? :required_files
-			return true
-		end
-
-		dir = Dir['*']
-
-		# Check if there is any regexp
-		# If it's the case, if any file
-		# matches, we delete the entry
-		# for diff to work properly
-		@cfg[:required_files].each_with_index do |e, i|
-			if dir.any? { |f| (e.respond_to?(:match)) && (e =~ f) }
-				@cfg[:required_files].delete_at i
-			end
-		end
-
-		@cfg[:required_files] - dir
-	end
 end

@@ -41,12 +41,7 @@ class Checker < Component
 		@results
 	end
 
-	# For interpreted languages
-	# We only check for missing files
-	def compile
-		res = check_for_required_files
-		res.empty? && 'None' || res
-	end
+private
 
 	def check(proj)
 		@results[proj] =
@@ -60,6 +55,39 @@ class Checker < Component
 		}
 	end
 
+	# For interpreted languages
+	# We only check for missing files
+	def compile
+		res = check_for_required_files
+		res.empty? && 'None' || res
+	end
+
+	def check_for_required_files
+		if !@cfg.has_key? :required_files
+			return []
+		end
+
+		dir = Dir['*']
+
+		# Check if there is any regexp
+		# If it's the case, if any file
+		# matches, we delete the entry
+		# for diff to work properly
+		@cfg[:required_files].each_with_index do |e, i|
+			if dir.any? { |f| (e.respond_to?(:match)) && (e =~ f) }
+				@cfg[:required_files].delete_at i
+			end
+		end
+
+		@cfg[:required_files] - dir
+	end
+
+	#
+	# Executes the given command
+	# and kills it if its execution
+	# time > timeout
+	# @returns stdout, stderr & process_status
+	#
 	def exec_with_timeout(cmd, timeout = @cfg[:timeout])
 		stdin, stdout, stderr, wait_thr = Open3.popen3(cmd)
 		process_status = -1
