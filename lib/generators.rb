@@ -41,8 +41,9 @@ module Generators
 		# Values for each project as rows
 		@data.keys.each_with_index do |proj, i|
 			sheet.insert_row(i+1,@data[proj].values.unshift(proj))
-		end
-		book.write @cfg[:out] + '.' + @cfg[:out_format]
+		end	
+
+		book.write @cfg[:out] + '.xls'
 	end
 
 	# Generates an HTML file 
