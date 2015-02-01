@@ -124,7 +124,6 @@ private
 			# Then whether it suceeded or not,
 			# we kill the process
 			#
-			$stdout << 'Timeout'
 			begin
 				Process.kill('KILL', wait_thr[:pid])
 			rescue Object => e
@@ -132,6 +131,12 @@ private
 			end
 
 			return { :stdout => 'Timeout', :success => false} unless process_status != -1
+			
+			#
+			# We're here only if the thread
+			# failed to join before timeout
+			#
+			$stdout << 'Timeout'
 		end
 		
 		result = {
