@@ -74,7 +74,7 @@ private
 	end
 
 	#
-	# @returns the first executable found
+	# @return the first executable found
 	#
 	def find_executable
 		Dir.glob('*').select {|f| File.executable?(f) && !File.directory?(f)}.first

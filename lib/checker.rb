@@ -67,14 +67,14 @@ private
 	# We only check for missing files
 	#
 	def prepare
-		check_for_required_files.empty? && 'None' || res
+		missing_files.empty? && 'None' || res
 	end
 
 	#
 	# This method checks for required files
 	# Typically needed for C with Makefile
 	# 
-	def check_for_required_files
+	def missing_files
 		if !@cfg.has_key? :required_files
 			return []
 		end
@@ -129,25 +129,19 @@ private
 			rescue Object => e
 				$stderr << "Unable to kill process : #{e.to_s}"
 			end
-
-			return { :stdout => 'Timeout', :success => false} unless process_status != -1
-			
-			#
-			# We're here only if the thread
-			# failed to join before timeout
-			#
-			$stdout << 'Timeout'
 		end
-		
+
 		result = {
-			:stdout => stdout.read,
-			:stderr => stderr.read,
-			:process_status => process_status
+			:stdout => process_status == -1 && 'Timeout' || stdout.read,
+			:stderr => process_status == -1 && 'Timeout' || stderr.read,
+			:process_status => process_status == -1 && 'Timeout' || process_status
 		}
+		
+		result.delete :process_status unless process_status != -1
 
 		stdout.close
 		stderr.close
 
-		return result
+		result
 	end
 end

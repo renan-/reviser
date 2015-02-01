@@ -9,8 +9,8 @@ require 'spreadsheet'
 module Generators
 	
 	# Generates the CSV file
-	def csv
-		CSV.open(@cfg[:out] + '.csv', 'wb') do |f|
+	def csv(ext = '.csv')
+		CSV.open(out(ext), 'wb') do |f|
 			# Criterias as columns
 			f << (criterias).unshift("projet")
 
@@ -22,7 +22,7 @@ module Generators
 	end
 
 	# Generates a Excel file
-	def xls
+	def xls(ext = '.xls')
 		Spreadsheet.client_encoding = 'UTF-8'
 		book = Spreadsheet::Workbook.new
 		sheet = book.create_worksheet :name => 'Results'
@@ -43,7 +43,7 @@ module Generators
 			sheet.insert_row(i+1,@data[proj].values.unshift(proj))
 		end	
 
-		book.write @cfg[:out] + '.xls'
+		book.write out(ext)
 	end
 
 	# Generates an HTML file 
@@ -81,6 +81,12 @@ module Generators
 
 		out += "</body></html>"		
 
-		File.open(@cfg[:out] + ext, 'w') { |f| f.write(out) }
+		File.open(out(ext), 'w') { |f| f.write(out) }
+	end
+
+private
+
+	def out(ext)
+		@cfg[:out] + ext
 	end
 end

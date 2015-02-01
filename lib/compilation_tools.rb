@@ -11,14 +11,13 @@ module CompilationTools
 	# Only here for compiled language,
 	#
 	def compile
-		check = check_for_required_files
 		#
 		# For now, we compile only if there's
 		# no missing file
 		# We should maybe make it more
 		# understandable in the config
 		#
-		if check.empty?
+		if missing_files.empty?
 			cmd = "#{@cfg[@cfg.has_key?(:preferred_build_command) ? :preferred_build_command : :default_build_command]}"
 			out = exec_with_timeout "#{cmd}"
 
