@@ -9,9 +9,10 @@
 module CompilationTools
 	protected
 
+	# Ch
 	def compile
 		check = check_for_required_files
-		if !check.respond_to? 'each'
+		if check.empty?
 			cmd = "#{@cfg[@cfg.has_key?(:preferred_build_command) ? :preferred_build_command : :default_build_command]}"
 			out = exec_with_timeout "#{cmd}"
 
@@ -34,7 +35,18 @@ module CompilationTools
 			return true
 		end
 
-		diff = @cfg[:required_files] - Dir.glob('*')
-		diff.empty? && true || diff
+		dir = Dir['*']
+
+		# Check if there is any regexp
+		# If it's the case, if any file
+		# matches, we delete the entry
+		# for diff to work properly
+		@cfg[:required_files].each_with_index do |e, i|
+			if dir.any? { |f| (e.respond_to?(:match)) && (e =~ f) }
+				@cfg[:required_files].delete_at i
+			end
+		end
+
+		@cfg[:required_files] - dir
 	end
 end

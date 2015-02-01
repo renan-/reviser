@@ -3,17 +3,16 @@
 
 language: Java
 
-preferred_build_command: javac src/tp_note/*.java
+preferred_build_command: javac src/*/*.java
 
 # For interpreted languages
 execute_command: java -cp src/
 
-# If not specified, the first
-# executable file found will be executed
-executable_name: tp_note.Principale
+executable_name: pkg.Principale
 
-# Because it's a GUI app
-timeout: 0
+# Uncomment if it's a GUI app
+# timeout: 0
 
 # Number of times to run execute_command
-execution_count: 1
+# If it's 1, no need to specify
+# execution_count: 1
