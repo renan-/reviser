@@ -2,7 +2,7 @@
 # Reviser config
 
 # The type of project (<sort>.yml must exists)
-sort: LabyrinthProject
+sort: Labyrinthe
 
 # The source archive containing all projects
 src: projects.zip
@@ -24,7 +24,7 @@ res_dir: res
 
 # Default timeout
 # shall be overriden in sorts
-timeout: 7
+timeout: 5
 
 # Options of all components
 # For the moment, there is just verbose option (txt file)

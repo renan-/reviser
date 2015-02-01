@@ -51,7 +51,7 @@ module ExecutionTools
 	private
 
 		def exec(param = nil)
-			program = (@cfg.has_key? :executable_name) ? @cfg[:executable_name] : find_executable
+			program = (@cfg.has_key? :program_name) ? @cfg[:program_name] : find_executable
 
 			return 'Program not found' unless program != nil
 

@@ -7,11 +7,13 @@
 #
 require 'open3'
 
+require_relative 'code_analysis_tools'
 require_relative 'compilation_tools'
 require_relative 'component'
 require_relative 'execution_tools'
 
 class Checker < Component
+	include CodeAnalysisTools
 	include ExecutionTools
 
 	def initialize(data)
@@ -39,38 +41,53 @@ class Checker < Component
 		@results
 	end
 
-	# For interpreted languages
-	def compile
-	end
+private
 
 	def check(proj)
-		# for all files#
-		files = Dir.glob("**/*").select { |f| (File.file?(f)) }
-		src_files = files.select { |f| @cfg[:extension].include? File.extname(f) }
-
-		@results[proj] = {
+		@results[proj] =
+		{
 			:fichiers => files.join("\r"),
 			:fichiers_sources => src_files.join("\r"),
-			:nombre_total_de_lignes_de_code => files.inject(0) { |sum, f|
-				sum + File.open(f).readlines.select { |l|
-					(!l.chomp.empty?) && (l.scrub !~ @cfg[:regex_comments])  
-				}.size
-			},
-			:nombre_de_lignes_de_commentaires => src_files.inject([]) { |tab, f|
-					tab << IO.read(f).scrub.scan(@cfg[:regex_comments])
-				}.inject("") { |s, comm|
-						s << comm.inject("") { |t, l|
-							t << l.select { |a| (a != nil) && !a.empty? }.join
-						}
-				}.split("\n").size,
+			:nombre_total_de_lignes_de_code => lines_count,
+			:nombre_de_lignes_de_commentaires => comments_count,
+			(@cfg[:compiled] && :resultats_compilation || :fichiers_manquants) => compile,
+			:resultats_execution => execute
 		}
-		
-		@results[proj][@cfg[:compiled] ? :resultats_compilation : :fichiers_manquants] = compile
-		@results[proj][:resultats_execution] = execute
-
-		@results
 	end
 
+	# For interpreted languages
+	# We only check for missing files
+	def compile
+		res = check_for_required_files
+		res.empty? && 'None' || res
+	end
+
+	def check_for_required_files
+		if !@cfg.has_key? :required_files
+			return []
+		end
+
+		dir = Dir['*']
+
+		# Check if there is any regexp
+		# If it's the case, if any file
+		# matches, we delete the entry
+		# for diff to work properly
+		@cfg[:required_files].each_with_index do |e, i|
+			if dir.any? { |f| (e.respond_to?(:match)) && (e =~ f) }
+				@cfg[:required_files].delete_at i
+			end
+		end
+
+		@cfg[:required_files] - dir
+	end
+
+	#
+	# Executes the given command
+	# and kills it if its execution
+	# time > timeout
+	# @returns stdout, stderr & process_status
+	#
 	def exec_with_timeout(cmd, timeout = @cfg[:timeout])
 		stdin, stdout, stderr, wait_thr = Open3.popen3(cmd)
 		process_status = -1

@@ -8,16 +8,16 @@ language: C
 preferred_build_command: make
 
 # Required files
-# Here, it's only the Makefile
+# Can also be a regex
 required_files:
-- Makefile
+- !ruby/regexp '/(M|m)akefile/'
 
 # For interpreted languages
 # execute_command: 
 
 # If not specified, the first
 # executable file found will be executed
-# executable_name:
+# program_name:
 
 # Number of times to execute
 # (not needed here, as explained below)

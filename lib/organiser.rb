@@ -49,9 +49,15 @@ class Organiser < Component
 			# directory to delete if the project directory is not structured
 			rm = directories.first if directories.size == 1
 			# Loop to find the core of project
-			while(directories.size == 1)
+			#
+			# Fixed the bug when there's only one file
+			# in the project (not likely to happen though)
+			# Still need to think about exceptions, and
+			# how to handle them
+			while directories.size == directories.select { |e| File.directory? File.join(path, e) }.size
 				level += 1
-				path = File.join(path, directories.first )
+				path = File.join(path, directories.first)
+
 				directories = (Dir.entries(path) - $rejectedEntries)
 			end
 			# If the core of project is not at the root of directory ...
@@ -75,5 +81,4 @@ class Organiser < Component
 		$logger.subtitle "Structure projects" if options[:verbose]
 		structure 
 	end
-
 end

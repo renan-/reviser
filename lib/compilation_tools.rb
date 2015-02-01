@@ -9,9 +9,10 @@
 module CompilationTools
 	protected
 
+	# Ch
 	def compile
 		check = check_for_required_files
-		if !check.respond_to? 'each'
+		if check.empty?
 			cmd = "#{@cfg[@cfg.has_key?(:preferred_build_command) ? :preferred_build_command : :default_build_command]}"
 			out = exec_with_timeout "#{cmd}"
 
@@ -27,14 +28,5 @@ module CompilationTools
 		else
 			"Missing file(s) : #{check}"
 		end
-	end
-
-	def check_for_required_files
-		if !@cfg.has_key? :required_files
-			return true
-		end
-
-		diff = @cfg[:required_files] - Dir.glob('*')
-		diff.empty? && true || diff
 	end
 end
