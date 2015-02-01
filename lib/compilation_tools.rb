@@ -7,9 +7,9 @@
 #
 
 module CompilationTools
-	protected
-
-	# Ch
+	#
+	# Only here for compiled language,
+	#
 	def compile
 		check = check_for_required_files
 		if check.empty?

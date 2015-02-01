@@ -7,25 +7,22 @@
 module CodeAnalysisTools
 
 	#
-	# @returns all the files in the project's
-	# 		   folder
+	# @return all the files in the project's folder
 	#
 	def files
 		Dir.glob("**/*").select { |f| (File.file?(f)) }
 	end
 
 	#
-	# @returns all files matching the 
-	#		   extenstion language
-	# 		   list (note that @cfg[:extension]
-	# 		   must be an array)
+	# @return all files matching the 
+	# 		  extenstion language list (note that @cfg[:extension] must be an array)
 	#
 	def src_files
 		files.select { |f| @cfg[:extension].include? File.extname(f) }
 	end
 
 	#
-	# @returns the total amount of lines of code
+	# @return the total amount of lines of code
 	#
 	def lines_count
 		count = src_files.inject(0) { |sum, f|
@@ -36,12 +33,7 @@ module CodeAnalysisTools
 	end
 
 	#
-	# @returns the number of lines of comments
-	#
-	# TODO : Make the code more readable,
-	# 	     and fix the fact that it seems
-	#        to return 1 more than the actual
-	#        value
+	# @return the number of lines of comments
 	#
 	def comments_count
 		src_files.inject([]) { |tab, f|

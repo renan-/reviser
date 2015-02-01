@@ -11,8 +11,6 @@ require 'mkmf'
 require 'timeout'
 
 module ExecutionTools
-	protected
-
 	#
 	# Determines how to execute the program
 	# thanks to config, then returns its exec
@@ -48,37 +46,37 @@ module ExecutionTools
 		outputs.join("\r")
 	end
 
-	private
+private
 
-		#
-		# The method that actually
-		# executes the program.
-		# If no program name is specified
-		# in the config, it executes the
-		# first executable found.
-		# It helps with C (a.out) when no 
-		# Makefile is avalaible, but it
-		# might not be a good idea regarding
-		# security
-		#
-		def exec(param = nil)
-			program = (@cfg.has_key? :program_name) ? @cfg[:program_name] : find_executable
+	#
+	# The method that actually
+	# executes the program.
+	# If no program name is specified
+	# in the config, it executes the
+	# first executable found.
+	# It helps with C (a.out) when no 
+	# Makefile is avalaible, but it
+	# might not be a good idea regarding
+	# security
+	#
+	def exec(param = nil)
+		program = (@cfg.has_key? :program_name) ? @cfg[:program_name] : find_executable
 
-			return 'Program not found' unless program != nil
+		return 'Program not found' unless program != nil
 
-			program = "#{@cfg[:program_prefix]}#{program}"
-			argument = (param == nil) ? '' : param
+		program = "#{@cfg[:program_prefix]}#{program}"
+		argument = (param == nil) ? '' : param
 
-			cmd = "#{(@cfg.has_key? :execute_command) ? @cfg[:execute_command] : ''} #{program} #{argument}"
-			out = exec_with_timeout cmd
-			
-			"$ #{cmd}\r#{out[:stdout]}\r#{out[:stderr]}"
-		end
+		cmd = "#{(@cfg.has_key? :execute_command) ? @cfg[:execute_command] : ''} #{program} #{argument}"
+		out = exec_with_timeout cmd
+		
+		"$ #{cmd}\r#{out[:stdout]}\r#{out[:stderr]}"
+	end
 
-		#
-		# @returns the first executable found
-		#
-		def find_executable
-			Dir.glob('*').select {|f| File.executable?(f) && !File.directory?(f)}.first
-		end
+	#
+	# @returns the first executable found
+	#
+	def find_executable
+		Dir.glob('*').select {|f| File.executable?(f) && !File.directory?(f)}.first
+	end
 end
