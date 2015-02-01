@@ -5,6 +5,8 @@ require 'fileutils'
 # Author::	Yann Prono
 class Organiser < Component
 
+	attr_accessor :path
+
 	# All entries to ignore during sort and organization
 	$rejectedEntries = ['.', '..', '__MACOSX']
 
@@ -12,7 +14,8 @@ class Organiser < Component
 	def initialize(data)
 		super data
 
-		@directory = @cfg[:dest]		
+		@directory = @cfg[:dest]
+		@path = ''		
 	end
 
 	# Rename directories more clearly
@@ -21,8 +24,7 @@ class Organiser < Component
 		count = 0
 
 		# get all entries of projects folder
-		entries = (Dir.entries(@directory) - $rejectedEntries)
-		entries.each do |entry|
+		all(@directory).each do |entry|
 			#apply regex and take first match
 			name = entry.scan(@cfg[:projects_names]).first
 			entry = File.join(@directory, entry)
@@ -40,14 +42,15 @@ class Organiser < Component
 	# have the same hierarchy for all.
 	def structure
 		# get all entries of projects folder
-		entries = (Dir.entries(@directory) - $rejectedEntries)
-		entries.each do |entry|
-			path = File.join(@directory, entry)
+		all(@directory).each do |entry|
+			chdir File.join(@directory, entry)
+			$logger.log "#{entry} => #{path}"
 			level = 0
-			mem = directories path
 
+			$logger.log("Files in #{path}\n#{all}")
+			$logger.log("Dirs in #{path}\n#{directories}")
 			# directory to delete if the project directory is not structured
-			rm = mem.size == 1 && mem.first || ''
+			rm = all == directories && directories.first || ''
 			# Loop to find the core of project
 			#
 			# Basically running through
@@ -55,18 +58,20 @@ class Organiser < Component
 			# while there are only directories
 			# in the current directory
 			#
-			while mem.size == 1
+			while all == directories
 				level += 1
-				path = File.join(path, mem.first)
-
-				mem = directories path
+				$logger.log("Level += 1\nPath = #{path}")
+				chdir File.join(path, directories.first)
+				$logger.log("New path = #{path}")
 			end
+
 			# If the core of project is not at the root of directory ...
 			if(level >= 1)
 				Dir.glob(File.join(path,'*')).each do |file|
 					FileUtils.mv(file,File.join(@directory, entry))
 				end
-				$logger.log("Structure #{File.join(path)}") if options[:verbose]
+				$logger.log("Structure #{File.join(@path)}") if options[:verbose]
+				$logger.log("Removing #{File.join(@directory, entry, rm)}") if options[:verbose]
 				FileUtils.rm_rf(File.join(@directory, entry, rm))
 			end
 
@@ -85,7 +90,15 @@ class Organiser < Component
 
 private
 
-	def directories(path)
-		(Dir.entries(path) - $rejectedEntries).select { |e| File.directory? File.join(path, e) }
+	def all(path = @path)
+		Dir.entries(path) - $rejectedEntries
+	end
+
+	def directories
+		all.select { |e| File.directory? File.join(@path, e) }
+	end
+
+	def chdir(dir)
+		@path = dir
 	end
 end
