@@ -1,4 +1,4 @@
-²require_relative "../../lib/archiver"
+require_relative "../../lib/archiver"
 require_relative "../../lib/component"
 require_relative "../../lib/reviser"
 require "test/unit"
@@ -16,16 +16,11 @@ class TestArchiver < Test::Unit::TestCase
 		@archiver = Archiver.new(nil)
 		@file = @archiver.src
 		@dest = @archiver.destination
-		@nb_projects = 15
+		@nb_projects = 18
 	end
 
 	def teardown 
 		FileUtils.rm_rf(@dest)
-	end
-
-	# Verify constructor
-	def test_initialize
-		assert(Dir.exists?(@dest), "The directory #{@dest} should exist")
 	end
 
 	# Normal case
@@ -36,11 +31,29 @@ class TestArchiver < Test::Unit::TestCase
 	end
 
 	# File not found
-	# TODO find how to test exception
 	def test_extract_no_file
-		raise = false
-		Archiver.extract("coucou.zip", @dest)
 		assert_raise Errno::ENOENT do
+			Archiver.extract("coucou.zip", @dest)
+		end
+	end
+
+	# Test if the default directory works
+	def test_extract_default_dest
+		# Get all entries before running
+		original = Dir.entries('.').reject{|entry| entry == '.' || entry == '..'}
+		# Let's do it 
+		Archiver.extract @file
+		# Get all entries after running
+		after = Dir.entries('.').reject{|entry| entry == '.' || entry == '..'}
+		assert_equal((after - original).size, @nb_projects, "the extraction should extract all entries in the current directory")
+		FileUtils.rm(after-original)
+	end
+
+	# If the archive is a unknown format
+	# Should raise a exception
+	def test_extract_unknown_format
+		assert_raise NoMethodError do
+			Archiver.extract('format.ar')
 		end
 	end
 
@@ -49,6 +62,23 @@ class TestArchiver < Test::Unit::TestCase
 		@archiver.run
 		entries = Dir.entries(@dest).reject{|entry| entry == '.' || entry == '..'}
 		assert_equal(@nb_projects, entries.size, "the directory was expected to contain #{@nb_projects} directories.")
-		end
+	end
+
+	# Test destination method
+	# the folder doesn't exist
+	def test_destination_mkdir		
+		Archiver.destination?(@dest)
+		assert(Dir.exists?(@dest), "The #{@dest} directory should exist")
+	end
+
+	# Test destination method
+	# The folder is firstly deleted and created
+	def test_destination_rm
+		FileUtils.mkdir(@dest)
+		FileUtils.touch File.join(@dest, "README.md")
+		Archiver.destination?(@dest)
+		assert(Dir.exists?(@dest), "The #{@dest} directory should exist")
+		assert_equal(Dir.glob(File.join(@dest,'*')).size,0, "The #{@dest} directory shouldn't contain files")
+	end
 
 end
