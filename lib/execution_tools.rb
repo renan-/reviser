@@ -50,6 +50,17 @@ module ExecutionTools
 
 	private
 
+		#
+		# The method that actually
+		# executes the program.
+		# If no program name is specified
+		# in the config, it executes the
+		# first executable found.
+		# It helps with C (a.out) when no 
+		# Makefile is avalaible, but it
+		# might not be a good idea regarding
+		# security
+		#
 		def exec(param = nil)
 			program = (@cfg.has_key? :program_name) ? @cfg[:program_name] : find_executable
 
@@ -64,6 +75,9 @@ module ExecutionTools
 			"$ #{cmd}\r#{out[:stdout]}\r#{out[:stderr]}"
 		end
 
+		#
+		# @returns the first executable found
+		#
 		def find_executable
 			Dir.glob('*').select {|f| File.executable?(f) && !File.directory?(f)}.first
 		end

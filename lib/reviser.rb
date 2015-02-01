@@ -1,7 +1,7 @@
 #
 # Author:: Renan Strauss
 #
-# This class is here mainly to give the user
+# This class is basically here to give the user
 # a generic and comprehensive way to use and
 # customize the behavior of our tool.
 # The main idea is that the user should not
