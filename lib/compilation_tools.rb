@@ -12,6 +12,12 @@ module CompilationTools
 	#
 	def compile
 		check = check_for_required_files
+		#
+		# For now, we compile only if there's
+		# no missing file
+		# We should maybe make it more
+		# understandable in the config
+		#
 		if check.empty?
 			cmd = "#{@cfg[@cfg.has_key?(:preferred_build_command) ? :preferred_build_command : :default_build_command]}"
 			out = exec_with_timeout "#{cmd}"
@@ -25,8 +31,6 @@ module CompilationTools
 			end
 
 			(out[:process_status].exitstatus == 0) ? "Exit status: 0\r#{out[:stdout]}" : "#{out[:stdout]}\r#{out[:stderr]}"
-		else
-			"Missing file(s) : #{check}"
 		end
 	end
 end

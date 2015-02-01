@@ -50,13 +50,14 @@ private
 	# their analysis value
 	#
 	def check(proj)
+		compile_key = (@cfg[:compiled] && :resultats_compilation || :fichiers_manquants)
 		@results[proj] =
 		{
 			:fichiers => files.join("\r"),
 			:fichiers_sources => src_files.join("\r"),
 			:nombre_total_de_lignes_de_code => lines_count,
 			:nombre_de_lignes_de_commentaires => comments_count,
-			(@cfg[:compiled] && :resultats_compilation || :fichiers_manquants) => compile,
+			compile_key => @cfg[:compiled] && compile || prepare,
 			:resultats_execution => execute
 		}
 	end
@@ -65,9 +66,8 @@ private
 	# For interpreted languages
 	# We only check for missing files
 	#
-	def compile
-		res = check_for_required_files
-		res.empty? && 'None' || res
+	def prepare
+		check_for_required_files.empty? && 'None' || res
 	end
 
 	#
