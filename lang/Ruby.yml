@@ -21,6 +21,6 @@ execute_command: ruby
 # executable file found will be executed
 program_name: main.rb
 
-regex_comments: !ruby/regexp '/#[^{].*$/'
+regex_comments: !ruby/regexp '/#([^{].*)$/'
 
 timeout: 1
