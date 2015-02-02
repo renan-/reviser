@@ -2,7 +2,9 @@ require 'fileutils'
 
 # Class which organizes all directories to simplify projects' analysis.
 #
-# Author::	Yann Prono
+# @author Yann Prono
+# @author Renan Strauss
+#
 class Organiser < Component
 
 	attr_accessor :path
@@ -50,7 +52,8 @@ class Organiser < Component
 			$logger.log("Files in #{path}\n#{all}")
 			$logger.log("Dirs in #{path}\n#{directories}")
 			# directory to delete if the project directory is not structured
-			rm = all == directories && directories.first || ''
+			rm = directories.first
+			
 			# Loop to find the core of project
 			#
 			# Basically running through

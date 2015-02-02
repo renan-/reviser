@@ -36,12 +36,15 @@ module CodeAnalysisTools
 	# @return the number of lines of comments
 	#
 	def comments_count
-		src_files.inject([]) { |tab, f|
-			tab << IO.read(f).scrub.scan(@cfg[:regex_comments])
-		}.inject("") { |s, comm|
-			s << comm.inject("") { |t, l|
-				t << l.select { |a| (a != nil) && !a.strip.empty? }.join("\n")
-			}
-		}.split("\n").size
+		tab_comments = src_files.inject([]) { |t, f| t << IO.read(f).scrub.scan(@cfg[:regex_comments]) }
+		lines = tab_comments.inject("") { |s, comm| s << find_comments(comm) }.split "\n"
+
+		lines.size
+	end
+
+private
+
+	def find_comments(comm)
+		comm.inject("") { |t, l| t << l.detect { |a| (a != nil) && !a.strip.empty? } + "\n" }
 	end
 end
