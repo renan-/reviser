@@ -46,11 +46,11 @@ class Organiser < Component
 		# get all entries of projects folder
 		all(@directory).each do |entry|
 			chdir File.join(@directory, entry)
-			$logger.log "#{entry} => #{path}"
+			$logger.log "#{entry} => #{path}" if options[:verbose]
 			level = 0
 
-			$logger.log("Files in #{path}\n#{all}")
-			$logger.log("Dirs in #{path}\n#{directories}")
+			$logger.log("Files in #{path}\n#{all}") if options[:verbose]
+			$logger.log("Dirs in #{path}\n#{directories}") if options[:verbose]
 			# directory to delete if the project directory is not structured
 			rm = directories.first
 			
@@ -63,9 +63,9 @@ class Organiser < Component
 			#
 			while all == directories
 				level += 1
-				$logger.log("Level += 1\nPath = #{path}")
+				$logger.log("Level += 1\nPath = #{path}") if options[:verbose]
 				chdir File.join(path, directories.first)
-				$logger.log("New path = #{path}")
+				$logger.log("New path = #{path}") if options[:verbose]
 			end
 
 			# If the core of project is not at the root of directory ...
