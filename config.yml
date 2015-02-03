@@ -1,19 +1,31 @@
 ---
-# Reviser config
 
-# The type of project (<sort>.yml must exists)
-sort: Labyrinthe
+################################################
+# 					Config file     		   #
+################################################
 
-# The source archive containing all projects
+
+############	Archiver config 	############
+
+# File name of the archive containing all projects
 src: projects.zip
 
 # The destination directory for these projects
 dest: projects
 
-# The result file to be generated
+
+############  	Organiser config 	############
+
+# Projects naming, useful to rename folders
+projects_names: !ruby/regexp '/^[a-zA-Z]+[ ]+[a-zA-Z]+/'
+
+
+############ 	Generator config '	############
+
+# The file name for results which will be generated
 out: results
 
-# The type of file (currently supported: csv, html, xls)
+# The type/format of the previous file => currently supported: [csv, html, xls]
 out_format:
 - csv
 - html
@@ -22,14 +34,21 @@ out_format:
 # (needed for html format)
 res_dir: res
 
+
+############	Reviser config 		############
+
+# The type of project (<sort>.yml must exists)
+sort: Labyrinthe
+
+
 # Default timeout
 # shall be overriden in sorts
 timeout: 5
 
+
+############	Global config 		############
+
 # Options of all components
-# For the moment, there is just verbose option (txt file)
+# For the moment, there is just verbose option (for logger)
 options: 
   :verbose: true
-
-## Projects naming, useful to rename folders
-projects_names: !ruby/regexp '/^[a-zA-Z]+[ ]+[a-zA-Z]+/'

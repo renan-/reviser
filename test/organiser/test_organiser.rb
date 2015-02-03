@@ -1,9 +1,4 @@
-require_relative '../../lib/component'
-require_relative '../../lib/archiver'
-require_relative '../../lib/organiser'
-require_relative '../../lib/reviser'
-require 'minitest/autorun'
-
+require_relative '../test_helper'
 
 #
 # Test of organiser class

@@ -1,8 +1,4 @@
-require_relative '../../lib/archiver'
-require_relative '../../lib/component'
-require_relative '../../lib/reviser'
-require 'minitest/autorun'
-require 'test/unit'
+require_relative '../test_helper'
 require 'fileutils'
 
 #
