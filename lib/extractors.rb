@@ -31,7 +31,7 @@ module Extractors
 	# ZIP format
 	#
 	def zip (src, destination)
-		# Config the gem
+		# Cfg the gem
 		Zip.on_exists_proc = true
 		Zip.continue_on_exists_proc = true
 

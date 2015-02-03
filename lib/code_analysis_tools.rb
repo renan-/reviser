@@ -15,10 +15,10 @@ module CodeAnalysisTools
 
 	#
 	# @return all files matching the 
-	# 		  extenstion language list (note that @cfg[:extension] must be an array)
+	# 		  extenstion language list (note that Cfg[:extension] must be an array)
 	#
 	def src_files
-		files.select { |f| @cfg[:extension].include? File.extname(f) }
+		files.select { |f| Cfg[:extension].include? File.extname(f) }
 	end
 
 	#
@@ -36,7 +36,7 @@ module CodeAnalysisTools
 	# @return the number of lines of comments
 	#
 	def comments_count
-		tab_comments = src_files.inject([]) { |t, f| t << IO.read(f).scrub.scan(@cfg[:regex_comments]) }
+		tab_comments = src_files.inject([]) { |t, f| t << IO.read(f).scrub.scan(Cfg[:regex_comments]) }
 		lines = tab_comments.inject("") { |s, comm| s << find_comments(comm) }.split "\n"
 
 		lines.size

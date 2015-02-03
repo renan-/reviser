@@ -16,7 +16,7 @@ class Organiser < Component
 	def initialize(data)
 		super data
 
-		@directory = @cfg[:dest]
+		@directory = Cfg[:dest]
 		@path = ''		
 	end
 
@@ -28,14 +28,14 @@ class Organiser < Component
 		# get all entries of projects folder
 		all(@directory).each do |entry|
 			#apply regex and take first match
-			name = entry.scan(@cfg[:projects_names]).first
+			name = entry.scan(Cfg[:projects_names]).first
 			entry = File.join(@directory, entry)
 			if(name != nil)
 				name = File.join(@directory, name)
   				FileUtils.mv(entry, name)
   				$logger.log("rename #{File.basename(entry)} to #{File.basename(name)}") if options[:verbose]
   			else 
-  				$logger.log("can't rename #{File.basename(entry)} (no matches with regex of config.yml)", true) if options[:verbose]
+  				$logger.log("can't rename #{File.basename(entry)} (no matches with regex of Cfg.yml)", true) if options[:verbose]
   			end
   		end
 	end

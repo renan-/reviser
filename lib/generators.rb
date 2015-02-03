@@ -49,8 +49,8 @@ module Generators
 	# Generates an HTML file 
 	def html(ext = '.html')
 		out = "<!DOCTYPE html><html><head>"
-		out += "<link rel=\"stylesheet\" href=\"#{@cfg[:res_dir]}/css/component.css\" />"
-		out += "<link rel=\"stylesheet\" href=\"#{@cfg[:res_dir]}/css/normalize.css\" />"
+		out += "<link rel=\"stylesheet\" href=\"#{Cfg[:res_dir]}/css/component.css\" />"
+		out += "<link rel=\"stylesheet\" href=\"#{Cfg[:res_dir]}/css/normalize.css\" />"
 		out += '<script src="res/js/component.css"></script>'
 		out += '<title>Results</title>'
 		out += "</head>\n<body><table><thead>"
@@ -77,7 +77,7 @@ module Generators
 
 		out += '<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>'
 		out += '<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>'
-		out += "<script src=\"#{@cfg[:res_dir]}/js/jquery.stickyheader.js\"></script>"
+		out += "<script src=\"#{Cfg[:res_dir]}/js/jquery.stickyheader.js\"></script>"
 
 		out += "</body></html>"		
 
@@ -87,6 +87,6 @@ module Generators
 private
 
 	def out(ext)
-		@cfg[:out] + ext
+		Cfg[:out] + ext
 	end
 end
