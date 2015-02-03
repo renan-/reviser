@@ -1,14 +1,15 @@
-require_relative "../../lib/component"
-require_relative "../../lib/archiver"
-require_relative "../../lib/organiser"
-require_relative "../../lib/reviser"
-require "test/unit"
+require_relative '../../lib/component'
+require_relative '../../lib/archiver'
+require_relative '../../lib/organiser'
+require_relative '../../lib/reviser'
+require 'minitest/autorun'
+
 
 #
 # Test of organiser class
 # @author Yann Prono
 #
-class TestOrganiser < Test::Unit::TestCase
+class TestOrganiser < Minitest::Test
 
 	$rejected = ['.','..','__MACOSX']
 

@@ -1,14 +1,15 @@
-require_relative "../../lib/archiver"
-require_relative "../../lib/component"
-require_relative "../../lib/reviser"
-require "test/unit"
-require "fileutils"
+require_relative '../../lib/archiver'
+require_relative '../../lib/component'
+require_relative '../../lib/reviser'
+require 'minitest/autorun'
+require 'test/unit'
+require 'fileutils'
 
 #
 # Test the Archiver class
 # Author:: 	Yann Prono
 #
-class TestArchiver < Test::Unit::TestCase
+class TestArchiver < Minitest::Test
 
 
 	def setup
@@ -32,7 +33,7 @@ class TestArchiver < Test::Unit::TestCase
 
 	# File not found
 	def test_extract_no_file
-		assert_raise Errno::ENOENT do
+		assert_raises Errno::ENOENT do
 			Archiver.extract("coucou.zip", @dest)
 		end
 	end
@@ -52,7 +53,7 @@ class TestArchiver < Test::Unit::TestCase
 	# If the archive is a unknown format
 	# Should raise a exception
 	def test_extract_unknown_format
-		assert_raise NoMethodError do
+		assert_raises NoMethodError do
 			Archiver.extract('format.ar')
 		end
 	end
