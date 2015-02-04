@@ -1,35 +1,3 @@
----
-# Reviser config
-
-# The type of project (<sort>.yml must exists)
-sort: Labyrinthe
-
-# The source archive containing all projects
 src: projects.zip
 
-# The destination directory for these projects
 dest: projects
-
-# The result file to be generated
-out: results
-
-# The type of file (currently supported: csv, html, xls)
-out_format:
-- csv
-- html
-
-# Ressources directory
-# (needed for html format)
-res_dir: res
-
-# Default timeout
-# shall be overriden in sorts
-timeout: 7
-
-# Options of all components
-# For the moment, there is just verbose option (txt file)
-options: 
-  :verbose: false
-
-## Projects naming, useful to rename folders
-projects_names: !ruby/regexp '/^[a-zA-Z]+[ ]+[a-zA-Z]+/'

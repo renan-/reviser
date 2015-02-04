@@ -18,9 +18,8 @@ class Archiver < Component
 	$rejected = ['.','..']
 	
 	# Get archive to use and the path directory.
-	def initialize(data)
+	def initialize(data = nil)
 		super data
-
 		@src = Cfg[:src]
 		@destination = Cfg[:dest]
 	end
@@ -34,7 +33,7 @@ class Archiver < Component
 	def self.destination?(destination)
 		unless $rejected.include? File.basename destination
 			FileUtils.rm_rf(destination) if Dir.exists? destination
-			FileUtils.mkdir destination, :mode => 0700
+			FileUtils.mkdir_p destination, :mode => 0700
 		end
 	end
 	
@@ -44,7 +43,7 @@ class Archiver < Component
 	# @param destination [String] the destination directory.
 	#
 	def self.extract(file_name, destination = '.')
-		raise Errno::ENOENT unless File.exists?(file_name)
+		raise Errno::ENOENT unless File.exist? file_name
 		ext = File.extname(file_name)
 		ext = ext.delete '.'
 

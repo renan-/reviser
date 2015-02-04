@@ -9,9 +9,9 @@ class TestArchiver < Minitest::Test
 
 
 	def setup
-		Reviser::setup 'config.yml'
-		@archiver = Archiver.new(nil)
-		@file = @archiver.src
+		Cfg::load 'config.yml'
+		@archiver = Archiver.new
+		@file  =@archiver.src
 		@dest = @archiver.destination
 		@nb_projects = 18
 	end
@@ -44,6 +44,16 @@ class TestArchiver < Minitest::Test
 		after = Dir.entries('.').reject{|entry| entry == '.' || entry == '..'}
 		assert_equal((after - original).size, @nb_projects, "the extraction should extract all entries in the current directory")
 		FileUtils.rm(after-original)
+	end
+
+	# Test if the extraction could be in subfolders
+	def test_extract_subfolders
+		folders = 'projects/Students/'
+		
+		Archiver.extract(@file, folders)
+		entries = Dir.entries(folders).reject{|entry| entry == '.' || entry == '..'}		
+		assert_equal(entries.size, @nb_projects, "the extraction should extract all entries in subfodlers #{folders}")
+		FileUtils.rm_rf folders
 	end
 
 	# If the archive is a unknown format
