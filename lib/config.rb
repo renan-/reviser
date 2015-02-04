@@ -12,8 +12,9 @@ class Cfg
 		@@mem[key] unless !@@loaded
 	end
 
-	def self.~(key)
-		false unless @@mem.has_key? key
+	# @return true if there is the key in the config
+	def self.has(key)
+		@@mem.has_key? key
 	end
 
 	def self.load(cfg_file)
