@@ -59,7 +59,7 @@ module Extractors
       	unzipped = StringIO.new(z.read)
       	z.close
       	tar(unzipped, destination)
-    end
+	end
 
 	# Alias for format shortcut
 	## cc Dominique Colnet
@@ -69,7 +69,7 @@ module Extractors
 	# Method which untar a file
 	# tar format
 	#
-    def tar (src,destination)
+	def tar (src,destination)
     	# test if src is String (filename) or IO stream
     	if src.is_a? String
     		stream = File.open(src)
@@ -91,7 +91,7 @@ module Extractors
 	     		end
 	  		end
   		end
- 	end
+	end
 
  	#
  	# Uncompress rar format

@@ -22,9 +22,6 @@ class Organiser < Component
 
 	# Rename directories more clearly
 	def renameDirectories
-		# If the regex doesn't match
-		count = 0
-
 		# get all entries of projects folder
 		all(@directory).each do |entry|
 			#apply regex and take first match
