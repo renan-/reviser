@@ -21,6 +21,6 @@ protected
 	#
 	# @return all options for all components if they exist in config file.
 	def options
-		(Cfg.has :options) ? Cfg[:options] : { :verbose => false }
+		(Cfg =~ :options) ? Cfg[:options] : { :verbose => false }
 	end
 end

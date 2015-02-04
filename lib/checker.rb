@@ -75,7 +75,7 @@ private
 	# Typically needed for C with Makefile
 	# 
 	def missing_files
-		if not :required_files =~ Cfg
+		if not  Cfg =~ :required_files
 			return []
 		end
 

@@ -6,6 +6,11 @@
 #
 
 class Cfg
+
+	# Path for specialized config files for projects
+	@path_sort = File.join(File.dirname(File.dirname(__FILE__)),'sort')
+
+	# Is the config is loaded ?
 	@@loaded = false
 
 	def self.[](key)
@@ -17,13 +22,17 @@ class Cfg
 		@@mem.has_key? key
 	end
 
+	# Method class alias
+	self.singleton_class.send(:alias_method, :=~, :has)
+
 	def self.load(cfg_file)
 		@@loaded = true
 		@@mem = {}
 
 		populate YAML.load(File.read(cfg_file))
-		sort_cfg = YAML.load(File.read(File.join(File.dirname(File.dirname(__FILE__)),
-			'sort',"#{@@mem[:sort]}.yml")))
+
+		filename_sort = File.join(@path_sort,"#{@@mem[:sort]}.yml")
+		sort_cfg = YAML.load(File.read(filename_sort))
 
 		populate YAML.load(File.read(File.join(File.dirname(File.dirname(__FILE__)),
 			'lang',"#{sort_cfg['language']}.yml")))
