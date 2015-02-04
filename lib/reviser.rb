@@ -8,19 +8,26 @@
 # instantiate components himself, nor worry
 # about the data these components exchange.
 #
+require_relative 'config'
 require_relative 'logger'
 
 class Reviser
+	@@setup = false
 	@@loadedComponents = {}
 
 	#
 	# Adds an entry with the specified data.
 	# At this time, we assume the user has given us
-	# a config that makes sense.
+	# a Cfg that makes sense.
 	# TODO : check data
 	#
 	def self.load(data)
 		@@loadedComponents[data[:component]] = {inputFrom: data[:inputFrom], data: nil}
+	end
+
+	def self.setup(config_file)
+		@@setup = true
+		Cfg.load config_file
 	end
 
 	#
@@ -28,6 +35,8 @@ class Reviser
 	# The exection order is based on the loading order.
 	#
 	def self.run
+		raise ArgumentError unless @@setup
+
 		@@loadedComponents.each do |comp, conf|
 			puts "Reviser is now running #{Reviser.titleize comp}..."
 

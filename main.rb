@@ -1,7 +1,7 @@
 require_relative 'lib/component'
 require_relative 'lib/reviser'
 
-Component::setup 'config.yml'
+Reviser::setup 'config.yml'
 
 # !!! Reviser's run method relies
 # on Ruby 1.9+ implementation of

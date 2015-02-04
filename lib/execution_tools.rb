@@ -13,29 +13,29 @@ require 'timeout'
 module ExecutionTools
 	#
 	# Determines how to execute the program
-	# thanks to config, then returns its exec
+	# thanks to Cfg, then returns its exec
 	# status(es)
 	#
 	def execute
 		outputs = []
-		if @cfg.has_key? :execution_value
-			if @cfg[:execution_value].respond_to? 'each'
-				@cfg[:execution_value].each do |v|
+		if :execution_value =~ Cfg
+			if Cfg[:execution_value].respond_to? 'each'
+				Cfg[:execution_value].each do |v|
 					outputs << exec(v)
 				end
 			else
-				if @cfg.has_key? :execution_count
-					outputs[@cfg[:execution_value]] = []
-					@cfg[:execution_count].times do
-						outputs << exec(@cfg[:execution_value])
+				if :execution_count =~ Cfg
+					outputs[Cfg[:execution_value]] = []
+					Cfg[:execution_count].times do
+						outputs << exec(Cfg[:execution_value])
 					end
 				else
-					outputs << exec(@cfg[:execution_value])
+					outputs << exec(Cfg[:execution_value])
 				end
 			end
 		else
-				if @cfg.has_key? :execution_count
-					@cfg[:execution_count].times do
+				if :execution_count =~ Cfg
+					Cfg[:execution_count].times do
 						outputs << exec
 					end
 				else
@@ -52,7 +52,7 @@ private
 	# The method that actually
 	# executes the program.
 	# If no program name is specified
-	# in the config, it executes the
+	# in the Cfg, it executes the
 	# first executable found.
 	# It helps with C (a.out) when no 
 	# Makefile is avalaible, but it
@@ -60,14 +60,14 @@ private
 	# security
 	#
 	def exec(param = nil)
-		program = (@cfg.has_key? :program_name) ? @cfg[:program_name] : find_executable
+		program = (:program_name =~ Cfg) ? Cfg[:program_name] : find_executable
 
 		return 'Program not found' unless program != nil
 
-		program = "#{@cfg[:program_prefix]}#{program}"
+		program = "#{Cfg[:program_prefix]}#{program}"
 		argument = (param == nil) ? '' : param
 
-		cmd = "#{(@cfg.has_key? :execute_command) ? @cfg[:execute_command] : ''} #{program} #{argument}"
+		cmd = "#{(:execute_command =~ Cfg) ? Cfg[:execute_command] : ''} #{program} #{argument}"
 		out = exec_with_timeout cmd
 		
 		"$ #{cmd}\r#{out[:stdout]}\r#{out[:stderr]}"

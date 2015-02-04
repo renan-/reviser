@@ -4,7 +4,7 @@
 # The Checker is a component that wraps
 # all required tools to do the analysis.
 # It adapts itself dynamically
-# to the language config.
+# to the language Cfg.
 #
 #
 require 'open3'
@@ -23,14 +23,14 @@ class Checker < Component
 
 		@results = {}
 
-		if @cfg[:compiled]
+		if Cfg[:compiled]
 			extend CompilationTools
 		end
 	end
 
 	def run
 		# We'll work in the dest directory
-		Dir.chdir @cfg[:dest] do
+		Dir.chdir Cfg[:dest] do
 			# The data we got from Organiser is a tab
 			# which contains all the project folders.
 			@data.each_with_index { |proj, i| 
@@ -50,14 +50,14 @@ private
 	# their analysis value
 	#
 	def check(proj)
-		compile_key = (@cfg[:compiled] && :resultats_compilation || :fichiers_manquants)
+		compile_key = (Cfg[:compiled] && :resultats_compilation || :fichiers_manquants)
 		@results[proj] =
 		{
 			:fichiers => files.join("\r"),
 			:fichiers_sources => src_files.join("\r"),
 			:nombre_total_de_lignes_de_code => lines_count,
 			:nombre_de_lignes_de_commentaires => comments_count,
-			compile_key => @cfg[:compiled] && compile || prepare,
+			compile_key => Cfg[:compiled] && compile || prepare,
 			:resultats_execution => execute
 		}
 	end
@@ -75,7 +75,7 @@ private
 	# Typically needed for C with Makefile
 	# 
 	def missing_files
-		if !@cfg.has_key? :required_files
+		if not :required_files =~ Cfg
 			return []
 		end
 
@@ -87,13 +87,13 @@ private
 		# matches, we delete the entry
 		# for diff to work properly
 		#
-		@cfg[:required_files].each_with_index do |e, i|
+		Cfg[:required_files].each_with_index do |e, i|
 			if dir.any? { |f| (e.respond_to?(:match)) && (e =~ f) }
-				@cfg[:required_files].delete_at i
+				Cfg[:required_files].delete_at i
 			end
 		end
 
-		@cfg[:required_files] - dir
+		Cfg[:required_files] - dir
 	end
 
 	#
@@ -102,7 +102,7 @@ private
 	# time > timeout
 	# @returns stdout, stderr & process_status
 	#
-	def exec_with_timeout(cmd, timeout = @cfg[:timeout])
+	def exec_with_timeout(cmd, timeout = Cfg[:timeout])
 		stdin, stdout, stderr, wait_thr = Open3.popen3(cmd)
 		process_status = -1
 

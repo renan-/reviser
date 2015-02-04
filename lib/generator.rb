@@ -11,10 +11,10 @@ class Generator < Component
 
 	def run
 		begin
-			if @cfg[:out_format].respond_to? 'each'
-				@cfg[:out_format].each { |f| send f.to_sym }
+			if Cfg[:out_format].respond_to? 'each'
+				Cfg[:out_format].each { |f| send f.to_sym }
 			else
-				send @cfg[:out_format].to_sym
+				send Cfg[:out_format].to_sym
 			end
 		rescue
 			'Wrong format'
@@ -38,6 +38,6 @@ class Generator < Component
 	
 end
 
-#Component::setup '../config.yml'
+#Component::setup '../Cfg.yml'
 #g = Generator.new nil
 #Dir.chdir('../') {g.html}

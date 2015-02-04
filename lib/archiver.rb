@@ -21,8 +21,8 @@ class Archiver < Component
 	def initialize(data)
 		super data
 
-		@src = @cfg[:src]
-		@destination = @cfg[:dest]
+		@src = Cfg[:src]
+		@destination = Cfg[:dest]
 	end
 
 	#
