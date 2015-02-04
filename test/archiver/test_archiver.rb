@@ -9,7 +9,7 @@ class TestArchiver < Minitest::Test
 
 
 	def setup
-		Component::setup 'config.yml'
+		Reviser::setup 'config.yml'
 		@archiver = Archiver.new(nil)
 		@file = @archiver.src
 		@dest = @archiver.destination

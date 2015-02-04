@@ -9,7 +9,7 @@ class TestOrganiser < Minitest::Test
 	$rejected = ['.','..','__MACOSX']
 
 	def setup
-		Component::setup 'config.yml'
+		Reviser::setup 'config.yml'
 
 		@archiver = Archiver.new(nil)
 		@dest = @archiver.destination
