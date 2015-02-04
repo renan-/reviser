@@ -77,7 +77,7 @@ module Generators
 
 		out += '<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>'
 		out += '<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>'
-		out += "<script src=\"#{Cfg[:res_dir]}/js/jquery.stickyheader.js\"></script>"
+		#out += "<script src=\"#{Cfg[:res_dir]}/js/jquery.stickyheader.js\"></script>"
 
 		out += "</body></html>"		
 
