@@ -8,20 +8,17 @@ class Criteria
 
 	# All criterias available.
 	@@criterias = {}
-	
-	# Are Criterias loaded ?
-	@@loaded = false
 
 	# Load all of modules available for the analysis
-	def self.load
-		modules =  Dir['*tool*']
+	def self.load		
+		modules =  Dir[File.join(File.dirname(__FILE__),'*tool*')]
+				
 		modules.each do |m|
 			require_relative m
 			name_module = camelize m
 			methods = Module.const_get(name_module).instance_methods
 			methods.each { |method| populate(method.to_sym, name_module) }
  		end
- 		@@loaded = true
  	end
 
 	# Gets the name of module 
@@ -33,7 +30,17 @@ class Criteria
 	# Gets all criterias which can be used.
 	# @return [Array] all criterias
 	def self.all
-		@@criterias.keys
+		@@criterias.keys.map &:to_sym
+	end
+
+	# Prepare all criterias provided by the user in the config file.
+	# @param [Array] config Contains all criterias the user wants
+	def self.prepare(config)
+		# Get all criterias to delete
+		toDelete = config.empty? ? {} : all - (config.map &:to_sym)
+
+		# Delete now !
+		toDelete.each {|criteria| @@criterias.delete(criteria.to_sym)}
 	end
 
 
@@ -47,5 +54,3 @@ private
 	end
 
 end
-
-Criteria.load

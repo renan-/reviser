@@ -35,6 +35,9 @@ out_format:
 res_dir: res
 
 
+############	Criterias	 		############
+criterias:
+
 ############	Reviser config 		############
 
 # The type of project (<sort>.yml must exists)
