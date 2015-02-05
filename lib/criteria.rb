@@ -1,11 +1,16 @@
 
 # Manages criterias.
-#
+# Convention over configuration
+# A criteria is stored in a module.
+# The filename's module contains 'tool' word.
 # @author Yann Prono
 class Criteria
 
 	# All criterias available.
 	@@criterias = {}
+	
+	# Are Criterias loaded ?
+	@@loaded = false
 
 	# Load all of modules available for the analysis
 	def self.load
@@ -16,6 +21,7 @@ class Criteria
 			methods = Module.const_get(name_module).instance_methods
 			methods.each { |method| populate(method.to_sym, name_module) }
  		end
+ 		@@loaded = true
  	end
 
 	# Gets the name of module 
@@ -23,6 +29,13 @@ class Criteria
 	def self.camelize(file_module) 
 		File.basename(file_module).delete('.rb').split('_').each {|s| s.capitalize! }.join('')
 	end
+
+	# Gets all criterias which can be used.
+	# @return [Array] all criterias
+	def self.all
+		@@criterias.keys
+	end
+
 
 private 
 
