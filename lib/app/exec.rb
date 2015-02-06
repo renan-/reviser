@@ -25,12 +25,21 @@ module Exec
 	# Create a environnment for checking projects
 	# This method only copies the config file into the current directory.
 	def init
-		message = "#{File.basename $template_path}\n\n"
 		exist = File.exist?(File.join(FileUtils.pwd,'config.yml'))
 		FileUtils.rm 'config.yml' if exist
 		FileUtils.cp($template_path,FileUtils.pwd) unless exist
-		puts (exist ? "\n\tRecreate\t"+message : "\n\tCreate\t"+message)
+		message(exist ? "Recreate" : "Create","#{File.basename $template_path}\n")
 	end
+
+	# Clean the directory of logs, projects and results.
+	def clean
+		Cfg.load 'config.yml'
+
+		FileUtils.rm_rf(Cfg[:dest], :verbose => true)
+		FileUtils.rm_rf('logs', :verbose => true)
+		Cfg[:out_format].each {|format| FileUtils.rm_rf(Dir["*#{format}"], :verbose => true) unless Dir["*#{format}"].empty?}
+	end
+
 
 	# Let do it for analysis.
 	# @param current_dir [String] the directory where the programm has to be launched.
@@ -62,5 +71,10 @@ module Exec
 		ls = Exec.instance_methods(true) - [:method_missing, :exec]
 		ls.each { |action| puts "\t#{action}" }
   	end
+
+  	# A Formatter message for command line
+  	def message(keyword, desc)
+  		puts "\t#{keyword}\t#{desc}"
+	end
 
 end
