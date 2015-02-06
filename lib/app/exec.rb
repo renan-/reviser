@@ -1,6 +1,9 @@
 require 'fileutils'
 
 # Module used for managing all actions in command line
+# This module enables to user the programm in command line.
+#
+# @author Yann Prono
 module Exec
 
 	# path of config template file.
@@ -11,8 +14,10 @@ module Exec
 		puts 'Hello, this is my app'
 	end
 
-	# Get the action of user and execute the good action
+	# Get parameters of user and execute the good action
 	# TODO
+	# - multiple parameters
+	# - Others actions
 	def exec(*argv)
 		self.send(argv[0].first) unless argv[0].empty?
 	end
@@ -22,11 +27,13 @@ module Exec
 	def init
 		message = "#{File.basename $template_path}\n\n"
 		exist = File.exist?(File.join(FileUtils.pwd,'config.yml'))
-
+		FileUtils.rm 'config.yml' if exist
 		FileUtils.cp($template_path,FileUtils.pwd) unless exist
 		puts (exist ? "\n\tRecreate\t"+message : "\n\tCreate\t"+message)
 	end
 
+	# Let do it for analysis.
+	# @param current_dir [String] the directory where the programm has to be launched.
 	def run(current_dir = '.')
 		config_file = File.expand_path('config.yml')
 
@@ -46,7 +53,8 @@ module Exec
 	end
 
 
-	# In case of the action is unknown
+	# In case of the action is unknown,
+	# print help.
 	def method_missing(m, *args, &block)  
 		puts "Usage:\n\tapp <action> <paramaters>*"
 		puts "\nParamaters could be optionnal."
