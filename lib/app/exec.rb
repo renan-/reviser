@@ -19,16 +19,18 @@ module Exec
 	# - multiple parameters
 	# - Others actions
 	def exec(*argv)
-		self.send(argv[0].first) unless argv[0].empty?
+		#params = argv[0][1..argv[0].size]
+		self.send(argv[0].first) unless argv[0].empty? 
 	end
 
 	# Create a environnment for checking projects
 	# This method only copies the config file into the current directory.
 	def init
-		exist = File.exist?(File.join(FileUtils.pwd,'config.yml'))
-		FileUtils.rm 'config.yml' if exist
+		file_config = File.join(FileUtils.pwd,'config.yml')
+		exist = File.exist? file_config
+		FileUtils.rm file_config if exist
 		FileUtils.cp($template_path,FileUtils.pwd) unless exist
-		message(exist ? "Recreate" : "Create","#{File.basename $template_path}\n")
+		message(exist ? "Recreate" : "Create","#{File.basename($template_path)}\n")
 	end
 
 	# Clean the directory of logs, projects and results.
@@ -48,11 +50,6 @@ module Exec
 
 		Reviser::setup config_file
 
-		# !!! Reviser's run method relies
-		# on Ruby 1.9+ implementation of
-		# iteration over hashes, which
-		# ensures that the hash is iterated
-		# accordingly to the insertion order
 		Reviser::load :component => 'archiver'
 		Reviser::load :component => 'organiser'
 		Reviser::load :component => 'checker', :inputFrom => 'organiser'
