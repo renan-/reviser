@@ -1,4 +1,7 @@
-require 'fileutils'
+
+module MyLogger
+
+	require 'fileutils'
 
 #
 # Logger is a generator whichs logs
@@ -10,11 +13,10 @@ class Logger
 	@@out_dir = 'logs'
 
 	# Create and open the file
-	# @param file_log [String] The file name of the file log
-	def initialize(file_log)
-		puts 'coucou' "file_log.class"
-		#FileUtils.mkdir @@out_dir unless Dir.exist? @@out_dir
-		#@fopen = File.open("#{File.join(@@out_dir, file_log)}+.txt", "w")
+	# @param filename [String] The file name of the file log
+	def initialize(filename)
+		FileUtils.mkdir @@out_dir unless Dir.exist? @@out_dir
+		@fopen = File.open("#{File.join(@@out_dir, filename)}.txt", "w")
 	end
 
 	def header(msg)
@@ -48,4 +50,5 @@ class Logger
 	def close
 		@fopen.close
 	end
+end
 end
