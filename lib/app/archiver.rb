@@ -22,7 +22,6 @@ class Archiver < Component
 		super data
 		@src = Cfg[:src]
 		@destination = Cfg[:dest]
-		init_logger if options[:verbose]
 	end
 
 	#

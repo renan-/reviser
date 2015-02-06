@@ -17,6 +17,7 @@ class Component
 	#
 	def initialize(data)
 		@data = data
+		init_logger if options[:verbose]
 	end
 
 protected
@@ -27,7 +28,7 @@ protected
 	end
 
 	def init_logger(name = self.class.name)
-		$logger = Logger.new('coucou')
+		$logger = MyLogger::Logger.new(name)
 		$logger.title "#{name}"
 	end
 end
