@@ -12,8 +12,9 @@ class Logger
 	# Create and open the file
 	# @param file_log [String] The file name of the file log
 	def initialize(file_log)
-		FileUtils.mkdir @@out_dir unless Dir.exist? @@out_dir
-		@fopen = File.open("#{File.join(@@out_dir, file_log)}", "w")
+		puts 'coucou' "file_log.class"
+		#FileUtils.mkdir @@out_dir unless Dir.exist? @@out_dir
+		#@fopen = File.open("#{File.join(@@out_dir, file_log)}+.txt", "w")
 	end
 
 	def header(msg)

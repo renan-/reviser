@@ -2,8 +2,10 @@
 # Author:: Renan Strauss
 #
 require 'yaml'
+require_relative 'logger'
 
 class Component
+	
 	# Each component has a logger (currently a txt file)
 	$logger
 
@@ -22,5 +24,10 @@ protected
 	# @return all options for all components if they exist in config file.
 	def options
 		(Cfg =~ :options) ? Cfg[:options] : { :verbose => false }
+	end
+
+	def init_logger(name = self.class.name)
+		$logger = Logger.new('coucou')
+		$logger.title "#{name}"
 	end
 end

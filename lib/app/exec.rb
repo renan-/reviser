@@ -14,17 +14,35 @@ module Exec
 	# Get the action of user and execute the good action
 	# TODO
 	def exec(*argv)
-		unless argv[0].empty?
-			self.send(argv[0].first)
-		end
+		self.send(argv[0].first) unless argv[0].empty?
 	end
 
 	# Create a environnment for checking projects
 	# This method only copies the config file into the current directory.
 	def init
-		pwd = FileUtils.pwd		
-		FileUtils.cp($template_path,pwd)
-		print "\n\tCreate\t#{File.basename $template_path}\n\n"
+		message = "#{File.basename $template_path}\n\n"
+		exist = File.exist?(File.join(FileUtils.pwd,'config.yml'))
+
+		FileUtils.cp($template_path,FileUtils.pwd) unless exist
+		puts (exist ? "\n\tRecreate\t"+message : "\n\tCreate\t"+message)
+	end
+
+	def run(current_dir = '.')
+		config_file = File.expand_path('config.yml')
+
+		Reviser::setup config_file
+
+		# !!! Reviser's run method relies
+		# on Ruby 1.9+ implementation of
+		# iteration over hashes, which
+		# ensures that the hash is iterated
+		# accordingly to the insertion order
+		Reviser::load :component => 'archiver'
+		Reviser::load :component => 'organiser'
+		Reviser::load :component => 'checker', :inputFrom => 'organiser'
+		Reviser::load :component => 'generator', :inputFrom => 'checker'
+
+		Reviser::run
 	end
 
 
