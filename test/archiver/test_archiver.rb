@@ -9,7 +9,7 @@ class TestArchiver < Minitest::Test
 
 
 	def setup
-		Cfg::load 'config.yml'
+		Cfg::load "#{File.join(File.dirname(__FILE__),'config.yml')}"
 		@archiver = Archiver.new
 		@file  =@archiver.src
 		@dest = @archiver.destination

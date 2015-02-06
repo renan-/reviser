@@ -9,13 +9,12 @@ class TestOrganiser < Minitest::Test
 	$rejected = ['.','..','__MACOSX']
 
 	def setup
-		Reviser::setup 'config.yml'
-
-		@archiver = Archiver.new(nil)
+		Cfg::load "#{File.join(File.dirname(__FILE__),'config.yml')}"
+		@archiver = Archiver.new
 		@dest = @archiver.destination
 		FileUtils.rm_rf(@dest)
 		@archiver.run
-		@organiser = Organiser.new(nil)
+		@organiser = Organiser.new
 	end
 
 	# Check if projects are not deleted
