@@ -38,11 +38,12 @@ class Exec < Thor
 	# Clean the directory of logs, projects and results.
 	desc 'clean', 'Delete datas creating by the App (logs, projects, results files ...).'
 	def clean
-		Cfg.load 'config.yml'
-
-		FileUtils.rm_rf(Cfg[:dest], :verbose => true)
-		FileUtils.rm_rf('logs', :verbose => true)
-		Cfg[:out_format].each {|format| FileUtils.rm_rf(Dir["*#{format}"], :verbose => true) unless Dir["*#{format}"].empty?}
+		if(File.exist? 'config.yml')
+			Cfg.load 'config.yml'
+			FileUtils.rm_rf(Cfg[:dest], :verbose => true)
+			FileUtils.rm_rf('logs', :verbose => true)
+			Cfg[:out_format].each {|format| FileUtils.rm_rf(Dir["*#{format}"], :verbose => true) unless Dir["*#{format}"].empty?}
+		end
 	end
 
 
@@ -50,9 +51,7 @@ class Exec < Thor
 	# @param current_dir [String] the directory where the programm has to be launched.
 	desc 'work', 'Run components to analysis computing projects.'
 	def work
-		config_file = File.expand_path('config.yml')
-
-		Reviser::setup config_file
+		setup_reviser
 
 		# TODO Maybe not the good place to put this code
 		path_res = File.join(File.dirname(File.dirname(File.dirname(__FILE__))),"#{Cfg[:res_dir]}")
@@ -66,12 +65,43 @@ class Exec < Thor
 		Reviser::run
 	end
 
+	# Launch archiver !
+	desc 'extract', 'Launch archiver and extract all projects.'
+	def extract
+		setup_reviser
+		Reviser::load :component => 'archiver'
+		Reviser::run
+	end
+
+	# Launch organiser !
+	desc 'organise', 'Launch organiser and prepare all projects for analysis'
+	def organise
+		setup_reviser
+		Reviser::load :component => 'organiser'
+		Reviser::run
+	end
+
+	# Launch checker and generator as well !
+	desc 'check', 'Launch checker for analysis and generate results.'
+	def check
+		setup_reviser
+		Reviser::load :component => 'checker'
+		Reviser::load :component => 'generator', :inputFrom => 'checker'
+		Reviser::run
+	end
+
 
 	no_tasks do
   		# A Formatter message for command line
   		def message(keyword, desc)
   			puts "\t#{keyword}\t\t#{desc}"
 		end
+
+		def setup_reviser
+			config_file = File.expand_path('config.yml')
+			Reviser::setup config_file
+		end
+
 	end
 
 end
