@@ -85,7 +85,8 @@ class Archiver < Component
   				$logger.log("Can't extract #{entry}: #{e.message}", true) if options[:verbose]
   			end
   		end
-  		$logger.footer("[#{extracted}/#{entries.size}] projects are been uncompressed", true) if options[:verbose]
+  		$logger.footer("[#{extracted}/#{entries.size}] projects are been uncompressed") if options[:verbose]
+  		$logger.close
 	end
 
 end

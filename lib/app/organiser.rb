@@ -86,6 +86,7 @@ class Organiser < Component
 
 		$logger.subtitle "Structure projects" if options[:verbose]
 		structure 
+		$logger.close
 	end
 
 private
