@@ -54,6 +54,10 @@ class Exec < Thor
 
 		Reviser::setup config_file
 
+		# TODO Maybe not the good place to put this code
+		path_res = File.join(File.dirname(File.dirname(File.dirname(__FILE__))),"#{Cfg[:res_dir]}")
+		FileUtils.cp_r(path_res,FileUtils.pwd)
+
 		Reviser::load :component => 'archiver'
 		Reviser::load :component => 'organiser'
 		Reviser::load :component => 'checker', :inputFrom => 'organiser'
