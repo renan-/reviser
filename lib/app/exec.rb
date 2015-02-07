@@ -1,39 +1,38 @@
+require 'thor'
 require 'fileutils'
 
 # Module used for managing all actions in command line
 # This module enables to user the programm in command line.
+# It use the powerful toolkit Thor for building  command line interfaces
 #
 # @author Yann Prono
-module Exec
+class Exec < Thor
 
 	# path of config template file.
 	$template_path = File.join(File.dirname(File.dirname(File.dirname(__FILE__))),'config.yml')
 
+
 	# Say hello to the user !
+	desc 'hello','Say hello to the user !'
 	def hello
 		puts 'Hello, this is my app'
 	end
 
-	# Get parameters of user and execute the good action
-	# TODO
-	# - multiple parameters
-	# - Others actions
-	def exec(*argv)
-		#params = argv[0][1..argv[0].size]
-		self.send(argv[0].first) unless argv[0].empty? 
-	end
 
 	# Create a environnment for checking projects
 	# This method only copies the config file into the current directory.
-	def init
-		file_config = File.join(FileUtils.pwd,'config.yml')
-		exist = File.exist? file_config
-		FileUtils.rm file_config if exist
-		FileUtils.cp($template_path,FileUtils.pwd) unless exist
-		message(exist ? "Recreate" : "Create","#{File.basename($template_path)}\n")
+	desc 'init DIRECTORY', 'Create a new App project. By default,DIRECTORY is the current.'
+	def init(dir = '.')
+		pwd = FileUtils.pwd
+		msg = File.exist?(File.join(pwd,dir,File.basename($template_path))) ? 'Recreate' : 'Create'
+		FileUtils.mkdir_p dir unless Dir.exist?(File.join(pwd,dir))
+		FileUtils.cp($template_path, dir)
+		message(msg, File.basename($template_path))
 	end
 
+
 	# Clean the directory of logs, projects and results.
+	desc 'clean', 'Delete datas creating by the App (logs, projects, results files ...)'
 	def clean
 		Cfg.load 'config.yml'
 
@@ -45,7 +44,8 @@ module Exec
 
 	# Let do it for analysis.
 	# @param current_dir [String] the directory where the programm has to be launched.
-	def run(current_dir = '.')
+	desc 'work', 'Run components to analysis computing projects'
+	def work(current_dir = '.')
 		config_file = File.expand_path('config.yml')
 
 		Reviser::setup config_file
@@ -59,19 +59,13 @@ module Exec
 	end
 
 
-	# In case of the action is unknown,
-	# print help.
-	def method_missing(m, *args, &block)  
-		puts "Usage:\n\tapp <action> <paramaters>*"
-		puts "\nParamaters could be optionnal."
-		puts "\nActions :"
-		ls = Exec.instance_methods(true) - [:method_missing, :exec]
-		ls.each { |action| puts "\t#{action}" }
-  	end
-
-  	# A Formatter message for command line
-  	def message(keyword, desc)
-  		puts "\t#{keyword}\t#{desc}"
+	no_tasks do
+  		# A Formatter message for command line
+  		def message(keyword, desc)
+  			puts "\t#{keyword}\t\t#{desc}"
+		end
 	end
 
 end
+
+Exec.start(ARGV)

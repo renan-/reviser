@@ -1,6 +1,6 @@
 require_relative 'app/exec'
 
-%w(checker reviser config).each do |lib|
+%w(checker reviser config exec).each do |lib|
 	require_relative "app/#{lib}"
 end
 
@@ -11,6 +11,5 @@ end
 # @author Yann Prono
 class App
 
-	# Include the module for command line
-	include Exec
+	
 end
