@@ -27,7 +27,7 @@ class Organiser < Component
 			#apply regex and take first match
 			name = entry.scan(Cfg[:projects_names]).first
 			entry = File.join(@directory, entry)
-			if(name != nil)
+			if name != nil
 				name = File.join(@directory, name)
   				FileUtils.mv(entry, name)
   				$logger.log("rename #{File.basename(entry)} to #{File.basename(name)}") if options[:verbose]
@@ -66,7 +66,7 @@ class Organiser < Component
 			end
 
 			# If the core of project is not at the root of directory ...
-			if(level >= 1)
+			if level >= 1
 				Dir.glob(File.join(path,'*')).each do |file|
 					FileUtils.mv(file,File.join(@directory, entry))
 				end

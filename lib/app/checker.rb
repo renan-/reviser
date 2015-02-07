@@ -75,9 +75,9 @@ private
 	# Typically needed for C with Makefile
 	# 
 	def missing_files
-		if not  Cfg =~ :required_files
-			return []
-		end
+		unless Cfg =~ :required_files
+      return []
+    end
 
 		dir = Dir['*']
 

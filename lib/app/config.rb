@@ -14,7 +14,7 @@ class Cfg
 	@@loaded = false
 
 	def self.[](key)
-		@@mem[key] unless !@@loaded
+    @@mem[key] if @@loaded
 	end
 
 	# @return true if there is the key in the config

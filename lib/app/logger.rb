@@ -14,28 +14,28 @@ class Logger
 
 	# Create and open the file
 	# @param filename [String] The file name of the file log
-	def initialize(filename)
+	def initialize filename
 		FileUtils.mkdir @@out_dir unless Dir.exist? @@out_dir
 		@fopen = File.open("#{File.join(@@out_dir, filename)}.txt", "w")
 	end
 
-	def header(msg)
+	def header msg
 		@fopen.print("\t*** ",msg," ***\n\n")
 	end
 
-	def footer(msg, close = false)
+	def footer msg
 		@fopen.print("\n\t*** ",msg," ***\n\n")
 	end
 
 	# Puts a title into the log file
 	# @param title [String] the title.
-	def title(title)
+	def title title
 		@fopen.print("\t\t","=" * (title.length+2),"\n")
 		@fopen.print("\t\t"," #{title}","\n")
 		@fopen.print("\t\t","=" * (title.length+2),"\n")
 	end
 
-	def subtitle(title)
+	def subtitle title
 		@fopen.print("\n\n\t","** #{title} **","\n\n")
 	end
 

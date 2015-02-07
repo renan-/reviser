@@ -1,6 +1,10 @@
 require 'thor'
 require 'fileutils'
 
+%w(config checker reviser exec).each do |lib|
+	require_relative "#{lib}"
+end
+
 # Module used for managing all actions in command line
 # This module enables to user the programm in command line.
 # It use the powerful toolkit Thor for building  command line interfaces
@@ -32,7 +36,7 @@ class Exec < Thor
 
 
 	# Clean the directory of logs, projects and results.
-	desc 'clean', 'Delete datas creating by the App (logs, projects, results files ...)'
+	desc 'clean', 'Delete datas creating by the App (logs, projects, results files ...).'
 	def clean
 		Cfg.load 'config.yml'
 
@@ -44,8 +48,8 @@ class Exec < Thor
 
 	# Let do it for analysis.
 	# @param current_dir [String] the directory where the programm has to be launched.
-	desc 'work', 'Run components to analysis computing projects'
-	def work(current_dir = '.')
+	desc 'work', 'Run components to analysis computing projects.'
+	def work
 		config_file = File.expand_path('config.yml')
 
 		Reviser::setup config_file
