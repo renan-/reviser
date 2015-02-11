@@ -17,8 +17,10 @@ Le but est d'instaurer les bases essentielles du projet
 ##Deuxième itération (en cours)
 
 Ajouter de nouvelles fonctionnalités
-* Construction du programme (compililation/interprétation, éxécution)
+* Construction du programme (compilation/interprétation, éxécution)
+* Génération de nouvelles formes de résultats (HTML, XLS)
 * Architecture pour l'analyse.
+* Creation d'une interface en ligne de commande (nommé app provisoirement).
 
 Le but est aussi de finir la phase d'archivage et d'organiser.
 
