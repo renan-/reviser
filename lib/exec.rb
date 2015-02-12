@@ -41,9 +41,12 @@ class Exec < Thor
 		if(File.exist? 'config.yml')
 			Cfg.load 'config.yml'
 			FileUtils.rm_rf(Cfg[:dest], :verbose => true)
-			FileUtils.rm_rf('logs', :verbose => true)
-			#!!! Why not *.#{format} ! and why not rm_f instead of rm_rf (output is never a directory)
-			Cfg[:out_format].each {|format| FileUtils.rm_rf(Dir["*#{format}"], :verbose => true) unless Dir["*#{format}"].empty?}
+			if Cfg.has_key?(:options) && Cfg[:options].has_key?(:log_dir)
+				FileUtils.rm_rf(Cfg[:options][:log_dir], :verbose => true)
+			else
+				FileUtils.rm_f(Dir['*.txt'], :verbose => true)
+			end
+			Cfg[:out_format].each { |format| FileUtils.rm_f(Dir["*.#{format}"], :verbose => true) }
 		end
 	end
 

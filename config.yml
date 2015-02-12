@@ -52,3 +52,4 @@ timeout: 5
 # For the moment, there is just verbose option (for logger)
 options: 
   :verbose: true
+  :log_dir: logs

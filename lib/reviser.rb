@@ -36,6 +36,10 @@ class Reviser
 	def self.run
 		raise ArgumentError unless @@setup
 
+		if Cfg.has_key?(:options) && Cfg[:options].has_key?(:log_dir)
+			FileUtils.mkdir Cfg[:options][:log_dir] unless Dir.exist? Cfg[:options][:log_dir]
+		end
+
 		@@loadedComponents.each do |comp, conf|
 			puts "Reviser is now running #{Reviser.titleize comp}..."
 

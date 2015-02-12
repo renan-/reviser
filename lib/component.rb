@@ -17,10 +17,12 @@ class Component
 	#
 	def initialize(data)
 		@data = data
+
+		log_file = File.join(options.has_key?(:log_dir) && options[:log_dir] || '.', "#{self.class.name}.txt")
 		# For now, we output to stderr if verbose option is not set
 		# In the future, it would be a good idea to always have logs,
 		# but to let the user change the level
-		@logger = Logger.new(options[:verbose] && "#{self.class.name}.txt" || STDERR)
+		@logger = Logger.new(options[:verbose] && log_file || STDERR)
 		@logger.level = Logger::DEBUG
 	end 
 
