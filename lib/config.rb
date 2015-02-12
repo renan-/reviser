@@ -4,11 +4,12 @@
 # so that we don't always use
 # "@cfg[:Cfg_field_with_a_very_long_name]"
 #
+require 'yaml'
 
 class Cfg
 
 	# Path for specialized config files for projects
-	@root = File.join(File.dirname(File.dirname(File.dirname(__FILE__))))
+	@root = File.join(File.dirname(File.dirname(__FILE__)))
 
 	# Is the config is loaded ?
 	@@loaded = false

@@ -13,7 +13,7 @@ end
 class Exec < Thor
 
 	# path of config template file.
-	$template_path = File.join(File.dirname(File.dirname(File.dirname(__FILE__))),'config.yml')
+	$template_path = File.join(File.dirname(File.dirname(__FILE__)),'config.yml')
 
 
 	# Say hello to the user !
@@ -42,6 +42,7 @@ class Exec < Thor
 			Cfg.load 'config.yml'
 			FileUtils.rm_rf(Cfg[:dest], :verbose => true)
 			FileUtils.rm_rf('logs', :verbose => true)
+			#!!! Why not *.#{format} ! and why not rm_f instead of rm_rf (output is never a directory)
 			Cfg[:out_format].each {|format| FileUtils.rm_rf(Dir["*#{format}"], :verbose => true) unless Dir["*#{format}"].empty?}
 		end
 	end
@@ -54,7 +55,7 @@ class Exec < Thor
 		setup_reviser
 
 		# TODO Maybe not the good place to put this code
-		path_res = File.join(File.dirname(File.dirname(File.dirname(__FILE__))),"#{Cfg[:res_dir]}")
+		path_res = File.join(File.dirname(File.dirname(__FILE__)),"#{Cfg[:res_dir]}")
 		FileUtils.cp_r(path_res,FileUtils.pwd)
 
 		Reviser::load :component => 'archiver'

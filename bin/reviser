@@ -1,4 +1,4 @@
 #!/usr/bin/env ruby
 
 # Command line interface
-require_relative '../lib/app/exec'
+require_relative '../lib/exec'

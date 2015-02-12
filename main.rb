@@ -1,5 +1,4 @@
-require_relative 'lib/app/component'
-require_relative 'lib/app/reviser'
+require_relative 'lib/reviser'
 
 Reviser::setup 'config.yml'
 
