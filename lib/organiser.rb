@@ -86,8 +86,6 @@ class Organiser < Component
 
 		@logger.info { "Structure projects" }
 		structure
-
-		@logger.close
 	end
 
 private

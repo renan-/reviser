@@ -42,7 +42,7 @@ class Reviser
 			require_relative "#{comp}"
 			c = eval("#{Reviser.titleize comp}").new ((conf[:inputFrom] != nil) && @@loadedComponents[conf[:inputFrom]][:data]) || nil
 
-			@@loadedComponents[comp][:data] = c.run
+			@@loadedComponents[comp][:data] = c.work
 			
 			puts "Done"
 		end

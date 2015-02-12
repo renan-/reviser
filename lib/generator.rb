@@ -16,8 +16,8 @@ class Generator < Component
 			else
 				send Cfg[:out_format].to_sym
 			end
-		rescue
-			'Wrong format'
+		rescue Object => e
+			@logger.fatal { "Wrong format : #{e.to_s}" }
 		end
 	end
 
@@ -34,10 +34,5 @@ class Generator < Component
 	def self.titleize(str)
 		str.split(/\_/).join(" ").capitalize
 	end
-
 	
 end
-
-#Component::setup '../Cfg.yml'
-#g = Generator.new nil
-#Dir.chdir('../') {g.html}

@@ -85,9 +85,7 @@ class Archiver < Component
   				@logger.error {"Can't extract #{entry}: #{e.message}" }
   			end
   		end
-  		@logger.info { "[#{extracted}/#{entries.size}] projects are been uncompressed" }
-  		
-  		@logger.close
+  		@logger.info { "[#{extracted}/#{entries.size}] projects have been processed" }
 	end
 
 end

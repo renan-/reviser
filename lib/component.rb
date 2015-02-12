@@ -24,6 +24,24 @@ class Component
 		@logger.level = Logger::DEBUG
 	end 
 
+	# Place-holder
+	# Just like an abstract method
+	def run
+		raise NotImplementedError, 'All components must implement a run method'
+	end
+
+	# Method template
+	# So that when somebody implements a custom
+	# Component, he doesn't have to carry about
+	# logger being closed or not.
+	# Might be even more useful at some point
+	def work
+		data = run
+		@logger.close
+
+		data
+	end
+
 protected
 	#
 	# @return all options for all components if they exist in config file.
