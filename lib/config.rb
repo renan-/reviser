@@ -1,8 +1,6 @@
 #
 # @author Renan Strauss
-# Externalises the Cfguration
-# so that we don't always use
-# "@cfg[:Cfg_field_with_a_very_long_name]"
+# Externalises the configuration
 #
 require 'yaml'
 
@@ -15,16 +13,17 @@ class Cfg
 	@@loaded = false
 
 	def self.[](key)
-    @@mem[key] if @@loaded
+    	@@mem[key] if @@loaded
 	end
 
 	# @return true if there is the key in the config
-	def self.has(key)
+	def self.has_key?(key)
 		@@mem.has_key? key
 	end
 
 	# Method class alias
-	self.singleton_class.send(:alias_method, :=~, :has)
+	# might remove this at some point ( sorry Yannou I know u worked hard :( )
+	self.singleton_class.send(:alias_method, :=~, :has_key?)
 
 	def self.load(cfg_file)
 		@@loaded = true

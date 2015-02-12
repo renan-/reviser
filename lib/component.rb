@@ -1,13 +1,13 @@
 #
 # Author:: Renan Strauss
 #
+require 'logger'
 require 'yaml'
-require_relative 'logger'
 
 class Component
 	
 	# Each component has a logger (currently a txt file)
-	$logger
+	# $logger
 
 	#
 	# Don't forget to call super in your component's initializer !
@@ -17,18 +17,17 @@ class Component
 	#
 	def initialize(data)
 		@data = data
-		init_logger if options[:verbose]
-	end
+		# For now, we output to stderr if verbose option is not set
+		# In the future, it would be a good idea to always have logs,
+		# but to let the user change the level
+		@logger = Logger.new(options[:verbose] && "#{self.class.name}.txt" || STDERR)
+		@logger.level = Logger::DEBUG
+	end 
 
 protected
 	#
 	# @return all options for all components if they exist in config file.
 	def options
-		(Cfg =~ :options) ? Cfg[:options] : { :verbose => false }
-	end
-
-	def init_logger(name = self.class.name)
-		$logger = MyLogger::Logger.new(name)
-		$logger.title "#{name}"
+		(Cfg.has_key? :options) && Cfg[:options] || { :verbose => false }
 	end
 end

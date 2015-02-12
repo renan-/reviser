@@ -30,9 +30,9 @@ class Organiser < Component
 			if name != nil
 				name = File.join(@directory, name)
   				FileUtils.mv(entry, name)
-  				$logger.log("rename #{File.basename(entry)} to #{File.basename(name)}") if options[:verbose]
+  				@logger.info { "renaming #{File.basename(entry)} to #{File.basename(name)}" }
   			else 
-  				$logger.log("can't rename #{File.basename(entry)} (no matches with regex of Cfg.yml)", true) if options[:verbose]
+  				@logger.warn { "can't rename #{File.basename(entry)} (no matches with regex of config)" }
   			end
   		end
 	end
@@ -43,11 +43,11 @@ class Organiser < Component
 		# get all entries of projects folder
 		all(@directory).each do |entry|
 			chdir File.join(@directory, entry)
-			$logger.log "#{entry} => #{path}" if options[:verbose]
+			@logger.info { "#{entry} => #{path}" }
 			level = 0
 
-			$logger.log("Files in #{path}\n#{all}") if options[:verbose]
-			$logger.log("Dirs in #{path}\n#{directories}") if options[:verbose]
+			@logger.info { "Files in #{path}\n#{all}" }
+			@logger.info {"Dirs in #{path}\n#{directories}" }
 			# directory to delete if the project directory is not structured
 			rm = directories.first
 			
@@ -60,9 +60,9 @@ class Organiser < Component
 			#
 			while all == directories
 				level += 1
-				$logger.log("Level += 1\nPath = #{path}") if options[:verbose]
+				@logger.debug { "Level += 1\nPath = #{path}" }
 				chdir File.join(path, directories.first)
-				$logger.log("New path = #{path}") if options[:verbose]
+				@logger.debug { "New path = #{path}" }
 			end
 
 			# If the core of project is not at the root of directory ...
@@ -70,8 +70,8 @@ class Organiser < Component
 				Dir.glob(File.join(path,'*')).each do |file|
 					FileUtils.mv(file,File.join(@directory, entry))
 				end
-				$logger.log("Structure #{File.join(@path)}") if options[:verbose]
-				$logger.log("Removing #{File.join(@directory, entry, rm)}") if options[:verbose]
+				@logger.info { "Structuring #{File.join(@path)}" }
+				@logger.info {"Removing #{File.join(@directory, entry, rm)}" }
 				FileUtils.rm_rf(File.join(@directory, entry, rm))
 			end
 
@@ -81,12 +81,13 @@ class Organiser < Component
 
 	# Method which run the organiser
 	def run
-		$logger.subtitle "Rename directories" if options[:verbose]
+		@logger.info { "Renaming directories" }
 		renameDirectories
 
-		$logger.subtitle "Structure projects" if options[:verbose]
-		structure 
-		$logger.close
+		@logger.info { "Structure projects" }
+		structure
+
+		@logger.close
 	end
 
 private

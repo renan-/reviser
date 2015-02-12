@@ -18,15 +18,15 @@ module CompilationTools
 		# understandable in the Cfg
 		#
 		if missing_files.empty?
-			cmd = "#{Cfg[Cfg =~ :preferred_build_command ? :preferred_build_command : :default_build_command]}"
-			out = exec_with_timeout "#{cmd}"
+			cmd = "#{Cfg[(Cfg.has_key? :preferred_build_command) && :preferred_build_command || :default_build_command]}"
+			out = exec_with_timeout cmd
 
 			if out.has_key? :process_status
 				return "Exit status: 0\r#{out[:stdout]}" unless out[:process_status].exitstatus != 0
 			end
 
-			if Cfg =~ :preferred_build_command
-				out = exec_with_timeout "#{Cfg[:default_build_command]}"
+			if Cfg.has_key? :preferred_build_command
+				out = exec_with_timeout Cfg[:default_build_command]
 			end
 
 			(out[:process_status].exitstatus == 0) ? "Exit status: 0\r#{out[:stdout]}" : "#{out[:stdout]}\r#{out[:stderr]}"
