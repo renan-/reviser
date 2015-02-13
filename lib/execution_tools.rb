@@ -7,7 +7,6 @@
 # languages
 #
 
-require 'mkmf'
 require 'timeout'
 
 module ExecutionTools

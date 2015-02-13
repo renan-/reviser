@@ -2,7 +2,6 @@ require 'rubygems'
 require 'rubygems/package'
 require 'zip'
 require 'zlib'
-require 'seven_zip_ruby'
 require 'fileutils'
 require 'shellwords'
 
@@ -111,7 +110,9 @@ module Extractors
 	#
 	# Uncompress a 7zip file
 	#
-	def seven_zip(src, destination) 
+	def seven_zip(src, destination)
+		require 'seven_zip_ruby'
+		
 		File.open(src, 'rb') do |file|
   			SevenZipRuby::Reader.open(file) do |szr|
     			szr.extract_all destination
