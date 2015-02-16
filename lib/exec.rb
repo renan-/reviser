@@ -1,16 +1,25 @@
 require 'thor'
 require 'fileutils'
 
-%w(config checker reviser exec).each do |lib|
-	require_relative "#{lib}"
-end
+require_relative 'reviser'
 
+#
 # Module used for managing all actions in command line
 # This module enables to user the programm in command line.
 # It use the powerful toolkit Thor for building  command line interfaces
 #
 # @author Yann Prono
+#
 class Exec < Thor
+
+	def initialize(*args)
+		super
+
+		Reviser::setup File.expand_path('config.yml')
+
+		path_res = File.join(File.dirname(File.dirname(__FILE__)),"#{Cfg[:res_dir]}")
+		FileUtils.cp_r(path_res, FileUtils.pwd)
+	end
 
 	# path of config template file.
 	$template_path = File.join(File.dirname(File.dirname(__FILE__)),'config.yml')
@@ -39,7 +48,6 @@ class Exec < Thor
 	desc 'clean', 'Delete datas creating by the App (logs, projects, results files ...).'
 	def clean
 		if(File.exist? 'config.yml')
-			Cfg.load 'config.yml'
 			FileUtils.rm_rf(Cfg[:dest], :verbose => true)
 			if Cfg.has_key?(:options) && Cfg[:options].has_key?(:log_dir)
 				FileUtils.rm_rf(Cfg[:options][:log_dir], :verbose => true)
@@ -55,12 +63,6 @@ class Exec < Thor
 	# @param current_dir [String] the directory where the programm has to be launched.
 	desc 'work', 'Run components to analysis computing projects.'
 	def work
-		setup_reviser
-
-		# TODO Maybe not the good place to put this code
-		path_res = File.join(File.dirname(File.dirname(__FILE__)),"#{Cfg[:res_dir]}")
-		FileUtils.cp_r(path_res,FileUtils.pwd)
-
 		Reviser::load :component => 'archiver'
 		Reviser::load :component => 'organiser'
 		Reviser::load :component => 'checker', :inputFrom => 'organiser'
@@ -72,7 +74,6 @@ class Exec < Thor
 	# Launch archiver !
 	desc 'extract', 'Launch archiver and extract all projects.'
 	def extract
-		setup_reviser
 		Reviser::load :component => 'archiver'
 		Reviser::run
 	end
@@ -80,7 +81,6 @@ class Exec < Thor
 	# Launch organiser !
 	desc 'organise', 'Launch organiser and prepare all projects for analysis'
 	def organise
-		setup_reviser
 		Reviser::load :component => 'organiser'
 		Reviser::run
 	end
@@ -88,24 +88,31 @@ class Exec < Thor
 	# Launch checker and generator as well !
 	desc 'check', 'Launch checker for analysis and generate results.'
 	def check
-		setup_reviser
 		Reviser::load :component => 'checker'
 		Reviser::load :component => 'generator', :inputFrom => 'checker'
 		Reviser::run
 	end
 
+	desc 'load COMPONENT [INPUTFROM]', 'Loads the specified COMPONENT, and takes input from the component INPUTFROM'
+	def load(component, inputFrom = nil)
+		params = {
+			:component => component
+		}
+		params[:inputFrom] = inputFrom unless inputFrom == nil
+
+		Reviser::load params
+	end
+
+	desc 'run', 'Runs the components loaded through reviser load COMPONENT'
+	def run
+		Reviser::run
+	end
 
 	no_tasks do
   		# A Formatter message for command line
   		def message(keyword, desc)
   			puts "\t#{keyword}\t\t#{desc}"
 		end
-
-		def setup_reviser
-			config_file = File.expand_path('config.yml')
-			Reviser::setup config_file
-		end
-
 	end
 
 end

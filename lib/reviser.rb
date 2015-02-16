@@ -8,6 +8,8 @@
 # instantiate components himself, nor worry
 # about the data these components exchange.
 #
+require 'mkmf'
+
 require_relative 'config'
 
 class Reviser
@@ -50,6 +52,10 @@ class Reviser
 			
 			puts "Done"
 		end
+
+		# To handle multiple loads
+		# and calls to run
+		@@loadedComponents = {}
 	end
 
 	#
