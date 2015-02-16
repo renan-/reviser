@@ -93,21 +93,6 @@ class Exec < Thor
 		Reviser::run
 	end
 
-	desc 'load COMPONENT [INPUTFROM]', 'Loads the specified COMPONENT, and takes input from the component INPUTFROM'
-	def load(component, inputFrom = nil)
-		params = {
-			:component => component
-		}
-		params[:inputFrom] = inputFrom unless inputFrom == nil
-
-		Reviser::load params
-	end
-
-	desc 'run', 'Runs the components loaded through reviser load COMPONENT'
-	def run
-		Reviser::run
-	end
-
 	no_tasks do
   		# A Formatter message for command line
   		def message(keyword, desc)
