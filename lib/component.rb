@@ -15,7 +15,7 @@ class Component
 	# component accordingly to what you told to Reviser, and
 	# creates a hash for child to easily access config file values
 	#
-	def initialize(data = nil)
+	def initialize(data)
 		@data = data
 
 		log_file = File.join(options.has_key?(:log_dir) && options[:log_dir] || '.', "#{self.class.name}.txt")
