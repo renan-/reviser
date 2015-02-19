@@ -10,6 +10,7 @@
 #
 require 'mkmf'
 
+require_relative 'component'
 require_relative 'config'
 
 class Reviser

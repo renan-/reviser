@@ -1,5 +1,3 @@
-
-require_relative 'component'
 require_relative 'generators'
 
 class Generator < Component

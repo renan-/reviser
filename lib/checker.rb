@@ -11,7 +11,6 @@ require 'open3'
 
 require_relative 'code_analysis_tools'
 require_relative 'compilation_tools'
-require_relative 'component'
 require_relative 'execution_tools'
 
 class Checker < Component

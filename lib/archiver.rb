@@ -1,6 +1,6 @@
 require 'fileutils'
+
 require_relative 'extractor'
-require_relative 'component'
 
 #
 # Manages uncompression of archive.

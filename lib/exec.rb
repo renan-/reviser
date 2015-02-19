@@ -12,13 +12,15 @@ require_relative 'reviser'
 #
 class Exec < Thor
 
+	@@setup = false
+
 	def initialize(*args)
 		super
 
-		Reviser::setup File.expand_path('config.yml')
-
-		path_res = File.join(File.dirname(File.dirname(__FILE__)),"#{Cfg[:res_dir]}")
-		FileUtils.cp_r(path_res, FileUtils.pwd)
+		# If config.yml already exists in the working
+		# directory, then we setup reviser here
+		config_file = File.expand_path('config.yml')
+		setup config_file unless !File.exist? config_file
 	end
 
 	# path of config template file.
@@ -41,20 +43,31 @@ class Exec < Thor
 		FileUtils.mkdir_p dir unless Dir.exist?(File.join(pwd,dir))
 		FileUtils.cp($template_path, dir)
 		message(msg, File.basename($template_path))
+
+		if not @@setup
+			setup File.expand_path(File.basename($template_path))
+		end
 	end
 
 
 	# Clean the directory of logs, projects and results.
 	desc 'clean', 'Delete datas creating by the App (logs, projects, results files ...).'
 	def clean
-		if(File.exist? 'config.yml')
+		if File.exist? 'config.yml'
 			FileUtils.rm_rf(Cfg[:dest], :verbose => true)
 			if Cfg.has_key?(:options) && Cfg[:options].has_key?(:log_dir)
 				FileUtils.rm_rf(Cfg[:options][:log_dir], :verbose => true)
 			else
 				FileUtils.rm_f(Dir['*.txt'], :verbose => true)
 			end
-			Cfg[:out_format].each { |format| FileUtils.rm_f(Dir["*.#{format}"], :verbose => true) }
+
+			if Cfg[:out_format].respond_to? 'each'
+				Cfg[:out_format].each { |format| FileUtils.rm_f(Dir["*.#{format}"], :verbose => true) }
+			else
+				FileUtils.rm_f(Dir["*.#{Cfg[:out_format]}"], :verbose => true)
+			end
+
+			FileUtils.rm_rf(Cfg[:res_dir], :verbose => true)
 		end
 	end
 
@@ -97,6 +110,15 @@ class Exec < Thor
   		# A Formatter message for command line
   		def message(keyword, desc)
   			puts "\t#{keyword}\t\t#{desc}"
+		end
+
+		def setup(config_file)
+			Reviser::setup config_file
+
+			path_res = File.join(File.dirname(File.dirname(__FILE__)),"#{Cfg[:res_dir]}")
+			FileUtils.cp_r(path_res, FileUtils.pwd)
+
+			@@setup = true
 		end
 	end
 
