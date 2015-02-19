@@ -13,7 +13,7 @@ class Organiser < Component
 	$rejectedEntries = ['.', '..', '__MACOSX']
 
 	# initialize tool
-	def initialize(data = nil)
+	def initialize(data)
 		super data
 
 		@directory = Cfg[:dest]

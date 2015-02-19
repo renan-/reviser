@@ -6,14 +6,13 @@
 require 'git'
 
 class GitOrganiser < Component
-	def initialize(data=nil)
+	def initialize(data)
 		super data
-		@directory = Cfg[:dest]
 	end
 	
 	def createGitDirectories 
-		all(@directory).each do |entry|
-		#ajouter fonction pour cree dossier git
+		all(Cfg[:dest]).each do |entry|
+			#ajouter fonction pour cree dossier git
 		end
 	end
 

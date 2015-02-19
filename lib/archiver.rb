@@ -18,7 +18,7 @@ class Archiver < Component
 	$rejected = ['.','..']
 	
 	# Get archive to use and the path directory.
-	def initialize(data = nil)
+	def initialize(data)
 		super data
 		@src = Cfg[:src]
 		@destination = Cfg[:dest]
