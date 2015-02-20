@@ -24,13 +24,13 @@ class TestArchiver < Minitest::Test
 	def test_extract
 		Archiver.extract(@file, @dest)
 		entries = Dir.entries(@dest).reject{|entry| entry == '.' || entry == '..'}
-		assert(entries.size >= 1, "the extraction should extract some entries")
+		assert(entries.size >= 1, 'the extraction should extract some entries')
 	end
 
 	# File not found
 	def test_extract_no_file
 		assert_raises Errno::ENOENT do
-			Archiver.extract("coucou.zip", @dest)
+			Archiver.extract('coucou.zip', @dest)
 		end
 	end
 
@@ -42,7 +42,7 @@ class TestArchiver < Minitest::Test
 		Archiver.extract @file
 		# Get all entries after running
 		after = Dir.entries('.').reject{|entry| entry == '.' || entry == '..'}
-		assert_equal((after - original).size, @nb_projects, "the extraction should extract all entries in the current directory")
+		assert_equal((after - original).size, @nb_projects, 'the extraction should extract all entries in the current directory')
 		FileUtils.rm(after-original)
 	end
 
@@ -82,7 +82,7 @@ class TestArchiver < Minitest::Test
 	# The folder is firstly deleted and created
 	def test_destination_rm
 		FileUtils.mkdir(@dest)
-		FileUtils.touch File.join(@dest, "README.md")
+		FileUtils.touch File.join(@dest, 'README.md')
 		Archiver.destination?(@dest)
 		assert(Dir.exists?(@dest), "The #{@dest} directory should exist")
 		assert_equal(Dir.glob(File.join(@dest,'*')).size,0, "The #{@dest} directory shouldn't contain files")

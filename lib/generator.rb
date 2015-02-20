@@ -40,7 +40,7 @@ class Generator < Component
 	# Quite handy
 	#
 	def self.titleize(str)
-		str.split(/\_/).join(" ").capitalize
+		str.split(/\_/).join(' ').capitalize
 	end
 	
 end

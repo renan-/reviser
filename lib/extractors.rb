@@ -12,14 +12,17 @@ require 'fileutils'
 #
 # Now, you can write the method corresponding to the format.
 # The name of the method corresponds to the format.
-# For example, if you to use rar format, the name of the method will be: "rar"
-# Don't forget to require the gem: "require <gem>" at the begininng of the method !
+# For example, if you want to use rar format, the name of the method will be: "rar"
+# Don't forget to require the gem: "require <gem>" at the beginning of the method !
 # the header of method looks like the following block:
 #
 #  		def <format> (src, destination)
 # 			require <gem>
 # 			...
 # 		end
+#
+# @author 	Anthony Cerf
+# @author 	Yann Prono
 #
 module Extractors
 

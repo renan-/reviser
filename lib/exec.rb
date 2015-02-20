@@ -20,7 +20,7 @@ class Exec < Thor
 		# If config.yml already exists in the working
 		# directory, then we setup reviser here
 		config_file = File.expand_path('config.yml')
-		setup config_file unless !File.exist? config_file
+    setup config_file if File.exist? config_file
 	end
 
 	# path of config template file.
@@ -30,7 +30,7 @@ class Exec < Thor
 	# Say hello to the user !
 	desc 'hello','Say hello to the user !'
 	def hello
-		puts 'Hello, this is my app'
+		puts 'Hello, I am reviser'
 	end
 
 
@@ -44,9 +44,9 @@ class Exec < Thor
 		FileUtils.cp($template_path, dir)
 		message(msg, File.basename($template_path))
 
-		if not @@setup
-			setup File.expand_path(File.basename($template_path))
-		end
+    unless @@setup
+      setup File.expand_path(File.basename($template_path))
+    end
 	end
 
 

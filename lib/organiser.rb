@@ -12,7 +12,7 @@ class Organiser < Component
 	attr_accessor :path
 
 	# All entries to ignore during sort and organization
-	$rejectedEntries = ['.', '..', '__MACOSX']
+	$rejected_entries = ['.', '..', '__MACOSX']
 
 	# initialize tool
 	def initialize(data)
@@ -23,7 +23,7 @@ class Organiser < Component
 	end
 
 	# Rename directories more clearly
-	def renameDirectories
+	def rename_directories
 		# get all entries of projects folder
 		all(@directory).each do |entry|
 			#apply regex and take first match
@@ -83,17 +83,17 @@ class Organiser < Component
 
 	# Method which run the organiser
 	def run
-		@logger.info { "Renaming directories" }
-		renameDirectories
+		@logger.info { 'Renaming directories' }
+		rename_directories
 
-		@logger.info { "Structure projects" }
+		@logger.info { 'Structure projects' }
 		structure
 	end
 
 private
 
 	def all(path = @path)
-		Dir.entries(path) - $rejectedEntries
+		Dir.entries(path) - $rejected_entries
 	end
 
 	def directories

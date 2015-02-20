@@ -15,7 +15,7 @@ require_relative 'config'
 
 class Reviser
 	@@setup = false
-	@@loadedComponents = {}
+	@@loaded_components = {}
 
 	#
 	# Adds an entry with the specified data.
@@ -24,7 +24,7 @@ class Reviser
 	# TODO : check data
 	#
 	def self.load(data)
-		@@loadedComponents[data[:component]] = {inputFrom: data[:inputFrom], data: nil}
+		@@loaded_components[data[:component]] = {inputFrom: data[:inputFrom], data: nil}
 	end
 
 	def self.setup(config_file)
@@ -43,26 +43,26 @@ class Reviser
 			FileUtils.mkdir Cfg[:options][:log_dir] unless Dir.exist? Cfg[:options][:log_dir]
 		end
 
-		@@loadedComponents.each do |comp, conf|
+		@@loaded_components.each do |comp, conf|
 			puts "Reviser is now running #{Reviser.titleize comp}..."
 
 			require_relative "#{comp}"
-			c = eval("#{Reviser.titleize comp}").new ((conf[:inputFrom] != nil) && @@loadedComponents[conf[:inputFrom]][:data]) || nil
+			c = eval("#{Reviser.titleize comp}").new ((conf[:inputFrom] != nil) && @@loaded_components[conf[:inputFrom]][:data]) || nil
 
-			@@loadedComponents[comp][:data] = c.work
+			@@loaded_components[comp][:data] = c.work
 			
-			puts "Done"
+			puts 'Done'
 		end
 
 		# To handle multiple loads
 		# and calls to run
-		@@loadedComponents = {}
+		@@loaded_components = {}
 	end
 
 	#
 	# Quite handy
 	#
 	def self.titleize(str)
-		str.split(/ |\_/).map(&:capitalize).join("")
+		str.split(/ |\_/).map(&:capitalize).join('')
 	end
 end

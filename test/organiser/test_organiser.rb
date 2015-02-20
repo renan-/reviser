@@ -19,10 +19,10 @@ class TestOrganiser < Minitest::Test
 
 	# Check if projects are not deleted
 	# display projects which are not renamed
-	def test_renameDirectories
+	def test_rename_directories
 		old = Dir.entries(@dest)- $rejected
 		nb = old.size
-		@organiser.renameDirectories
+		@organiser.rename_directories
 		entries = Dir.entries(@dest)- ['.','..']
 		assert_equal(nb, entries.size,'projects should not be deleted')
 		puts "#{(old & entries).size} projects could not been renamed"

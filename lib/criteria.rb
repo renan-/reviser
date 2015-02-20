@@ -1,12 +1,19 @@
 
-# Manages criterias.
-# Convention over configuration
-# A criteria is stored in a module.
+# Manage criteria.
+# Criteria provides all criteria available 
+# that can be used for the analysis.
+#
+# Convention over configuration !
+#
+# Currently (I said 'currently' Renan), criteria is stored in a module.
 # The filename's module contains 'tool' word.
+#
 # @author Yann Prono
+#
 class Criteria
 
 	# All criterias available.
+	# :criterion => Name of the module
 	@@criterias = {}
 
 	# Load all of modules available for the analysis
@@ -37,10 +44,10 @@ class Criteria
 	# @param [Array] config Contains all criterias the user wants
 	def self.prepare(config)
 		# Get all criterias to delete
-		toDelete = config.empty? ? {} : all - (config.map &:to_sym)
+		to_delete = config.empty? ? {} : all - (config.map &:to_sym)
 
 		# Delete now !
-		toDelete.each {|criteria| @@criterias.delete(criteria.to_sym)}
+		to_delete.each {|criteria| @@criterias.delete(criteria.to_sym)}
 	end
 
 

@@ -10,7 +10,7 @@
 # Now, you can write the method corresponding to the format.
 # The name of the method corresponds to the format.
 # For example, if you want to generate a word file (.doc), the name of the method will be: "doc"
-# Don't forget to require the gem: "require <gem>" at the begininng of the method !
+# Don't forget to require the gem: "require <gem>" at the beginning of the method !
 # the header of method looks like the following block:
 #
 #  		def <format> (ext = '<format>')
@@ -38,7 +38,7 @@ module Generators
 		require 'csv'
 		CSV.open(out(ext), 'wb') do |f|
 			# Criterias as columns
-			f << (criterias).unshift("projet")
+			f << (criterias).unshift('projet')
 
 			# Values for each project as rows
 			@data.keys.each do |proj|
@@ -58,7 +58,7 @@ module Generators
 		format = Spreadsheet::Format.new :weight => :bold, :size => 14 , 
 		:horizontal_align => :center
 
-		(criterias.unshift("Projets")).each_with_index do |crit, i|
+		(criterias.unshift('Projets')).each_with_index do |crit, i|
 			sheet[0,i] = crit
 			sheet.column(i).width = (crit.size * format.font.size/10) + 5
 		end
@@ -75,17 +75,17 @@ module Generators
 
 	# Generates an HTML file 
 	def html(ext = '.html')
-		out = "<!DOCTYPE html><html><head>"
+		out = '<!DOCTYPE html><html><head>'
 		out += "<link rel=\"stylesheet\" href=\"#{Cfg[:res_dir]}/css/component.css\" />"
 		out += "<link rel=\"stylesheet\" href=\"#{Cfg[:res_dir]}/css/normalize.css\" />"
 		out += '<script src="res/js/component.css"></script>'
 		out += '<title>Results</title>'
 		out += "</head>\n<body><table><thead>"
-		out += "  <tr>"
+		out += '  <tr>'
 
-		criterias.unshift("Projet").each { |crit| out += "<th>#{crit}</th>" }
+		criterias.unshift('Projet').each { |crit| out += "<th>#{crit}</th>" }
 		
-		out += "</tr></thead><tbody>"
+		out += '</tr></thead><tbody>'
  		# Values for each project as rows
 		@data.keys.each do |proj|
 			out += "<tr><th>#{proj}</th>"
@@ -97,18 +97,18 @@ module Generators
 				end
 				out += "#{v}</td>"
 			end
-			out += "</tr>"
+			out += '</tr>'
 		end
 
-		out += "</tbody></table>"
+		out += '</tbody></table>'
 
 		out += '<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>'
 		out += '<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>'
 		#out += "<script src=\"#{Cfg[:res_dir]}/js/jquery.stickyheader.js\"></script>"
 
-		out += "</body></html>"		
+		out += '</body></html>'
 
-		File.open(out(ext), 'w') { |f| f.write(out) }
+    File.open(out(ext), 'w') { |f| f.write(out) }
 	end
 
 private
