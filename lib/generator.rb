@@ -1,12 +1,22 @@
 require_relative 'generators'
 
+#
+# Generator is used to create a file result after the analysis.
+# Currently, Generator supports HTML, XLS and CSV format.
+#
+# @author 	Renan Strauss
+# @author 	Yann Prono
+#
 class Generator < Component
+	
+	# Include all supported formats
 	include Generators
 
 	def initialize(data)
 		super data
 	end
 
+	# Run the generation of results file in all asked formats by user.
 	def run
 		begin
 			if Cfg[:out_format].respond_to? 'each'

@@ -1,6 +1,8 @@
 require 'fileutils'
 
-# Class which organizes all directories to simplify projects' analysis.
+# Class which organizes all directories to simplify projects'  analysis.
+# Organiser renames projects folders and organises the whole of projects
+# in order to have a structured folder (files at the root of folder).
 #
 # @author Yann Prono
 # @author Renan Strauss

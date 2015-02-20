@@ -1,8 +1,33 @@
-require 'csv'
-require 'spreadsheet'
 
-# Module containing all methods
-# for writing results.
+# Module containing all methods for writing results.
+#
+# Convention over configuration !
+#
+# To add a new format maybe you need to install the Gem.
+# Find a Gem which supports a specified format on rubygems.org.
+# Add the line "gem <gem>" in the Gemfile and execute "bundle install"
+#
+# Now, you can write the method corresponding to the format.
+# The name of the method corresponds to the format.
+# For example, if you want to generate a word file (.doc), the name of the method will be: "doc"
+# Don't forget to require the gem: "require <gem>" at the begininng of the method !
+# the header of method looks like the following block:
+#
+#  		def <format> (ext = '<format>')
+# 			require <gem>
+# 			...
+# 		end
+#
+# To write results, you have to go through the @data instance variable.
+# @data is a hashmap:
+# 		- key: 		The person's name.
+#		- value: 	Results of analysis
+#
+# Each value of @data is also a hashmap:
+# 		- key: 		the name of criterion checked.
+#		- value: 	The result of criterion.
+#
+#
 # @author Renan Strauss
 # @author Yann Prono
 #
@@ -10,6 +35,7 @@ module Generators
 	
 	# Generates the CSV file
 	def csv(ext = '.csv')
+		require 'csv'
 		CSV.open(out(ext), 'wb') do |f|
 			# Criterias as columns
 			f << (criterias).unshift("projet")
@@ -23,6 +49,7 @@ module Generators
 
 	# Generates a Excel file
 	def xls(ext = '.xls')
+		require 'spreadsheet'
 		Spreadsheet.client_encoding = 'UTF-8'
 		book = Spreadsheet::Workbook.new
 		sheet = book.create_worksheet :name => 'Results'

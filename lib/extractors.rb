@@ -3,6 +3,8 @@ require 'fileutils'
 
 # The module contains all methods to uncompress a archive 
 # regardless the format.
+
+# Convention over configuration !
 #
 # To add a new format, maybe you need to install the Gem.
 # Find a Gem which uncompress a specified format on rubygems.org.

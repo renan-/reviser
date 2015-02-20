@@ -4,7 +4,7 @@ require_relative 'extractor'
 
 #
 # Manages uncompression of archive.
-# The archive contains all computing projects.
+# The archive contains all computing projects or anything archive.
 #
 # @example The simple way to extract a compressed file is : 
 # 		Archiver.extract(myFile, myDirectory)
@@ -15,9 +15,10 @@ class Archiver < Component
 
 	attr_reader :src, :destination
 
+	# Ignored entries
 	$rejected = ['.','..']
 	
-	# Get archive to use and the path directory.
+	# Get the archive name and the destination directory.
 	def initialize(data)
 		super data
 		@src = Cfg[:src]
@@ -55,7 +56,7 @@ class Archiver < Component
 	#
 	# Method which extract an archive
 	# which contains all computing projects.
-	# This method extract in first time the archive
+	# This method extracts in first time the archive
 	# and after all extracted files.
 	# Options are for the moment options[:verbose]
 	#
