@@ -68,7 +68,10 @@ class Exec < Thor
 			end
 
 			FileUtils.rm_rf(Cfg[:res_dir], :verbose => true)
+		else
+			message("Error", "'config.yml' doesn't exist! Check if you are in the good directory.")
 		end
+
 	end
 
 
