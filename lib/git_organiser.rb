@@ -24,7 +24,8 @@ class GitOrganiser < Component
 					git_init
 					git_add
 					git_commit
-					git_push
+					# Why push ? Maybe you can test if a remote repo is configured?
+					# git_push
 				end
 			end
 		end
