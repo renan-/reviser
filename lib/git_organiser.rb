@@ -8,6 +8,7 @@ require 'git'
 class GitOrganiser < Component
 	def initialize(data)
 		super data
+		@g=nil
 	end
 	
 	# La methode run est obligatoire les gars!
@@ -20,26 +21,28 @@ class GitOrganiser < Component
 			projects.each do |proj|
 				# On entre dans le repertoire du projet
 				Dir.chdir proj do
-					# On initialise un depot git
 					git_init
-					# ...
+					git_add
+					git_commit
+					git_push
 				end
 			end
 		end
 	end
 
-	# En ruby la methode doit s'appeler create_git_directories
-	# (on n'est pas en Java tout degueulasse !!)
-	# Je la renomme git_init, c'est plus dans l'esprit de ruby
-	# (et surtout dans l'esprit du projet)
-	# Et la methode all n'est pas appropriee du tout, il faut lire la doc!
 	def git_init
-		# Il faut s'inspirer des autres composants
-		# J'ai restructure le votre pour que vous n'ayez
-		# que a vous concentrer sur ce qu'il faut faire pour 1
-		# projet, sans se soucier de ou vous etes
-		# Cette methode sera appellee dans le repertoire du
-		# projet pour lequel il faut initialiser un depot git
+		@g = Git.init
+	end
+	
+	def git_add
+		@g.add(:all=>true)
+	end
+	
+	def git_commit
+		@g.commit_all('initialization of git repertory')		 
 	end
 
+	def git_push
+		@g.push
+	end
 end
