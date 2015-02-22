@@ -48,10 +48,12 @@ class CriteriaManager
 	# Prepare all criterias provided by the user in the config file.
 	# @param [Array] criteria Contains all criterias the user wants
 	def prepare(crit_config)
-		# Get all criterias to delete
-		to_delete = crit_config.empty? ? {} : all - (crit_config.map &:to_sym)
-		# Delete now !
-		to_delete.each {|crit| @criteria.delete(crit.to_sym)}
+		if crit_config != nil
+			# Get all criterias to delete
+			to_delete = crit_config.empty? ? {} : all - (crit_config.map &:to_sym)
+			# Delete now !
+			to_delete.each {|crit| @criteria.delete(crit.to_sym)}
+		end
 	end
 
 
