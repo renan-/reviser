@@ -39,6 +39,12 @@ class CriteriaManager
 		end
 	end
 
+	def run
+		@criteria.each do |meth, mod|
+			mod.send(meth)
+		end
+	end
+
 
 	private 
 
