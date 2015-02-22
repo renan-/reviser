@@ -19,7 +19,6 @@ class CriteriaManager
 	def initialize
 		@criteria = Hash.new
 		load
-		prepare
 	end
 
 	# Load all of modules available for the analysis
@@ -47,14 +46,12 @@ class CriteriaManager
 	end
 
 	# Prepare all criterias provided by the user in the config file.
-	# @param [Array] config Contains all criterias the user wants
-	def prepare
-		puts Cfg[:criteria]
+	# @param [Array] criteria Contains all criterias the user wants
+	def prepare(crit_config)
 		# Get all criterias to delete
-		#to_delete = Cfg[:criteria].empty? ? {} : all - (config.map &:to_sym)
-
+		to_delete = crit_config.empty? ? {} : all - (crit_config.map &:to_sym)
 		# Delete now !
-		#to_delete.each {|criteria| @criterias.delete(criteria.to_sym)}
+		to_delete.each {|crit| @criteria.delete(crit.to_sym)}
 	end
 
 

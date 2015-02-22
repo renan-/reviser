@@ -12,6 +12,7 @@ require 'open3'
 require_relative 'code_analysis_tools'
 require_relative 'compilation_tools'
 require_relative 'execution_tools'
+require_relative 'criteria_manager'
 
 class Checker < Component
 	include CodeAnalysisTools
@@ -51,7 +52,9 @@ private
 	# their analysis value
 	#
 	def check(proj)
-		compile_key = (Cfg[:compiled] && :resultats_compilation || :fichiers_manquants)
+		cm = CriteriaManager.new
+		cm.prepare Cfg[:criteria]
+=begin		compile_key = (Cfg[:compiled] && :resultats_compilation || :fichiers_manquants)
 		@results[proj] =
 		{
 			:fichiers => files.join("\r"),
@@ -61,6 +64,7 @@ private
 			compile_key => Cfg[:compiled] && compile || prepare,
 			:resultats_execution => execute
 		}
+=end
 	end
 
 	#
