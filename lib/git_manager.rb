@@ -52,6 +52,8 @@ class GitManager < Component
 	end
 
 	# method which allows the user to see the differences between two last commits
+	# I have to know the current commit and the last but how ?
+	# and do a diff between these 2 commits.
 	def git_diff
 
 	end
