@@ -14,17 +14,17 @@ class Exec < Thor
 
 	@@setup = false
 
+	# path of config template file.
+	$template_path = File.join(File.dirname(File.dirname(__FILE__)),'config.yml')
+
 	def initialize(*args)
 		super
 
 		# If config.yml already exists in the working
 		# directory, then we setup reviser here
 		config_file = File.expand_path('config.yml')
-    setup config_file if File.exist? config_file
+    	setup config_file if File.exist? config_file
 	end
-
-	# path of config template file.
-	$template_path = File.join(File.dirname(File.dirname(__FILE__)),'config.yml')
 
 
 	# Say hello to the user !

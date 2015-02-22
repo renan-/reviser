@@ -52,9 +52,12 @@ private
 	# their analysis value
 	#
 	def check(proj)
+		# Useless, just prepare 
+		# In the future, cm will run automaticlly methods !
 		cm = CriteriaManager.new
 		cm.prepare Cfg[:criteria]
-=begin		compile_key = (Cfg[:compiled] && :resultats_compilation || :fichiers_manquants)
+
+		compile_key = (Cfg[:compiled] && :resultats_compilation || :fichiers_manquants)
 		@results[proj] =
 		{
 			:fichiers => files.join("\r"),
@@ -64,7 +67,6 @@ private
 			compile_key => Cfg[:compiled] && compile || prepare,
 			:resultats_execution => execute
 		}
-=end
 	end
 
 	#

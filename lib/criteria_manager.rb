@@ -21,23 +21,6 @@ class CriteriaManager
 		load
 	end
 
-	# Load all of modules available for the analysis
-	def load		
-		modules =  Dir[File.join(File.dirname(__FILE__),'*tool*')]
-		
-		modules.each do |m|
-			require_relative m
-			module_name = camelize m
-			methods = Module.const_get(module_name).instance_methods
-			methods.each { |method| populate(method, module_name) }
- 		end	
- 	end
-
-	# Gets the name of module 
-	# @param file_module Name of the file module.
-	def camelize(file_module) 
-		File.basename(file_module).delete('.rb').split('_').each {|s| s.capitalize! }.join('')
-	end
 
 	# Gets all criterias which can be used.
 	# @return [Array] all criterias
@@ -64,6 +47,24 @@ class CriteriaManager
 	# @param module_name The name of the module.
 	def populate(criterion, module_name)
 		@criteria[criterion.to_sym] = module_name
+	end
+
+	# Load all of modules available for the analysis
+	def load		
+		modules =  Dir[File.join(File.dirname(__FILE__),'*tool*')]
+		
+		modules.each do |m|
+			require_relative m
+			module_name = camelize m
+			methods = Module.const_get(module_name).instance_methods
+			methods.each { |method| populate(method, module_name) }
+ 		end	
+ 	end
+
+	# Gets the name of module 
+	# @param file_module Name of the file module.
+	def camelize(file_module) 
+		File.basename(file_module).delete('.rb').split('_').each {|s| s.capitalize! }.join('')
 	end
 
 end
