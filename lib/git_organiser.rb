@@ -50,4 +50,9 @@ class GitOrganiser < Component
 	def git_push
 		@g.push
 	end
+
+	# method which allows the user to see the differences between two last commits
+	def git_diff
+
+	end
 end
