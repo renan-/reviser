@@ -1,4 +1,5 @@
 # Class which organizes all directories for use them with git.
+# Its another component of the project
 #
 # @author Romain Ruez
 # @author Anthony Cerf
@@ -31,14 +32,17 @@ class GitOrganiser < Component
 		end
 	end
 
+	# method which initialize a git repository
 	def git_init
 		@g = Git.init
 	end
-	
+
+	# method which allows the user to add something on the repository
 	def git_add
 		@g.add(:all=>true)
 	end
-	
+
+	# method for displaying a message when the repository is configured
 	def git_commit
 		@g.commit_all('initialization of git repertory')		 
 	end
