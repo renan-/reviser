@@ -6,7 +6,7 @@
 #
 require 'git'
 
-class GitTools < Component
+class GitManager < Component
 	def initialize(data)
 		super data
 		@g=nil
