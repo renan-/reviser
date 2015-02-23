@@ -1,11 +1,12 @@
 # Class which organizes all directories for use them with git.
+# Its another component of the project
 #
 # @author Romain Ruez
 # @author Anthony Cerf
 #
 require 'git'
 
-class GitOrganiser < Component
+class GitManager < Component
 	def initialize(data)
 		super data
 		@g=nil
@@ -31,19 +32,29 @@ class GitOrganiser < Component
 		end
 	end
 
+	# method which initialize a git repository
 	def git_init
 		@g = Git.init
 	end
-	
+
+	# method which allows the user to add something on the repository
 	def git_add
 		@g.add(:all=>true)
 	end
-	
+
+	# method for displaying a message when the repository is configured
 	def git_commit
 		@g.commit_all('initialization of git repertory')		 
 	end
 
 	def git_push
 		@g.push
+	end
+
+	# method which allows the user to see the differences between two last commits
+	# I have to know the current commit and the last but how ?
+	# and do a diff between these 2 commits.
+	def git_diff
+
 	end
 end
