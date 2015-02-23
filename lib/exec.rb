@@ -81,7 +81,7 @@ class Exec < Thor
 	def work
 		Reviser::load :component => 'archiver'
 		Reviser::load :component => 'organiser'
-		Reviser::load :component => 'git_organiser'
+		Reviser::load :component => 'git_manager'
 		Reviser::load :component => 'checker', :inputFrom => 'organiser'
 		Reviser::load :component => 'generator', :inputFrom => 'checker'
 
