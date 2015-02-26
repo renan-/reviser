@@ -77,10 +77,12 @@ class Organiser < Component
 		end
 	end
 
-	def git
-		git_init
-		git_add
-		git_commit
+	def git(entry)
+		Dir.chdir File.join(@directory, entry) do
+			git_init
+			git_add
+			git_commit
+		end
 	end
 
 
@@ -91,7 +93,7 @@ class Organiser < Component
 			structure entry
 
 			@logger.info { 'Initializing git repo' }
-			git
+			git entry
 
 			@logger.info { 'Renaming directories' }
 			rename entry
