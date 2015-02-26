@@ -60,8 +60,8 @@ private
 		#compile_key = (Cfg[:compiled] && :resultats_compilation || :fichiers_manquants)
 		#@results[proj] =
 		#{
-		#	:fichiers => files.join("\r"),
-		#	:fichiers_sources => src_files.join("\r"),
+		#	:fichiers => all_files,
+		#	:fichiers_sources => src_files,
 		#	:nombre_total_de_lignes_de_code => lines_count,
 		#	:nombre_de_lignes_de_commentaires => comments_count,
 		#	compile_key => Cfg[:compiled] && compile || prepare,
@@ -69,7 +69,7 @@ private
 		#}
 		@results[proj] = {}
 		Cfg[:criterias].each do |meth, crit|
-			@results[proj][crit.to_sym] = send meth
+			@results[proj][crit] = send meth
 		end
 	end
 
