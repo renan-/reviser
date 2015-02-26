@@ -47,6 +47,19 @@ timeout: 5
 
 ############	Global config 		############
 
+#
+# Criterias you want for analysis
+# Can be overriden or declared in
+# project's config file
+#
+criterias:
+  :all_files: Fichiers
+  :src_files: Fichiers sources
+  :lines_count: Nombre de lignes de code
+  :comments_count: Nombre de lignes de commentaires
+  :compile: Resultats compilation
+  :execute: Resultats execution
+
 # Options of all components
 # For the moment, there is just verbose option (for logger)
 options: 
