@@ -54,19 +54,23 @@ private
 	def check(proj)
 		# Useless, just prepare 
 		# In the future, cm will run automaticlly methods !
-		cm = CriteriaManager.new
-		cm.prepare Cfg[:criteria]
+		#cm = CriteriaManager.new
+		#cm.prepare Cfg[:criteria]
 
-		compile_key = (Cfg[:compiled] && :resultats_compilation || :fichiers_manquants)
-		@results[proj] =
-		{
-			:fichiers => files.join("\r"),
-			:fichiers_sources => src_files.join("\r"),
-			:nombre_total_de_lignes_de_code => lines_count,
-			:nombre_de_lignes_de_commentaires => comments_count,
-			compile_key => Cfg[:compiled] && compile || prepare,
-			:resultats_execution => execute
-		}
+		#compile_key = (Cfg[:compiled] && :resultats_compilation || :fichiers_manquants)
+		#@results[proj] =
+		#{
+		#	:fichiers => all_files,
+		#	:fichiers_sources => src_files,
+		#	:nombre_total_de_lignes_de_code => lines_count,
+		#	:nombre_de_lignes_de_commentaires => comments_count,
+		#	compile_key => Cfg[:compiled] && compile || prepare,
+		#	:resultats_execution => execute
+		#}
+		@results[proj] = {}
+		Cfg[:criterias].each do |meth, crit|
+			@results[proj][crit] = send meth
+		end
 	end
 
 	#
