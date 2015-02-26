@@ -95,7 +95,7 @@ module Generators
 				else 
 					out += '<td>'
 				end
-				out += "#{v}</td>"
+				out += "<pre>#{v}</pre></td>"
 			end
 			out += '</tr>'
 		end
