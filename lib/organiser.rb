@@ -22,7 +22,7 @@ class Organiser < Component
 		super data
 
 		@directory = Cfg[:dest]
-		@path = ''
+		@path = nil
 		@git = nil
 	end
 
@@ -59,7 +59,7 @@ class Organiser < Component
 		# while there are only directories
 		# in the current directory
 		#
-		while all == directories
+		while all(@path) == directories
 			level += 1
 			@logger.debug { "Level += 1\nPath = #{path}" }
 			chdir File.join(path, directories.first)
@@ -107,7 +107,11 @@ private
 	end
 
 	def directories
-		all.select { |e| File.directory? File.join(@directory, e) }
+		if @path == nil
+			all.select { |e| File.directory? File.join(@directory, e) }
+		else
+			all(@path).select { |e| File.directory? File.join(@path, e) }
+		end
 	end
 
 	def chdir(dir)
