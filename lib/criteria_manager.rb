@@ -16,9 +16,19 @@ class CriteriaManager
 	# :criterion => Name of the module
 	@criteria
 
+	# :criterion => label of criterion
+	@name_crits
+
+	PWD = File.dirname(__FILE__)
+
+	# Path of extensions
+	EXT = File.join(File.dirname(PWD), 'ext')
+
 	def initialize
 		@criteria = Hash.new
-		load
+		@name_crits = Hash.new
+		load(PWD, '*tool*')
+		load(EXT, '*')
 	end
 
 
@@ -28,6 +38,7 @@ class CriteriaManager
 		@criteria.keys.map &:to_sym
 	end
 
+
 	# Prepare all criterias provided by the user in the config file.
 	# @param [Array] criteria Contains all criterias the user wants
 	def prepare(crit_config)
@@ -36,12 +47,6 @@ class CriteriaManager
 			to_delete = crit_config.empty? ? {} : all - (crit_config.map &:to_sym)
 			# Delete now !
 			to_delete.each {|crit| @criteria.delete(crit.to_sym)}
-		end
-	end
-
-	def run
-		@criteria.each do |meth, mod|
-			mod.send(meth)
 		end
 	end
 
@@ -56,13 +61,15 @@ class CriteriaManager
 	end
 
 	# Load all of modules available for the analysis
-	def load		
-		modules =  Dir[File.join(File.dirname(__FILE__),'*tool*')]
-		
+	# @param directory Directory where search of modules is done.
+	# @param regex regex to find name of modules.
+	def load(directory, regex = '*')
+		modules =  Dir[File.join(directory, regex)]
+
 		modules.each do |m|
 			require_relative m
 			module_name = camelize m
-			methods = Module.const_get(module_name).instance_methods
+			methods = Object.const_get(module_name).instance_methods
 			methods.each { |method| populate(method, module_name) }
  		end	
  	end
@@ -70,7 +77,8 @@ class CriteriaManager
 	# Gets the name of module 
 	# @param file_module Name of the file module.
 	def camelize(file_module) 
-		File.basename(file_module).delete('.rb').split('_').each {|s| s.capitalize! }.join('')
+		ext = File.extname(file_module)
+		File.basename(file_module, ext).split('_').each {|s| s.capitalize! }.join('')
 	end
 
 end
