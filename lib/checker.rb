@@ -12,11 +12,9 @@ require 'open3'
 require_relative 'code_analysis_tools'
 require_relative 'compilation_tools'
 require_relative 'execution_tools'
-require_relative 'criteria_manager'
 
 class Checker < Component
 	include CodeAnalysisTools
-	include ExecutionTools
 
 	def initialize(data)
 		super data
@@ -26,6 +24,8 @@ class Checker < Component
 		if Cfg[:compiled]
 			extend CompilationTools
 		end
+
+		extend ExecutionTools unless (!Cfg[:compiled] && !Cfg.has_key?(:execute_command))
 	end
 
 	# Yann : je ne recupere pas les datas de l'organiser,
@@ -52,24 +52,40 @@ private
 	# their analysis value
 	#
 	def check(proj)
-		# Useless, just prepare 
-		# In the future, cm will run automaticlly methods !
-		#cm = CriteriaManager.new
-		#cm.prepare Cfg[:criteria]
-
-		#compile_key = (Cfg[:compiled] && :resultats_compilation || :fichiers_manquants)
-		#@results[proj] =
-		#{
-		#	:fichiers => all_files,
-		#	:fichiers_sources => src_files,
-		#	:nombre_total_de_lignes_de_code => lines_count,
-		#	:nombre_de_lignes_de_commentaires => comments_count,
-		#	compile_key => Cfg[:compiled] && compile || prepare,
-		#	:resultats_execution => execute
-		#}
+		#
+		# First we iterate over criterias
+		# defined in config
+		#
 		@results[proj] = {}
 		Cfg[:criterias].each do |meth, crit|
-			@results[proj][crit] = send meth
+			begin
+				@results[proj][crit] = send meth
+			rescue NoMethodError
+				@logger.fatal { "You specified an undefined method in config : #{meth}" }
+			end
+		end
+
+		#
+		# Then we look for external modules
+		#
+		Cfg[:extensions].each do |ext, crits|
+			begin
+				@logger.debug { "Including extension #{ext}, located in #{File.join(Cfg::ROOT, 'ext', "#{ext}.rb")}, whose class name is #{camelize(ext)}" }
+				require File.join(Cfg::ROOT, 'ext', "#{ext}.rb")
+				extend Object.const_get "#{camelize ext}"
+			rescue Object => e
+				@logger.fatal { "Unable to load extension #{ext}, here's why : #{e.to_s}" }
+			end
+
+			crits.each do |meth, crit|
+				begin
+					@logger.debug { "Calling #{meth} for #{crit}" }
+					@results[proj][crit] = send meth
+					@logger.debug { "Result is : #{@results[proj][crit]}" }
+				rescue NoMethodError
+					@logger.fatal { "You specified an undefined method in config : #{meth}" }
+				end
+			end
 		end
 	end
 
@@ -152,5 +168,13 @@ private
 		stderr.close
 
 		result
+	end
+
+	#
+	# Gets the name of module 
+	# @param file_module Name of the file module.
+	#
+	def camelize(basename) 
+		basename.split('_').each {|s| s.capitalize! }.join('')
 	end
 end

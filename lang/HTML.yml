@@ -1,0 +1,35 @@
+---
+# HTML language
+
+# List of source files extensions
+# !!!!! Recent changes make me think
+# we should actually think about
+# renaming it to ext for instance !!!!!!!!
+extension:
+- .html
+
+# Whether it's a compiled or an interpreted language
+compiled: false
+
+#
+# In all HTML projects, we'll need
+# the html_validator extension
+#
+extensions:
+  html_validator:
+    :valid: Validite HTML 5
+
+# Program prefix, needed especially for C
+# The execution command will look like this :
+# [execute_command=(java, ruby, python, ...)] [program_prefix]<program> [args]
+# [] are optionals, whereas <> mandatory
+# program_prefix:
+
+# For interpreted languages
+# execute_command: ruby
+
+# If not specified, the first
+# executable file found will be executed
+# program_name: main.rb
+
+regex_comments: !ruby/regexp '/#([^{].*)$/'
