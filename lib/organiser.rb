@@ -107,7 +107,7 @@ private
 	end
 
 	def directories
-		all.select { |e| File.directory? File.join(@path, e) }
+		all.select { |e| File.directory? File.join(@directory, e) }
 	end
 
 	def chdir(dir)
