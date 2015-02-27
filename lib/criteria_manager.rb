@@ -29,8 +29,12 @@ class CriteriaManager
 		@name_crits = Hash.new
 		load(PWD, '*tool*')
 		load(EXT, '*')
+		
 		load_labels :criterias
 		load_labels :extensions
+
+		prepare :criterias
+		prepare :extensions
 	end
 
 
@@ -42,11 +46,12 @@ class CriteriaManager
 
 
 	# Prepare all criterias provided by the user in the config file.
-	# @param [Array] criteria Contains all criterias the user wants
-	def prepare(crit_config)
-		if crit_config != nil
+	# @param key key of config file
+	def prepare(key)
+		if Cfg.has_key? key
 			# Get all criterias to delete
-			to_delete = crit_config.empty? ? {} : all - (crit_config.map &:to_sym)
+			to_delete = Cfg[key].empty? ? {} : all - (Cfg[key].keys.map &:to_sym)
+
 			# Delete now !
 			to_delete.each {|crit| @criteria.delete(crit.to_sym)}
 		end
