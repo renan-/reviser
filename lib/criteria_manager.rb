@@ -29,6 +29,8 @@ class CriteriaManager
 		@name_crits = Hash.new
 		load(PWD, '*tool*')
 		load(EXT, '*')
+		load_labels :criterias
+		load_labels :extensions
 	end
 
 
@@ -79,6 +81,16 @@ class CriteriaManager
 	def camelize(file_module) 
 		ext = File.extname(file_module)
 		File.basename(file_module, ext).split('_').each {|s| s.capitalize! }.join('')
+	end
+
+	# Load labels given by the user
+	# @param key key of criteria in config file
+	def load_labels(key)
+		if Cfg.has_key? key
+			Cfg[key].each do |meth, crit|
+				@name_crits[meth] = crit
+			end
+		end		
 	end
 
 end
