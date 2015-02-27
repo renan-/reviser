@@ -7,7 +7,7 @@ require 'yaml'
 class Cfg
 
 	# Path for specialized config files for projects
-	@root = File.join(File.dirname(File.dirname(__FILE__)))
+	ROOT = File.join(File.dirname(File.dirname(__FILE__)))
 
 	# Is the config is loaded ?
 	@@loaded = false
@@ -31,9 +31,9 @@ class Cfg
 
 		populate YAML.load(File.read(cfg_file))
 
-		type_file = File.join(@root,'type',"#{@@mem[:type]}.yml")
+		type_file = File.join(ROOT,'type',"#{@@mem[:type]}.yml")
 		type_cfg  = YAML.load(File.read(type_file))
-		populate YAML.load(File.read(File.join(@root,'lang',"#{type_cfg['language']}.yml")))
+		populate YAML.load(File.read(File.join(ROOT,'lang',"#{type_cfg['language']}.yml")))
 		# So that project's type Cfg overrides
 		# lang Cfg
 		populate type_cfg

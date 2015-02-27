@@ -12,6 +12,15 @@ preferred_build_command: make
 required_files:
 - !ruby/regexp '/(M|m)akefile/'
 
+#
+# The extensions you want
+# In this case, ext/valgrind.rb
+# must exist
+#
+extensions:
+  valgrind:
+    :memleaks: Fuites memoire
+
 # For interpreted languages
 # execute_command: 
 

@@ -88,7 +88,7 @@ class Organiser < Component
 
 	# Method which run the organiser
 	def run
-		all(@directory).each do |entry|
+		directories.each do |entry|
 			@logger.info { 'Structure projects' }
 			structure entry
 
@@ -102,7 +102,7 @@ class Organiser < Component
 
 private
 
-	def all(path = @path)
+	def all(path = @directory)
 		Dir.entries(path) - $rejected_entries
 	end
 
