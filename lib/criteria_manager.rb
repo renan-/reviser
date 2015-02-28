@@ -5,12 +5,23 @@ require_relative 'config'
 # It's also managed labels of criterion
 # To add a criterion, the user has to write in the config file
 # all criteria he wants.
+#
+# Convention over configuration !
+# Criteria manager imports automaticlly all ruby files 
+# containing 'tool' in its filename.
 # 
 # @example Call a criterion (in the config File):
 #   criteria:
 #     - :count_lines: Number of lines
 #     - :list_files: List of all files
 #     - :<method>: <label of method>
+
+# @example Write a module:
+# Create a file with name as this regex '*tool.rb*' => 'my_module_tools.rb'
+# header of this module :
+# 	module MyModuleTools
+#   ...
+#	end
 #
 # @author Yann Prono
 #
