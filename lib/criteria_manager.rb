@@ -75,7 +75,8 @@ class CriteriaManager
 
 		modules.each do |m|
 			require_relative m
-			module_name = camelize m
+			ext = File.extname m
+			module_name = camelize(File.basename(m,ext))
 			methods = Object.const_get(module_name).instance_methods
 			methods.each { |method| populate(method, module_name) }
  		end	
@@ -84,8 +85,7 @@ class CriteriaManager
 	# Gets the name of module 
 	# @param file_module Name of the file module.
 	def camelize(file_module) 
-		ext = File.extname(file_module)
-		File.basename(file_module, ext).split('_').each {|s| s.capitalize! }.join('')
+		file_module.split('_').each {|s| s.capitalize! }.join('')
 	end
 
 	# Load labels given by the user
@@ -93,9 +93,16 @@ class CriteriaManager
 	def load_labels(key)
 		if Cfg.has_key? key
 			Cfg[key].each do |meth, crit|
-				@name_crits[meth] = crit
+				@name_crits[meth] = crit == nil ? create_label(meth.to_s) : crit
 			end
 		end		
+	end
+
+	# Create label for method in params
+	# @param meth [String] method linked to the label
+	# @return [String] Renamed Label inspired of the name of the method
+	def create_label(meth)
+		meth.split('_').each {|s| s.capitalize! }.join(' ')
 	end
 
 end
