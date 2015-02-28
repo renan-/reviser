@@ -1,8 +1,9 @@
 require_relative 'config'
+
 # Manage criteria.
 # Criteria Manager provides all criteria available.
-# It can be also manage labels linked to these criteria
-# To custom criteria, the user has to write in the config file
+# It's also managed labels of criterion
+# To add a criterion, the user has to write in the config file
 # all criteria he wants.
 # 
 # @example Call a criterion (in the config File):
@@ -33,19 +34,8 @@ class CriteriaManager
 		@labels_crits = Hash.new
 		load(PWD, '*tool*')
 		load(EXT, '*')
-		
 		prepare :criterias
-		prepare :extensions
-
 		load_labels :criterias
-		load_labels :extensions
-	end
-
-
-	# Gets all criterias which can be used.
-	# @return [Array] all criterias
-	def all
-		@criteria.keys.map &:to_sym
 	end
 
 	# @return criterion => label of criterion
@@ -53,6 +43,9 @@ class CriteriaManager
 		return @labels_crits
 	end
 
+	# Enable to call a specified method.
+	# @param meth [String] Method to call.
+	# @return results of the method.
 	def call(meth)
 		if @criteria.key? meth
 			self.class.send(:include, @criteria[meth]) unless respond_to? meth
@@ -82,6 +75,12 @@ class CriteriaManager
 
 
 	private 
+
+	# Get all criteria which can be used.
+	# @return [Array] all criteria
+	def all
+		@criteria.keys.map &:to_sym
+	end
 
 	#  from Cfg file to symbols
 	# @param criterion The criteria
