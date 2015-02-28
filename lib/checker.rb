@@ -18,14 +18,14 @@ class Checker < Component
 	include CodeAnalysisTools
 	include ExecutionTools
 
+	# Manager of criteria
+	@crit_manager
+
 	def initialize(data)
 		super data
-
+		
 		@results = {}
-
-		if Cfg[:compiled]
-			extend CompilationTools
-		end
+		@crit_manager = CriteriaManager.new
 	end
 
 	# Yann : je ne recupere pas les datas de l'organiser,
@@ -68,8 +68,8 @@ private
 		#	:resultats_execution => execute
 		#}
 		@results[proj] = {}
-		Cfg[:criterias].each do |meth, crit|
-			@results[proj][crit] = send meth
+		@crit_manager.criteria.each do |meth, label|
+			@results[proj][label] = @crit_manager.call meth
 		end
 	end
 

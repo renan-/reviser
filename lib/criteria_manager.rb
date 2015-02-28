@@ -1,12 +1,15 @@
 require_relative 'config'
 # Manage criteria.
-# Criteria provides all criteria available 
-# that can be used for the analysis.
-#
-# Convention over configuration !
-#
-# Currently (I said 'currently' Renan), criteria is stored in a module.
-# The filename's module contains 'tool' word.
+# Criteria Manager provides all criteria available.
+# It can be also manage labels linked to these criteria
+# To custom criteria, the user has to write in the config file
+# all criteria he wants.
+# 
+# @example Call a criterion (in the config File):
+#   criteria:
+#     - :count_lines: Number of lines
+#     - :list_files: List of all files
+#     - :<method>: <label of method>
 #
 # @author Yann Prono
 #
@@ -17,8 +20,9 @@ class CriteriaManager
 	@criteria
 
 	# :criterion => label of criterion
-	@name_crits
+	@labels_crits
 
+	# Current directory of this file
 	PWD = File.dirname(__FILE__)
 
 	# Path of extensions
@@ -26,15 +30,15 @@ class CriteriaManager
 
 	def initialize
 		@criteria = Hash.new
-		@name_crits = Hash.new
+		@labels_crits = Hash.new
 		load(PWD, '*tool*')
 		load(EXT, '*')
 		
-		load_labels :criterias
-		load_labels :extensions
-
 		prepare :criterias
 		prepare :extensions
+
+		load_labels :criterias
+		load_labels :extensions
 	end
 
 
@@ -44,13 +48,32 @@ class CriteriaManager
 		@criteria.keys.map &:to_sym
 	end
 
+	# @return criterion => label of criterion
+	def criteria
+		return @labels_crits
+	end
+
+	def call(meth)
+		if @criteria.key? meth
+			self.class.send(:include, @criteria[meth]) unless respond_to? meth
+			var = send meth
+		else
+			nil
+		end
+	end
+
 
 	# Prepare all criterias provided by the user in the config file.
 	# @param key key of config file
 	def prepare(key)
+
 		if Cfg.has_key? key
+			# Diff between modules of app and input of user
+			unknown_modules = (Cfg[key].keys.map &:to_sym) - all
+
 			# Get all criterias to delete
 			to_delete = Cfg[key].empty? ? {} : all - (Cfg[key].keys.map &:to_sym)
+			to_delete = to_delete + unknown_modules
 
 			# Delete now !
 			to_delete.each {|crit| @criteria.delete(crit.to_sym)}
@@ -76,8 +99,8 @@ class CriteriaManager
 		modules.each do |m|
 			require_relative m
 			ext = File.extname m
-			module_name = camelize(File.basename(m,ext))
-			methods = Object.const_get(module_name).instance_methods
+			module_name = Object.const_get("#{camelize(File.basename(m,ext))}")
+			methods = module_name.instance_methods
 			methods.each { |method| populate(method, module_name) }
  		end	
  	end
@@ -88,17 +111,19 @@ class CriteriaManager
 		file_module.split('_').each {|s| s.capitalize! }.join('')
 	end
 
-	# Load labels given by the user
-	# @param key key of criteria in config file
+	# Load labels given by the user.
+	# If the label doesn't exist, it will created with the name of the method.
+	# @param key Key of criteria in config file
 	def load_labels(key)
 		if Cfg.has_key? key
-			Cfg[key].each do |meth, crit|
-				@name_crits[meth] = crit == nil ? create_label(meth.to_s) : crit
+			Cfg[key].each do |meth, label|
+				# only if meth is loaded in @criteria
+				@labels_crits[meth] = (label == nil ? create_label(meth.to_s) : label) if @criteria.key? meth
 			end
 		end		
 	end
 
-	# Create label for method in params
+	# Create label for a method.
 	# @param meth [String] method linked to the label
 	# @return [String] Renamed Label inspired of the name of the method
 	def create_label(meth)
