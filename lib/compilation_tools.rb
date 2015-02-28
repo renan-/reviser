@@ -1,3 +1,5 @@
+require_relative 'core_tools'
+
 #
 # @Author Yann Prono
 # @Author Renan Strauss
@@ -7,6 +9,10 @@
 #
 
 module CompilationTools
+
+	# Needed for compilation
+	include CoreTools
+	
 	#
 	# Only here for compiled language,
 	#
