@@ -31,12 +31,12 @@ class Cfg
 
 		populate YAML.load(File.read(cfg_file))
 
-		filename_sort = File.join(@root,'sort',"#{@@mem[:sort]}.yml")
-		sort_cfg = YAML.load(File.read(filename_sort))
-		populate YAML.load(File.read(File.join(@root,'lang',"#{sort_cfg['language']}.yml")))
+		type_file = File.join(@root,'type',"#{@@mem[:type]}.yml")
+		type_cfg  = YAML.load(File.read(type_file))
+		populate YAML.load(File.read(File.join(@root,'lang',"#{type_cfg['language']}.yml")))
 		# So that project's type Cfg overrides
 		# lang Cfg
-		populate sort_cfg
+		populate type_cfg
 	end
 
 private
