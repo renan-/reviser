@@ -12,8 +12,6 @@ require_relative 'git'
 class Organiser < Component
 	include Git
 
-	attr_accessor :path
-
 	# All entries to ignore during sort and organization
 	$rejected_entries = ['.', '..', '__MACOSX']
 
@@ -22,7 +20,7 @@ class Organiser < Component
 		super data
 
 		@directory = Cfg[:dest]
-		@path = nil
+		@path = @directory
 		@git = nil
 	end
 
@@ -43,12 +41,12 @@ class Organiser < Component
 	# Method which moves project's directories in order to
 	# have the same hierarchy for all.
 	def structure(entry)
-		chdir File.join(@directory, entry)
-		@logger.info { "#{entry} => #{path}" }
+		chdir entry
+		@logger.info { "#{entry} => #{@path}" }
 		level = 0
 
-		@logger.info { "Files in #{path}\n#{all}" }
-		@logger.info {"Dirs in #{path}\n#{directories}" }
+		@logger.info { "Files in #{@path}\n#{all}" }
+		@logger.info {"Dirs in #{@path}\n#{directories}" }
 		# directory to delete if the project directory is not structured
 		rm = directories.first
 		
@@ -59,22 +57,24 @@ class Organiser < Component
 		# while there are only directories
 		# in the current directory
 		#
-		while all(@path) == directories
+		while all == directories
 			level += 1
-			@logger.debug { "Level += 1\nPath = #{path}" }
-			chdir File.join(path, directories.first)
-			@logger.debug { "New path = #{path}" }
+			@logger.debug { "Level += 1\nPath = #{@path}" }
+			chdir directories.first
+			@logger.debug { "New path = #{@path}" }
 		end
 
 		# If the core of project is not at the root of directory ...
 		if level >= 1
-			Dir.glob(File.join(path,'*')).each do |file|
+			Dir.glob(File.join(@path,'*')).each do |file|
 				FileUtils.mv(file,File.join(@directory, entry))
 			end
 			@logger.info { "Structuring #{File.join(@path)}" }
 			@logger.info {"Removing #{File.join(@directory, entry, rm)}" }
 			FileUtils.rm_rf(File.join(@directory, entry, rm))
 		end
+
+		@path = @directory
 	end
 
 	def git(entry)
@@ -102,19 +102,22 @@ class Organiser < Component
 
 private
 
-	def all(path = @directory)
-		Dir.entries(path) - $rejected_entries
+	#
+	# Take attention : these accessors
+	# are meant to be used by structure
+	# only ! Because @path is initialized
+	# for that, and used only in this def
+	#
+	def all
+		Dir.entries(@path) - $rejected_entries
 	end
 
 	def directories
-		if @path == nil
-			all.select { |e| File.directory? File.join(@directory, e) }
-		else
-			all(@path).select { |e| File.directory? File.join(@path, e) }
-		end
+		all.select { |e| File.directory? File.join(@path, e) }
 	end
 
 	def chdir(dir)
-		@path = dir
+		base = @path
+		@path = File.join(base, dir)
 	end
 end
