@@ -71,6 +71,7 @@ protected
 	# @param criterion The criteria
 	# @param module_name The name of the module.
 	def populate(criterion, module_name)
+		raise "Criterion '#{criterion}' is already defined in #{@criteria[criterion.to_sym]} (#{criterion}/#{module_name}).\nPlease change the name of the method in one of modules." if @criteria.has_key? criterion.to_sym
 		@criteria[criterion.to_sym] = module_name
 	end
 
@@ -85,7 +86,7 @@ protected
 			ext = File.extname m
 			module_name = Object.const_get "#{camelize(File.basename(m,ext))}", false
 			@logger.info { "Load #{module_name}" }
-			methods = module_name.instance_methods
+			methods = module_name.instance_methods false
 			methods.each { |method| populate(method, module_name) }
  		end	
  	end
