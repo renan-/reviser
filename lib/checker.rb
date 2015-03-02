@@ -51,7 +51,7 @@ private
 		
 		# for each method asked by user with its label
 		@output.each do |meth, label|
-			@results[proj][label] = call meth
+			@results[proj][label] = call meth if(@criteria.has_key? meth)
 		end
 	end
 

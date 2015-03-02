@@ -50,7 +50,7 @@ module CriteriaHelper
 	def call(meth)
 		if @criteria.key? meth
 			self.class.send(:include, @criteria[meth]) unless respond_to? meth
-			var = send meth
+			send meth
 		else
 			nil
 		end
