@@ -1,7 +1,10 @@
+#
 # Provide important methods
 # for compilation or something like that.
 #
+# @author Renan Strauss
 # @author Yann Prono
+#
 module Utils
 	#
 	# For interpreted languages

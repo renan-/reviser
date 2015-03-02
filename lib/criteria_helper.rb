@@ -24,6 +24,7 @@ require_relative 'config'
 #	end
 #
 # @author Yann Prono
+# @author Renan Strauss
 #
 module CriteriaHelper
 
@@ -43,17 +44,6 @@ module CriteriaHelper
 	# Path of extensions
 	EXT = File.join(File.dirname(PWD), 'ext')
 
-	def init_criteria_helper
-		@criteria = Hash.new
-		@output = Hash.new
-
-		load PWD, '*tool*'
-		load EXT, '*'
-
-		prepare :criteria
-		load_labels :criteria
-	end
-
 	# Enable to call a specified method.
 	# @param meth [String] Method to call.
 	# @return results of the method.
@@ -67,25 +57,7 @@ module CriteriaHelper
 	end
 
 
-	# Prepare all criterias provided by the user in the config file.
-	# @param key key of config file
-	def prepare(key)
-
-		if Cfg.has_key? key
-			# Diff between modules of app and input of user
-			unknown_modules = (Cfg[key].keys.map &:to_sym) - all
-
-			# Get all criterias to delete
-			to_delete = Cfg[key].empty? ? {} : all - (Cfg[key].keys.map &:to_sym)
-			to_delete = to_delete + unknown_modules
-
-			# Delete now !
-			to_delete.each {|crit| @criteria.delete(crit.to_sym)}
-		end
-	end
-
-
-	private 
+protected
 
 	# Get all criteria which can be used.
 	# @return [Array] all criteria
@@ -125,10 +97,10 @@ module CriteriaHelper
 	# If the label doesn't exist, it will created with the name of the method.
 	# @param key Key of criteria in config file
 	def load_labels(key)
-		if Cfg.has_key? key
+		if Cfg.has_key?(key) && Cfg[key].respond_to?('each')
 			Cfg[key].each do |meth, label|
 				# only if meth is loaded in @criteria
-				@output[meth] = (label == nil ? create_label(meth.to_s) : label) if @criteria.key? meth
+				@output[meth] = (label == nil ? create_label(meth.to_s) : label)
 			end
 		end		
 	end

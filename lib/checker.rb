@@ -55,4 +55,22 @@ private
 		end
 	end
 
+	#
+	# This method is what would be the constructor
+	# of criteria_helper if it was a class
+	#
+	def init_criteria_helper
+		@criteria = Hash.new
+		@output = Hash.new
+
+		load PWD, '*tool*'
+		load EXT, '*'
+
+		keys = [:criteria, :extensions]
+
+
+		#keys.each { |x| prepare x }
+		keys.each { |x| load_labels x }
+	end
+
 end

@@ -60,6 +60,10 @@ criteria:
   :compile: Resultats compilation
   :execute: Resultats execution
 
+extensions:
+  :memleaks: Fuites memoires
+
+
 # Options of all components
 # For the moment, there is just verbose option (for logger)
 options: 
