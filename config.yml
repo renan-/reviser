@@ -52,7 +52,7 @@ timeout: 5
 # Can be overriden or declared in
 # project's config file
 #
-criterias:
+criteria:
   :all_files: Fichiers
   :src_files: Fichiers sources
   :lines_count: Nombre de lignes de code

@@ -45,8 +45,8 @@ class CriteriaManager
 		@labels_crits = Hash.new
 		load(PWD, '*tool*')
 		load(EXT, '*')
-		prepare :criterias
-		load_labels :criterias
+		prepare :criteria
+		load_labels :criteria
 	end
 
 	# @return criterion => label of criterion
