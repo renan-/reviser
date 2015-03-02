@@ -25,14 +25,17 @@ require_relative 'config'
 #
 # @author Yann Prono
 #
-class CriteriaManager
+module CriteriaHelper
+
+	attr_reader :criteria
+	attr_reader :output
 
 	# All criterias available.
 	# :criterion => Name of the module
 	@criteria
 
 	# :criterion => label of criterion
-	@labels_crits
+	@output
 
 	# Current directory of this file
 	PWD = File.dirname(__FILE__)
@@ -40,18 +43,15 @@ class CriteriaManager
 	# Path of extensions
 	EXT = File.join(File.dirname(PWD), 'ext')
 
-	def initialize
+	def init_criteria_helper
 		@criteria = Hash.new
-		@labels_crits = Hash.new
-		load(PWD, '*tool*')
-		load(EXT, '*')
+		@output = Hash.new
+
+		load PWD, '*tool*'
+		load EXT, '*'
+
 		prepare :criteria
 		load_labels :criteria
-	end
-
-	# @return criterion => label of criterion
-	def criteria
-		return @labels_crits
 	end
 
 	# Enable to call a specified method.
@@ -109,7 +109,7 @@ class CriteriaManager
 		modules.each do |m|
 			require_relative m
 			ext = File.extname m
-			module_name = Object.const_get("#{camelize(File.basename(m,ext))}")
+			module_name = Object.const_get "#{camelize(File.basename(m,ext))}", false
 			methods = module_name.instance_methods
 			methods.each { |method| populate(method, module_name) }
  		end	
@@ -128,7 +128,7 @@ class CriteriaManager
 		if Cfg.has_key? key
 			Cfg[key].each do |meth, label|
 				# only if meth is loaded in @criteria
-				@labels_crits[meth] = (label == nil ? create_label(meth.to_s) : label) if @criteria.key? meth
+				@output[meth] = (label == nil ? create_label(meth.to_s) : label) if @criteria.key? meth
 			end
 		end		
 	end

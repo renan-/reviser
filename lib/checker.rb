@@ -9,18 +9,17 @@
 #
 require 'open3'
 
-require_relative 'criteria_manager'
+require_relative 'criteria_helper'
 
 class Checker < Component
-	
-	# Manager of criteria
-	@crit_manager
+	include CriteriaHelper
 
 	def initialize(data)
 		super data
-		
+
+		init_criteria_helper
+
 		@results = {}
-		@crit_manager = CriteriaManager.new
 	end
 
 	# Yann : je ne recupere pas les datas de l'organiser,
@@ -51,8 +50,8 @@ private
 		@results[proj] = {}
 		
 		# for each method asked by user with its label
-		@crit_manager.criteria.each do |meth, label|
-			@results[proj][label] = @crit_manager.call meth
+		@output.each do |meth, label|
+			@results[proj][label] = call meth
 		end
 	end
 

@@ -1,4 +1,4 @@
-require_relative 'core_tools'
+require_relative 'utils'
 
 #
 # @Author Yann Prono
@@ -9,9 +9,7 @@ require_relative 'core_tools'
 #
 
 module CompilationTools
-
-	# Needed for compilation
-	include CoreTools
+	include Utils
 	
 	#
 	# Only here for compiled language,

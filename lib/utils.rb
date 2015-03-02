@@ -2,7 +2,7 @@
 # for compilation or something like that.
 #
 # @author Yann Prono
-module CoreTools
+module Utils
 	#
 	# For interpreted languages
 	# We only check for missing files
