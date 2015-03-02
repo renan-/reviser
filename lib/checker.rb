@@ -51,7 +51,11 @@ private
 		
 		# for each method asked by user with its label
 		@output.each do |meth, label|
-			@results[proj][label] = call meth if(@criteria.has_key? meth)
+			if @criteria.has_key? meth
+				@results[proj][label] = call meth 
+			else
+				@logger.error { "Unknown method '#{meth}'' for project #{proj}" }
+			end
 		end
 	end
 
@@ -66,11 +70,7 @@ private
 		load PWD, '*tool*'
 		load EXT, '*'
 
-		keys = [:criteria, :extensions]
-
-
-		#keys.each { |x| prepare x }
-		keys.each { |x| load_labels x }
+		[:criteria, :extensions].each { |x| load_labels x }
 	end
 
 end

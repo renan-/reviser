@@ -49,8 +49,10 @@ module CriteriaHelper
 	# @return results of the method.
 	def call(meth)
 		if @criteria.key? meth
+			@logger.info { "Include methods of #{@criteria[meth]}" } unless respond_to? meth
 			self.class.send(:include, @criteria[meth]) unless respond_to? meth
-			send meth
+
+			send meth 
 		else
 			nil
 		end
@@ -82,6 +84,7 @@ protected
 			require_relative m
 			ext = File.extname m
 			module_name = Object.const_get "#{camelize(File.basename(m,ext))}", false
+			@logger.info { "Load #{module_name}" }
 			methods = module_name.instance_methods
 			methods.each { |method| populate(method, module_name) }
  		end	
