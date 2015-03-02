@@ -9,7 +9,6 @@ Reviser::setup 'config.yml'
 # accordingly to the insertion order
 Reviser::load :component => 'archiver'
 Reviser::load :component => 'organiser'
-#Revisier::load :component => 'git_organiser'
 Reviser::load :component => 'checker', :inputFrom => 'organiser'
 Reviser::load :component => 'generator', :inputFrom => 'checker'
 
