@@ -39,15 +39,18 @@ module CriteriaHelper
 	@output
 
 	# Current directory of this file
-	PWD = File.dirname(__FILE__)
+	PWD = File.dirname __FILE__
 
 	# Path of extensions
-	EXT = File.join(File.dirname(PWD), 'ext')
+	EXT = File.join File.dirname(PWD), 'ext'
+
+	# Path of label file
+	LABELS = File.join File.dirname(PWD), 'labels.yml'
 
 	# Enable to call a specified method.
 	# @param meth [String] Method to call.
 	# @return results of the method.
-	def call(meth)
+	def call meth
 		if @criteria.key? meth
 			@logger.info { "Include methods of #{@criteria[meth]}" } unless respond_to? meth
 			self.class.send(:include, @criteria[meth]) unless respond_to? meth
@@ -70,7 +73,7 @@ protected
 	#  from Cfg file to symbols
 	# @param criterion The criteria
 	# @param module_name The name of the module.
-	def populate(criterion, module_name)
+	def populate criterion, module_name
 		raise "Criterion '#{criterion}' is already defined in #{@criteria[criterion.to_sym]} (#{criterion}/#{module_name}).\nPlease change the name of the method in one of modules." if @criteria.has_key? criterion.to_sym
 		@criteria[criterion.to_sym] = module_name
 	end
@@ -78,7 +81,7 @@ protected
 	# Load all of modules available for the analysis
 	# @param directory Directory where search of modules is done.
 	# @param regex regex to find name of modules.
-	def load(directory, regex = '*')
+	def load directory, regex = '*'
 		modules =  Dir[File.join(directory, regex)]
 
 		modules.each do |m|
@@ -93,27 +96,29 @@ protected
 
 	# Gets the name of module 
 	# @param file_module Name of the file module.
-	def camelize(file_module) 
+	def camelize file_module
 		file_module.split('_').each {|s| s.capitalize! }.join('')
 	end
 
 	# Load labels given by the user.
 	# If the label doesn't exist, it will created with the name of the method.
 	# @param key Key of criteria in config file
-	def load_labels(key)
+	def load_labels key 
+		labels = YAML.load File.read LABELS
 		if Cfg.has_key?(key) && Cfg[key].respond_to?('each')
 			Cfg[key].each do |meth, label|
-				# only if meth is loaded in @criteria
-				@output[meth] = (label == nil ? create_label(meth.to_s) : label)
+				# label not redefined ?          take label into labels.yml  if it is present 	          else create it !
+				label = label == nil ? ((labels.respond_to?('[]') && labels.key?(meth)) ? labels[meth] : create_label(meth) ) : label
+				@output[meth] = label
 			end
-		end		
+		end
 	end
 
 	# Create label for a method.
 	# @param meth [String] method linked to the label
 	# @return [String] Renamed Label inspired of the name of the method
-	def create_label(meth)
-		meth.split('_').each {|s| s.capitalize! }.join(' ')
+	def create_label meth
+		meth.to_s.split('_').each {|s| s.capitalize! }.join(' ')
 	end
 
 end
