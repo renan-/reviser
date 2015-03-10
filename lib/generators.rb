@@ -116,4 +116,8 @@ private
 	def out(ext)
 		Cfg[:out] + ext
 	end
+
+	def file? path
+		File.exist?(path)
+	end
 end

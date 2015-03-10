@@ -7,6 +7,8 @@ module Valgrind
 
 	include Utils
 
+	VALGRIND_FILE = "valgrind.txt"
+
 	#
 	# Check memory leaks of the program
 	# The module uses execution value written in the config file of the project 
@@ -17,6 +19,7 @@ module Valgrind
 		param = Cfg.has_key?(:execution_value) ? Cfg[:execution_value].first : ''
 		cmd = "valgrind --leak-check=full --track-origins=yes --show-reachable=yes #{program} #{param}"
 		out = exec_with_timeout cmd
-		"$ #{cmd}\r#{out[:stdout]}\r#{out[:stderr]}"
+		File.open(VALGRIND_FILE, 'w') { |f| f.write "$ #{cmd}\r#{out[:stdout]}\r#{out[:stderr]}" }
+		File.join(FileUtils.pwd, VALGRIND_FILE)
 	end
 end
