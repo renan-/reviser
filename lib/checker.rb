@@ -12,7 +12,7 @@ require 'open3'
 require_relative 'criteria_helper'
 
 class Checker < Component
-	include CriteriaHelper
+	include CriteriaHelper::Criteria
 
 	def initialize(data)
 		super data

@@ -29,7 +29,7 @@ class Cfg
 		@@mem = {}
 
 		populate YAML.load(File.read(cfg_file))
-
+		
 		type_file = File.join(ROOT,'type',"#{@@mem[:type]}.yml")
 		type_cfg  = YAML.load(File.read(type_file))
 		populate YAML.load(File.read(File.join(ROOT,'lang',"#{type_cfg['language']}.yml")))

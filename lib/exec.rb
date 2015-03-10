@@ -2,6 +2,7 @@ require 'thor'
 require 'fileutils'
 
 require_relative 'reviser'
+require_relative 'criteria_helper'
 
 #
 # Module used for managing all actions in command line
@@ -108,6 +109,13 @@ class Exec < Thor
 		Reviser::load :component => 'generator', :inputFrom => 'checker'
 		Reviser::run
 	end
+
+	desc 'add METH "LABEL" ', 'Add to the method METH a static LABEL'
+	def add meth, label
+		CriteriaHelper::LabelHelper.add meth, label
+		message("Add Label",meth + " => " + label)
+	end
+
 
 	no_tasks do
   		# A Formatter message for command line

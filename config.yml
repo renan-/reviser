@@ -53,15 +53,15 @@ timeout: 5
 # project's config file
 #
 criteria:
-  :all_files: Fichiers
-  :src_files: Fichiers sources
-  :lines_count: Nombre de lignes de code
-  :comments_count: Nombre de lignes de commentaires
-  :compile: Resultats compilation
-  :execute: Resultats execution
+  - all_files
+  - src_files
+  - lines_count
+  - comments_count
+  - compile
+  - execute
 
 extensions:
-  :memleaks: Fuites memoires
+  - memleaks
 
 
 # Options of all components
