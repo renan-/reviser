@@ -110,10 +110,11 @@ class Exec < Thor
 		Reviser::run
 	end
 
-	desc 'add METH "LABEL" ', 'Add to the method METH a static LABEL'
+	# For the moment, associate a label to a criterion (method).
+	desc 'add METH "LABEL" ', 'Add to the method METH a associated LABEL'
 	def add meth, label
-		CriteriaHelper::LabelHelper.add meth, label
-		message("Add Label",meth + " => " + label)
+		res = CriteriaHelper::LabelHelper.add meth, label
+		message "#{res} label",meth + " => " + label
 	end
 
 

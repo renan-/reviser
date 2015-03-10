@@ -1,6 +1,6 @@
 require 'fileutils'
 
-require_relative 'extractor'
+require_relative 'extractors'
 
 #
 # Manages uncompression of archive.
@@ -12,6 +12,8 @@ require_relative 'extractor'
 # @author	Yann Prono
 #
 class Archiver < Component
+
+	extend Extractors
 
 	attr_reader :src, :destination
 
@@ -48,9 +50,12 @@ class Archiver < Component
 		ext = File.extname(file_name)
 		ext = ext.delete '.'
 
+		# Raise exception if the format is unknown by Archiver
+		raise "Unknown format '#{r}'" unless respond_to?(ext)
+
 		self::destination? destination
 
-		Extractor.send(ext,file_name, destination)
+		send(ext,file_name, destination)
 	end
 
 	#
@@ -64,6 +69,7 @@ class Archiver < Component
 		@logger.info { 'First extraction' }
 		# Extract the original archive
 		Archiver.extract(@src, @destination)
+		@logger.info { 'First extraction' }
 		@logger.info { 'Extraction of sub archives' }
 		
 		# Extract all sub archives
@@ -84,6 +90,7 @@ class Archiver < Component
 			# In case of it can't extract 
   			rescue => e
   				@logger.error {"Can't extract #{entry}: #{e.message}" }
+  				FileUtils.rm_rf(File.join(@destination,entry))
   			end
   		end
   		@logger.info { "[#{extracted}/#{entries.size}] projects have been processed" }

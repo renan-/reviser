@@ -1,38 +1,37 @@
 require_relative 'config'
 
 # Manage criteria and labels.
-# Criteria Manager provides all criteria available.
-# It's also managed labels of criterion
-# To add a criterion, the user has to write in the config file
-# all criteria he wants.
-#
-# Convention over configuration !
-# Criteria manager imports automaticlly all ruby files 
-# containing 'tool' in its filename.
-# 
+
 # @example Call a criterion (in the config File):
 #   criteria:
 #     - :count_lines: Number of lines
 #     - :list_files: List of all files
 #     - :<method>: <label of method>
-
-# @example Write a module:
-# Create a file with name as this regex '*tool.rb*' => 'my_module_tools.rb'
-# header of this module :
-# 	module MyModuleTools
-#   ...
-#	end
 #
 # @author Yann Prono
 # @author Renan Strauss
 #
 module CriteriaHelper
 
-		# Current directory of this file
-		PWD = File.dirname __FILE__
-
+	# This module enables to 
+	# imports automaticlly all modules for the analysis
+	#
+	# Convention over configuration !
+	# A analysis module contains the word 'tool' in its filename.
+	# You also have the possibility to put code in the ext folder.
+	#
+	# @example Call a criterion during analysis (in the config File):
+	#   criteria:
+	#     - :count_lines
+	#     - :list_files
+	#     - :<method>: <custom label>
+	#
+	# In the last item of the list, the custom label will overwrite the label 
+	# in labels.yml if it exist.
+	# 
 	module Criteria
 		
+		# Where I am ?	
 		PWD = File.dirname __FILE__
 		# Path of extensions
 		EXT = File.join File.dirname(PWD), 'ext'
@@ -46,8 +45,6 @@ module CriteriaHelper
 
 		# :criterion => label of criterion
 		@output
-
-	
 
 		# Enable to call a specified method.
 		# @param meth [String] Method to call.
@@ -134,6 +131,12 @@ module CriteriaHelper
 
 
 	# Manage all actions for adding, updating or getting labels of Reviser.
+	# A label is a a group of words, describing the associated criterion (method).
+	#
+	# @example  
+	#  	criterion => label
+	# 	all_files => all files of project
+	#
 	# known Labels are in the labels.yml file.
 	#
 	# @author Yann Prono
@@ -142,22 +145,26 @@ module CriteriaHelper
 		# Current directory of this file
 		PWD = File.dirname __FILE__
 
-		# Path of label file
+		# Path of label.yml file
 		LABELS = File.join(File.dirname(PWD), 'labels.yml')
 
 		#
 		# Enable to associate a label to a criterion (method).
+		# The label will be saved in the 'labels.yml' file
 		# @param meth Method to link.
 		# @param label Label to link with the method.
 	    def self.add meth, label
+	    	res = "Create"
 			labels = YAML.load File.open(LABELS)
 			if labels.respond_to? '[]'
+				res = "Update" if labels.key? meth
 				labels[meth] = label
 				File.open(LABELS, 'w') { |f| f.write labels.to_yaml }
 			end
+			res
 		end
 
-		# @return all known labels by reviser
+		# @return Hash all known labels by reviser.
 		# :criterion => label
 		def self.load
 			LabelHelper.populate(YAML.load(File.open(LABELS)))
