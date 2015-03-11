@@ -22,6 +22,9 @@ class Organiser < Component
 		@directory = Cfg[:dest]
 		@path = @directory
 		@git = nil
+		@count = {}
+		@students = []
+		@groups = []
 	end
 
 	# Rename directories more clearly
@@ -90,6 +93,7 @@ class Organiser < Component
 	def run
 		projects = Dir.entries(@directory) - $rejected_entries
 		projects.each do |entry|
+			format entry
 			@logger.info { 'Structure projects' }
 			structure entry
 
@@ -98,6 +102,9 @@ class Organiser < Component
 
 			@logger.info { 'Renaming directories' }
 			rename entry
+
+			puts @groups.inspect
+			puts @students.inspect
 		end
 	end
 
@@ -120,4 +127,5 @@ private
 		base = @path
 		@path = File.join(base, dir)
 	end
+	
 end
