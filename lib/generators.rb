@@ -76,6 +76,7 @@ module Generators
 	# Generates an HTML file 
 	def html(ext = '.html')
 		out = '<!DOCTYPE html><html><head>'
+		out += '<meta charset= "UTF-8">'
 		out += "<link rel=\"stylesheet\" href=\"#{Cfg[:res_dir]}/css/component.css\" />"
 		out += "<link rel=\"stylesheet\" href=\"#{Cfg[:res_dir]}/css/normalize.css\" />"
 		out += '<script src="res/js/component.css"></script>'
@@ -95,7 +96,10 @@ module Generators
 				else 
 					out += '<td>'
 				end
-				out += "<pre>#{v}</pre></td>"
+
+				# If file, generate a link, else do nothing !
+				out += file?(v) && "<pre><a href=\"#{v.gsub(' ','%20')}\" target=\"_blank\">#{v}</a></pre></td>" ||"<pre>#{v}</pre></td>"
+
 			end
 			out += '</tr>'
 		end
@@ -118,6 +122,7 @@ private
 	end
 
 	def file? path
-		File.exist?(path)
+		File.exist? path.to_s
 	end
+
 end
