@@ -1,6 +1,7 @@
 require 'fileutils'
 
 require_relative 'git'
+require_relative 'project_properties'
 
 # Class which organizes all directories to simplify projects'  analysis.
 # Organiser renames projects folders and organises the whole of projects
@@ -11,6 +12,7 @@ require_relative 'git'
 #
 class Organiser < Component
 	include Git
+	include ProjectProperties
 
 	# All entries to ignore during sort and organization
 	$rejected_entries = ['.', '..', '__MACOSX']
@@ -29,16 +31,9 @@ class Organiser < Component
 
 	# Rename directories more clearly
 	def rename(entry)
-		#apply regex and take first match
-		name = entry.scan(Cfg[:projects_names]).first
-		entry = File.join(@directory, entry)
-		if name != nil
-			name = File.join(@directory, name)
-			FileUtils.mv(entry, name)
-			@logger.info { "renaming #{File.basename(entry)} to #{File.basename(name)}" }
-		else 
-			@logger.warn { "can't rename #{File.basename(entry)} (no matches with regex of config)" }
-		end
+		name = format entry
+		FileUtils.mv(File.join(@directory, entry), File.join(@directory,name))
+		@logger.info { "renaming #{File.basename(entry)} to #{File.basename(name)}" }
 	end
 
 	# Method which moves project's directories in order to
@@ -93,7 +88,6 @@ class Organiser < Component
 	def run
 		projects = Dir.entries(@directory) - $rejected_entries
 		projects.each do |entry|
-			format entry
 			@logger.info { 'Structure projects' }
 			structure entry
 
@@ -102,9 +96,6 @@ class Organiser < Component
 
 			@logger.info { 'Renaming directories' }
 			rename entry
-
-			puts @groups.inspect
-			puts @students.inspect
 		end
 	end
 

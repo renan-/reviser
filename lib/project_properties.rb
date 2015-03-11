@@ -1,5 +1,5 @@
-module Project_analyser
-	
+module ProjectProperties
+
 	SYMBOLES = {
 		:class 	=> 'CLASS',
 		:name 	=> 'NAME',
@@ -35,6 +35,13 @@ module Project_analyser
 			group << eval("$#{i}")
 		end	
 		@groups << group
+		generate_label group
+	end
+
+	def generate_label names
+		label = ""
+		names.each {|n| label += label == "" ? n : " " + n }
+		label
 	end
 
 end
