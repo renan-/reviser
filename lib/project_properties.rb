@@ -5,9 +5,6 @@
 # @author Yann Prono
 module ProjectProperties
 
-	# Represents all pssibilities of the end of the name of directory.
-	REGEX_END = "[\\.[a-z.]+]*"
-
 	# Dictionnary for regex in config file
 	SYMBOLS = {
 		:class 	=> 'CLASS',
@@ -45,9 +42,13 @@ module ProjectProperties
 	# directory project.
 	# @param entry Project to read
 	def format entry
+		ext = File.extname(entry)
+		entry = File.basename(entry, ext)
+		puts entry
+
 		analyze_formatter if @count.empty?
 		nb_students = 0
-		regex = Cfg[:projects_names] + REGEX_END
+		regex = Cfg[:projects_names]
 
 		@count.each do |k,v|
 			regex = regex.gsub(SYMBOLS[k], REGEX[k])
@@ -61,6 +62,7 @@ module ProjectProperties
 		# Nomber of students is detected with the numbers of occurence of special words
 		for i in 1..nb_students
 			@students << eval("$#{i}")
+			puts eval("$#{i}")
 			group << eval("$#{i}")
 		end
 		
