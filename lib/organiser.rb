@@ -96,7 +96,9 @@ class Organiser < Component
 
 			@logger.info { 'Renaming directories' }
 			rename entry
-		end
+		end		
+		@logger.info { "#{@groups.size} groups have been detected" }
+		@logger.info { "#{@students.size} students have been detected" }	
 	end
 
 private

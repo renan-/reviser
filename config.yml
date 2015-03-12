@@ -17,7 +17,10 @@ dest: projects
 ############  	Organiser config 	############
 
 # Projects naming, useful to rename folders
-projects_names: !ruby/regexp '/^[a-zA-Z]+[ ]+[a-zA-Z]+/'
+# NAME => ONLY the name of the student
+# NAME#FIRST => the name and the firstime  of the student, separated with a space
+# 'S3A_NAME_NAME'   'S3A_NAME#FIRST'   
+projects_names: 'NAME#FIRST'
 
 
 ############ 	Generator config '	############
