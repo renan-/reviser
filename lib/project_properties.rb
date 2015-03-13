@@ -60,6 +60,7 @@ module ProjectProperties
 	# generate a name for the directory.
 	# @return String the formatted label
 	def generate_label infos
+		puts infos.inspect
 		label = ""
 		infos.each {|i| label += label == "" ? i : " " + i }
 		label
@@ -90,25 +91,34 @@ module ProjectProperties
 		regex = Cfg[:projects_names]
 		nb_students = 0
 		group = []
-		puts get_position regex
-		position = (get_position regex).select{ |k,v| v == :name}
+		position = get_position regex
 
 		@count.each do |k,v|
 			regex = regex.gsub(SYMBOLS[k], REGEX[k])
 			nb_students += v if k == :name
 		end
+		puts position
 
 		# Apply created regex
 		entry.match(Regexp.new(regex))
+		incr = 0
+		incr = 1 if @count.key?(:firstname) && @count.key?(:name)
+		pos = 1
+		begin
+			tmp =  incr == 0 ? eval("$#{pos}") : eval("$#{pos}") + " " + eval("$#{pos + incr}")
+			@students << tmp
+			group << tmp
+			pos += 1 + incr
+		end while pos <= position.size
 		
-
-		position.each do |pos, n| 
-			@students << eval("$#{pos}")
-			group << eval("$#{pos}")
-			# TODO
-			@groups << eval("$#{pos}")
-		end
+		@groups << group
+		
 		group
 	end
 
 end
+
+
+#prono_yann.zip
+# 1 => name 
+# 2 => firstname
