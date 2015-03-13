@@ -8,7 +8,7 @@ module ProjectProperties
 	# Dictionnary for regex in config file
 	SYMBOLS = {
 		:class 	=> 'CLASS',
-		:name_firstname 	=> 'NAME#FIRST',
+		:firstname 	=> 'FIRSTN',
 		:name 	=> 'NAME',
 		:user 	=> 'USER',
 		:lambda	=>	'LAMBDA'
@@ -17,8 +17,8 @@ module ProjectProperties
 	# Regex to associate, depending the used word in Cfg
 	REGEX = {
 		:class 	=> '([^_]*)',
-		:name_firstname 	=> '([^_]* [^_]*)',
-		:name 	=> '([^_]*)',
+		:firstname 	=> '([^_]*)',
+		:name 	=> '([^_]*)', 
 		:user 	=> '([^_]*)',
 		:lambda 	=> '[a-zA-Z0-9 _]*',
 	}
@@ -42,31 +42,16 @@ module ProjectProperties
 	# directory project.
 	# @param entry Project to read
 	def format entry
-		ext = File.extname(entry)
-		entry = File.basename(entry, ext)
-		puts entry
+		ext = File.extname entry
+		entry = File.basename entry, ext
 
 		analyze_formatter if @count.empty?
-		nb_students = 0
+
 		regex = Cfg[:projects_names]
 
-		@count.each do |k,v|
-			regex = regex.gsub(SYMBOLS[k], REGEX[k])
-			nb_students += v if k == :name
-		end
+		nb_students = 0
 
-		# Apply created regex
-		entry.match(Regexp.new(regex))
-		group = []
-
-		# Nomber of students is detected with the numbers of occurence of special words
-		for i in 1..nb_students
-			@students << eval("$#{i}")
-			puts eval("$#{i}")
-			group << eval("$#{i}")
-		end
-		
-		@groups << group
+		group = check_entry_name entry
 		generate_label group
 	end
 
@@ -78,6 +63,50 @@ module ProjectProperties
 		label = ""
 		infos.each {|i| label += label == "" ? i : " " + i }
 		label
+	end
+
+	# I'm not pround of this method ...
+	def get_position_names regex
+		res = {}
+		SYMBOLS.each do |k,v|
+			regex.scan(v) do |c|
+				res[$~.offset(0)[0]] = k
+			end
+		end
+
+		res = (res.sort_by { |k,v| k }).to_h
+		tmp = {}
+
+		index = 1
+		res.each do |k,v|
+			tmp[index] = v
+			index += 1
+		end
+		tmp
+	end
+
+	
+	def check_entry_name entry
+		regex = Cfg[:projects_names]
+		nb_students = 0
+		group = []
+		position = (get_position_names regex).select{ |k,v| v == :name}
+
+		@count.each do |k,v|
+			regex = regex.gsub(SYMBOLS[k], REGEX[k])
+			nb_students += v if k == :name
+		end
+
+		# Apply created regex
+		entry.match(Regexp.new(regex))
+
+		position.each do |pos, n| 
+			@students << eval("$#{pos}")
+			group << eval("$#{pos}")
+			# TODO
+			@groups << eval("$#{pos}")
+		end
+		group
 	end
 
 end
