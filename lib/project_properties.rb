@@ -66,7 +66,7 @@ module ProjectProperties
 	end
 
 	# I'm not pround of this method ...
-	def get_position_names regex
+	def get_position regex
 		res = {}
 		SYMBOLS.each do |k,v|
 			regex.scan(v) do |c|
@@ -90,7 +90,8 @@ module ProjectProperties
 		regex = Cfg[:projects_names]
 		nb_students = 0
 		group = []
-		position = (get_position_names regex).select{ |k,v| v == :name}
+		puts get_position regex
+		position = (get_position regex).select{ |k,v| v == :name}
 
 		@count.each do |k,v|
 			regex = regex.gsub(SYMBOLS[k], REGEX[k])
@@ -99,6 +100,7 @@ module ProjectProperties
 
 		# Apply created regex
 		entry.match(Regexp.new(regex))
+		
 
 		position.each do |pos, n| 
 			@students << eval("$#{pos}")
