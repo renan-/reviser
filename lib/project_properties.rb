@@ -17,8 +17,8 @@ module ProjectProperties
 	# Regex to associate, depending the used word in Cfg
 	REGEX = {
 		:class 	=> '([^_]*)',
-		:firstname 	=> '([^_]*)',
-		:name 	=> '([^_]*)', 
+		:firstname 	=> '([A-Za-z\-]+)',
+		:name 	=> '([A-Za-z]+)', 
 		:user 	=> '([^_]*)',
 		:lambda 	=> '[a-zA-Z0-9 _]*',
 	}
@@ -60,10 +60,11 @@ module ProjectProperties
 	# generate a name for the directory.
 	# @return String the formatted label
 	def generate_label infos
-		puts infos.inspect
-		label = ""
-		infos.each {|i| label += label == "" ? i : " " + i }
-		label
+		if !infos.empty?
+			label = ""
+			infos.each {|i| label += label == "" ? i : " " + i }
+			label
+		end
 	end
 
 	# I'm not pround of this method ...
@@ -89,36 +90,45 @@ module ProjectProperties
 	
 	def check_entry_name entry
 		regex = Cfg[:projects_names]
-		nb_students = 0
 		group = []
 		position = get_position regex
 
 		@count.each do |k,v|
-			regex = regex.gsub(SYMBOLS[k], REGEX[k])
-			nb_students += v if k == :name
+			regex = regex.gsub SYMBOLS[k], REGEX[k]
 		end
-		puts position
-
+		
 		# Apply created regex
-		entry.match(Regexp.new(regex))
-		incr = 0
-		incr = 1 if @count.key?(:firstname) && @count.key?(:name)
+		entry.match Regexp.new(regex)
 		pos = 1
+
 		begin
-			tmp =  incr == 0 ? eval("$#{pos}") : eval("$#{pos}") + " " + eval("$#{pos + incr}")
-			@students << tmp
-			group << tmp
-			pos += 1 + incr
+			tmp = eval "$#{pos}"
+			if tmp != nil
+				group << tmp
+			end
+			pos += 1
 		end while pos <= position.size
-		
+
 		@groups << group
-		
+		analyze_group group
 		group
 	end
 
+	def analyze_group grp
+		formalized = []
+		if @count.key? :firstname
+			require 'enumerator'
+			grp.each_slice(2) do |k,v|
+				student = "#{k} #{v}"
+				formalized << student
+				@students << student
+			end
+		else
+			grp.each do |name|
+				@students << name
+			end
+			grp
+		end
+	end
+
 end
-
-
-#prono_yann.zip
-# 1 => name 
-# 2 => firstname

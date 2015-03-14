@@ -32,8 +32,16 @@ class Organiser < Component
 	# Rename directories more clearly
 	def rename(entry)
 		name = format entry
-		FileUtils.mv(File.join(@directory, entry), File.join(@directory,name))
-		@logger.info { "renaming #{File.basename(entry)} to #{File.basename(name)}" }
+		if name != nil
+			if name != entry
+				FileUtils.mv(File.join(@directory, entry), File.join(@directory,name))
+				@logger.info { "renaming #{File.basename(entry)} to #{File.basename(name)}" }
+			else
+				@logger.info { "#{entry} has not been renamed}, already formatted" }
+			end
+		else
+			@logger.error { "Can't rename #{File.basename(entry)} - Datas not found in name"}
+		end
 	end
 
 	# Method which moves project's directories in order to
@@ -96,7 +104,7 @@ class Organiser < Component
 
 			@logger.info { 'Renaming directories' }
 			rename entry
-		end		
+		end
 		@logger.info { "#{@groups.size} groups have been detected" }
 		@logger.info { "#{@students.size} students have been detected" }	
 	end
