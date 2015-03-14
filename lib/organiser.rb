@@ -27,6 +27,7 @@ class Organiser < Component
 		@count = {}
 		@students = []
 		@groups = []
+		@unknown = []
 	end
 
 	# Rename directories more clearly
@@ -106,7 +107,12 @@ class Organiser < Component
 			rename entry
 		end
 		@logger.info { "#{@groups.size} groups have been detected" }
-		@logger.info { "#{@students.size} students have been detected" }	
+		@logger.info { "#{@students.size} students have been detected" }
+
+		unless @unknown.empty?
+			@logger.error { "\n\n#{@unknown.size} projects didn't matched with regex\n" }
+			@unknown.each {|pro| @logger.info { "\t#{pro}"} }
+		end
 	end
 
 private

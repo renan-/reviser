@@ -29,7 +29,7 @@ module ProjectProperties
 	def analyze_formatter
 		regex = Cfg[:projects_names]
 		# Foreach known symbol
-		SYMBOLS.each do |k,v|
+		SYMBOLS.each do |k, _|
 			# Get numbers of occurences of the word k in regex 
 			matches = regex.scan(SYMBOLS[k]).size
 			# the word K => number of occurences
@@ -47,11 +47,8 @@ module ProjectProperties
 
 		analyze_formatter if @count.empty?
 
-		regex = Cfg[:projects_names]
 
-		nb_students = 0
-
-		group = check_entry_name entry
+    group = check_entry_name entry
 		generate_label group
 	end
 
@@ -61,39 +58,48 @@ module ProjectProperties
 	# @return String the formatted label
 	def generate_label infos
 		if !infos.empty?
-			label = ""
-			infos.each {|i| label += label == "" ? i : " " + i }
+			label = ''
+			infos.each {|i| label += label == '' ? i : ' ' + i }
 			label
 		end
 	end
 
 	# I'm not pround of this method ...
+	# associate to a symbol, his position in the regex
+	# @example NAME_FIRSTN
+	# will give : {
+	#	1 => :name,
+	#	2 => :firstname
+	#}
 	def get_position regex
 		res = {}
 		SYMBOLS.each do |k,v|
-			regex.scan(v) do |c|
+			regex.scan(v) do |_|
 				res[$~.offset(0)[0]] = k
 			end
 		end
 
-		res = (res.sort_by { |k,v| k }).to_h
+		res = (res.sort_by { |k, _| k }).to_h
 		tmp = {}
 
 		index = 1
-		res.each do |k,v|
+		res.each do |_,v|
 			tmp[index] = v
 			index += 1
 		end
 		tmp
 	end
 
-	
+	#
+	# Apply regex of user on the entry name.
+	# and try to get all interested matched values.
 	def check_entry_name entry
 		regex = Cfg[:projects_names]
+		# who work on the current project (entry) ?
 		group = []
 		position = get_position regex
 
-		@count.each do |k,v|
+		@count.each do |k, _|
 			regex = regex.gsub SYMBOLS[k], REGEX[k]
 		end
 		
@@ -101,6 +107,7 @@ module ProjectProperties
 		entry.match Regexp.new(regex)
 		pos = 1
 
+		# Get matched values
 		begin
 			tmp = eval "$#{pos}"
 			if tmp != nil
@@ -108,12 +115,21 @@ module ProjectProperties
 			end
 			pos += 1
 		end while pos <= position.size
+		
+		if group != nil && !group.empty?
+			group = analyze_group group
+			@groups << group if group
+		else
+			@unknown << entry
+		end
 
-		@groups << group
-		analyze_group group
 		group
 	end
 
+	# try to find all informations
+	# about students which composed the group.
+	# This method update array of students.
+	# grp Array of matched informations
 	def analyze_group grp
 		formalized = []
 		if @count.key? :firstname
@@ -123,6 +139,7 @@ module ProjectProperties
 				formalized << student
 				@students << student
 			end
+			formalized
 		else
 			grp.each do |name|
 				@students << name

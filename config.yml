@@ -17,10 +17,11 @@ dest: projects
 ############  	Organiser config 	############
 
 # Projects naming, useful to rename folders
-# NAME => ONLY the name of the student
-# NAME#FIRST => the name and the firstime  of the student, separated with a space
-# 'S3A_NAME_NAME'   'S3A_NAME#FIRST'   
-projects_names: 'NAME#FIRST'
+# NAME => Name of the student
+# FIRSTN => Firstname of the student
+# '^NAME_NAME' 	=> 2 names of students separated by a undescore
+# 'FIRSTN NAME' => a student with name and firstname, separated with a space.
+projects_names: '^FIRSTN NAME'
 
 
 ############ 	Generator config '	############
