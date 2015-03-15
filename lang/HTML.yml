@@ -1,0 +1,20 @@
+---
+# HTML
+
+# List of source files extensions
+extension:
+- .html
+
+# Whether it's a compiled or an interpreted language
+compiled: false
+
+regex_comments: !ruby/regexp '/#([^{].*)$/'
+
+criteria:
+  - all_files
+  - src_files
+  - lines_count
+  - comments_count
+
+extensions:
+  - validate_html
