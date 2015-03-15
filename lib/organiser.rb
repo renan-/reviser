@@ -36,12 +36,12 @@ class Organiser < Component
 		if name != nil
 			if name != entry
 				FileUtils.mv(File.join(@directory, entry), File.join(@directory,name))
-				@logger.info { "renaming #{File.basename(entry)} to #{File.basename(name)}" }
+				@logger.h2 Logger::INFO, "renaming #{File.basename(entry)} to #{File.basename(name)}"
 			else
-				@logger.info { "#{entry} has not been renamed}, already formatted" }
+				@logger.h2 Logger::INFO, "#{entry} has not been renamed}, already formatted"
 			end
 		else
-			@logger.error { "Can't rename #{File.basename(entry)} - Datas not found in name"}
+			@logger.h2 Logger::ERROR, "Can't rename #{File.basename(entry)} - Datas not found in name"
 		end
 	end
 
@@ -49,11 +49,13 @@ class Organiser < Component
 	# have the same hierarchy for all.
 	def structure(entry)
 		chdir entry
-		@logger.info { "#{entry} => #{@path}" }
+		@logger.h2 Logger::INFO, "#{entry} => #{@path}"
 		level = 0
+		@logger.h2 Logger::INFO, "Files in #{@path}"
+		@logger.h3 Logger::INFO, "#{all}"
 
-		@logger.info { "Files in #{@path}\n#{all}" }
-		@logger.info {"Dirs in #{@path}\n#{directories}" }
+		@logger.h2 Logger::INFO, "Dirs in #{@path}"
+		@logger.h3 Logger::INFO, "#{directories}"
 		# directory to delete if the project directory is not structured
 		rm = directories.first
 		
@@ -66,9 +68,9 @@ class Organiser < Component
 		#
 		while all == directories
 			level += 1
-			@logger.debug { "Level += 1\nPath = #{@path}" }
+			@logger.h2 Logger::DEBUG, "Level += 1\nPath = #{@path}"
 			chdir directories.first
-			@logger.debug { "New path = #{@path}" }
+			@logger.h2 Logger::DEBUG, "New path = #{@path}"
 		end
 
 		# If the core of project is not at the root of directory ...
@@ -76,8 +78,8 @@ class Organiser < Component
 			Dir.glob(File.join(@path,'*')).each do |file|
 				FileUtils.mv(file,File.join(@directory, entry))
 			end
-			@logger.info { "Structuring #{File.join(@path)}" }
-			@logger.info {"Removing #{File.join(@directory, entry, rm)}" }
+			@logger.h2 Logger::INFO, "Structuring #{File.join(@path)}"
+			@logger.h2 Logger::INFO, "Removing #{File.join(@directory, entry, rm)}"
 			FileUtils.rm_rf(File.join(@directory, entry, rm))
 		end
 
@@ -97,21 +99,22 @@ class Organiser < Component
 	def run
 		projects = Dir.entries(@directory) - $rejected_entries
 		projects.each do |entry|
-			@logger.info { 'Structure projects' }
+			@logger.h1 Logger::INFO, 'Structure projects'
 			structure entry
 
-			@logger.info { 'Initializing git repo' }
+			@logger.h1 Logger::INFO, 'Initializing git repo'
 			git entry
 
-			@logger.info { 'Renaming directories' }
+			@logger.h1 Logger::INFO, 'Renaming directories'
 			rename entry
 		end
-		@logger.info { "#{@groups.size} groups have been detected" }
-		@logger.info { "#{@students.size} students have been detected" }
+
+		@logger.h1 Logger::INFO, "#{@groups.size} groups have been detected"
+		@logger.h1 Logger::INFO, "#{@students.size} students have been detected"
 
 		unless @unknown.empty?
-			@logger.error { "\n\n#{@unknown.size} projects didn't matched with regex\n" }
-			@unknown.each {|pro| @logger.info { "\t#{pro}"} }
+			@logger.h1 Logger::ERROR, "\n\n#{@unknown.size} projects didn't matched with regex\n"
+			@unknown.each {|pro| @logger.h2 Logger::ERROR, "\t#{pro}" }
 		end
 	end
 

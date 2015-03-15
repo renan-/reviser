@@ -25,7 +25,7 @@ class Generator < Component
 				send Cfg[:out_format].to_sym
 			end
 		rescue Object => e
-			@logger.fatal { "Wrong format : #{e.to_s}" }
+			@logger.h1 Logger::FATAL, "Wrong format : #{e.to_s}"
 		end
 	end
 

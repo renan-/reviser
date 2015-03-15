@@ -66,11 +66,11 @@ class Archiver < Component
 	# Options are for the moment options[:verbose]
 	#
 	def run
-		@logger.info { 'First extraction' }
+		@logger.h1 Logger::INFO,'First extraction'
 		# Extract the original archive
 		Archiver.extract(@src, @destination)
-		@logger.info { 'First extraction' }
-		@logger.info { 'Extraction of sub archives' }
+		@logger.h1 Logger::INFO,'First extraction'
+		@logger.h1 Logger::INFO,'Extraction of sub archives'
 		
 		# Extract all sub archives
 		entries = Dir.entries(@destination) - $rejected
@@ -86,14 +86,14 @@ class Archiver < Component
 				FileUtils.rm_rf(File.join(@destination,entry))
 				extracted += 1
 
-				@logger.info { "extracting #{file_name} to #{destination}" }
+				@logger.h2 Logger::INFO, "extracting #{file_name} to #{destination}"
 			# In case of it can't extract 
   			rescue => e
-  				@logger.error {"Can't extract #{entry}: #{e.message}" }
+  				@logger.h2 Logger::ERROR, "Can't extract #{entry}: #{e.message}"
   				FileUtils.rm_rf(File.join(@destination,entry))
   			end
   		end
-  		@logger.info { "[#{extracted}/#{entries.size}] projects have been processed" }
+  		@logger.h1 Logger::INFO, "[#{extracted}/#{entries.size}] projects have been processed"
 	end
 
 end
