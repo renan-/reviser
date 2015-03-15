@@ -51,7 +51,7 @@ module CriteriaHelper
 		# @return results of the method.
 		def call meth
 			if @criteria.key? meth
-				@logger.info { "Include methods of #{@criteria[meth]}" } unless respond_to? meth
+				@logger.h1(Logger::INFO, "Include methods of #{@criteria[meth]}") unless respond_to? meth
 				self.class.send(:include, @criteria[meth]) unless respond_to? meth
 
 				send meth 
@@ -82,12 +82,13 @@ module CriteriaHelper
 		# @param regex regex to find name of modules.
 		def load directory, regex = '*'
 			modules =  Dir[File.join(directory, regex)]
-
+			@logger.h2 Logger::INFO, "Modules of #{directory}"
 			modules.each do |m|
+
 				require_relative m
 				ext = File.extname m
 				module_name = Object.const_get "#{camelize(File.basename(m,ext))}", false
-				@logger.info { "Load #{module_name}" }
+				@logger.h3 Logger::INFO, "Load #{module_name}"
 				methods = module_name.instance_methods false
 				methods.each { |method| populate(method, module_name) }
 	 		end	
@@ -109,7 +110,7 @@ module CriteriaHelper
 				Cfg[key].each do |meth|
 					if meth.respond_to?('each')
 						label =  meth[meth.keys[0]]
-						@logger.error { "Undefined label for #{meth.keys[0]}, check your config file" } if label == nil
+						@logger.h2(Logger::ERROR, "Undefined label for #{meth.keys[0]}, check your config file") if label == nil
 						label = create_label(meth.keys[0]) if label == nil
 						@output[meth.keys[0].to_sym] = label
 					else
@@ -124,7 +125,7 @@ module CriteriaHelper
 		# @param meth [String] method linked to the label
 		# @return [String] Renamed Label inspired of the name of the method
 		def create_label meth
-			@logger.info { "Create label for #{meth}. You should custom your label (see 'reviser add')" }
+			@logger.h2 Logger::ERROR, "Create label for #{meth}. You should custom your label (see 'reviser add')"
 			meth.to_s.split('_').each {|s| s.capitalize! }.join(' ')
 		end
 	end

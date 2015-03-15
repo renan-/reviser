@@ -1,5 +1,15 @@
 require 'logger'
 
+#
+# Modules containing all methods to custom logger.
+# 
+# There are 3 main level of logger (as in HTML)
+# => h1
+# => h2
+# => h3
+
+# @author Yann Prono
+# @author Anthony Cerf
 module LoggerMode
 
 	module Txt
@@ -20,7 +30,6 @@ module LoggerMode
 			change_formatter "\t\t\t"
 			@logger.add severity, msg
 		end
-
 	end
 
 	module Org
@@ -44,11 +53,20 @@ module LoggerMode
 
 	end
 
-
+	# Change formatter
+	# @param prefix Prefix to put before all content
 	def change_formatter prefix
 		@logger.formatter = proc do |severity, datetime, progname, msg|
-			"#{prefix} #{severity} #{msg}\n"
+			"\n#{prefix} #{severity} #{msg}"
 		end
+	end
+
+	# Create new line
+	def newline
+		@logger.formatter = proc do |severity, datetime, progname, msg|
+			"\n#{msg}"
+		end
+		@logger.add(nil,"\n")
 	end
 
 end

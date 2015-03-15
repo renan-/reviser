@@ -99,22 +99,30 @@ class Organiser < Component
 	def run
 		projects = Dir.entries(@directory) - $rejected_entries
 		projects.each do |entry|
-			@logger.h1 Logger::INFO, 'Structure projects'
+			@logger.h1 Logger::INFO, "Work on #{entry}"
+			@logger.h1 Logger::INFO, "Structure project"
 			structure entry
 
-			@logger.h1 Logger::INFO, 'Initializing git repo'
+			@logger.h1 Logger::INFO, "Initializing git repo"
 			git entry
 
-			@logger.h1 Logger::INFO, 'Renaming directories'
+			@logger.h1 Logger::INFO, "Renaming directory"
 			rename entry
+			@logger.newline
 		end
 
 		@logger.h1 Logger::INFO, "#{@groups.size} groups have been detected"
 		@logger.h1 Logger::INFO, "#{@students.size} students have been detected"
 
 		unless @unknown.empty?
-			@logger.h1 Logger::ERROR, "\n\n#{@unknown.size} projects didn't matched with regex\n"
-			@unknown.each {|pro| @logger.h2 Logger::ERROR, "\t#{pro}" }
+			@logger.newline
+			@logger.h1 Logger::ERROR, "#{@unknown.size} projects didn't matched with regex\n"
+			@unknown.each {|pro| @logger.h2 Logger::ERROR, "#{pro}" }
+		end
+		unless @students.empty?
+			@logger.newline
+			@logger.h1 Logger::INFO, "students:"
+			@students.each {|student| @logger.h2 Logger::INFO, "#{student}" }
 		end
 	end
 

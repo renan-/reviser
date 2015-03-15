@@ -54,7 +54,7 @@ private
 			if @criteria.has_key? meth
 				@results[proj][label] = call meth 
 			else
-				@logger.error { "Unknown method '#{meth}'' for project #{proj}" }
+				@logger.h1(Logger::ERROR, "Unknown method '#{meth}'' for project #{proj}")
 			end
 		end
 	end
@@ -66,10 +66,10 @@ private
 	def init_criteria_helper
 		@criteria = Hash.new
 		@output = Hash.new
-
+		@logger.h1 Logger::INFO, "Loading modules"
 		load PWD, '*tool*'
 		load EXT, '*'
-
+		@logger.h1 Logger::INFO, "Loading labels"
 		[:criteria, :extensions].each { |x| load_labels x }
 	end
 

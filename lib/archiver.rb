@@ -66,10 +66,9 @@ class Archiver < Component
 	# Options are for the moment options[:verbose]
 	#
 	def run
-		@logger.h1 Logger::INFO,'First extraction'
+		@logger.h1 Logger::INFO,"First extraction - #{src}"
 		# Extract the original archive
 		Archiver.extract(@src, @destination)
-		@logger.h1 Logger::INFO,'First extraction'
 		@logger.h1 Logger::INFO,'Extraction of sub archives'
 		
 		# Extract all sub archives
@@ -85,7 +84,6 @@ class Archiver < Component
   				Archiver.extract(file_name, destination)
 				FileUtils.rm_rf(File.join(@destination,entry))
 				extracted += 1
-
 				@logger.h2 Logger::INFO, "extracting #{file_name} to #{destination}"
 			# In case of it can't extract 
   			rescue => e
