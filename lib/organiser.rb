@@ -35,14 +35,20 @@ class Organiser < Component
 		name = format entry
 		if name != nil
 			if name != entry
-				FileUtils.mv(File.join(@directory, entry), File.join(@directory,name))
+				FileUtils.mkdir File.join(@directory, name)
+				FileUtils.mv Dir["#{File.join(@directory, entry)}/*"], File.join(@directory, name)
+				FileUtils.rm_rf File.join(@directory, entry)
 				@logger.h2 Logger::INFO, "renaming #{File.basename(entry)} to #{File.basename(name)}"
+
+				return name
 			else
 				@logger.h2 Logger::INFO, "#{entry} has not been renamed}, already formatted"
 			end
 		else
 			@logger.h2 Logger::ERROR, "Can't rename #{File.basename(entry)} - Datas not found in name"
 		end
+
+		entry
 	end
 
 	# Method which moves project's directories in order to
@@ -103,12 +109,12 @@ class Organiser < Component
 			@logger.h1 Logger::INFO, "Structure project"
 			structure entry
 
-			@logger.h1 Logger::INFO, "Initializing git repo"
-			git entry
-
 			@logger.h1 Logger::INFO, "Renaming directory"
-			rename entry
+			new_entry_name = rename entry
 			@logger.newline
+
+			@logger.h1 Logger::INFO, "Initializing git repo"
+			git new_entry_name
 		end
 
 		@logger.h1 Logger::INFO, "#{@groups.size} groups have been detected"

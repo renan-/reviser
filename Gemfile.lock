@@ -2,7 +2,8 @@ GEM
   remote: http://rubygems.org/
   specs:
     diff-lcs (1.2.5)
-    ffi (1.9.8)
+    ffi (1.9.8-x64-mingw32)
+    ffi (1.9.8-x86-mingw32)
     git (1.2.9.1)
     html5_validator (1.0.0)
       json
