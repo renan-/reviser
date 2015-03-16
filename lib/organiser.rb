@@ -27,6 +27,7 @@ class Organiser < Component
 		@count = {}
 		@students = []
 		@groups = []
+		@binoms = []
 		@unknown = []
 	end
 
@@ -35,7 +36,7 @@ class Organiser < Component
 		name = format entry
 		if name != nil
 			if name != entry
-				FileUtils.mkdir File.join(@directory, name)
+				FileUtils.mkdir_p File.join(@directory, name)
 				FileUtils.mv Dir["#{File.join(@directory, entry)}/*"], File.join(@directory, name)
 				FileUtils.rm_rf File.join(@directory, entry)
 				@logger.h2 Logger::INFO, "renaming #{File.basename(entry)} to #{File.basename(name)}"
@@ -116,15 +117,17 @@ class Organiser < Component
 			@logger.h1 Logger::INFO, "Initializing git repo"
 			git new_entry_name
 		end
-
+		# Results of organiser
 		@logger.h1 Logger::INFO, "#{@groups.size} groups have been detected"
 		@logger.h1 Logger::INFO, "#{@students.size} students have been detected"
 
+		# Bad students ?
 		unless @unknown.empty?
 			@logger.newline
 			@logger.h1 Logger::ERROR, "#{@unknown.size} projects didn't matched with regex\n"
 			@unknown.each {|pro| @logger.h2 Logger::ERROR, "#{pro}" }
 		end
+		# Good students 
 		unless @students.empty?
 			@logger.newline
 			@logger.h1 Logger::INFO, "students:"

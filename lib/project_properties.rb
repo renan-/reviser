@@ -7,7 +7,7 @@ module ProjectProperties
 
 	# Dictionnary for regex in config file
 	SYMBOLS = {
-		:class 	=> 'CLASS',
+		:group 	=> 'GROUP',
 		:firstname 	=> 'FIRSTN',
 		:name 	=> 'NAME',
 		:user 	=> 'USER',
@@ -16,7 +16,7 @@ module ProjectProperties
 
 	# Regex to associate, depending the used word in Cfg
 	REGEX = {
-		:class 	=> '([^_]*)',
+		:group 	=> '([A-Za-z0-9]+)',
 		:firstname 	=> '([A-Za-z\-]+)',
 		:name 	=> '([A-Za-z]+)', 
 		:user 	=> '([^_]*)',
@@ -47,8 +47,7 @@ module ProjectProperties
 
 		analyze_formatter if @count.empty?
 
-
-    group = check_entry_name entry
+    	group = check_entry_name entry
 		generate_label group
 	end
 
@@ -59,7 +58,9 @@ module ProjectProperties
 	def generate_label infos
 		if !infos.empty?
 			label = ''
-			infos.each {|i| label += label == '' ? i : ' ' + i }
+			infos.reject{|k| k == :group }.each {|k,v| label += v.respond_to?('each') && v.each {|data| data +' ' } || v + ' ' }
+			# Inject group of project before name : group/name
+			label = infos.key?(:group) && File.join(infos[:group], label) || label
 			label
 		end
 	end
@@ -96,7 +97,6 @@ module ProjectProperties
 	def check_entry_name entry
 		regex = Cfg[:projects_names]
 		# who work on the current project (entry) ?
-		group = []
 		position = get_position regex
 
 		@count.each do |k, _|
@@ -106,24 +106,18 @@ module ProjectProperties
 		# Apply created regex
 		entry.match Regexp.new(regex)
 		pos = 1
+		infos = {}
 
 		# Get matched values
 		begin
 			tmp = eval "$#{pos}"
 			if tmp != nil
-				group << tmp
+				infos[position[pos]] = tmp
 			end
 			pos += 1
 		end while pos <= position.size
-		
-		if group != nil && !group.empty?
-			group = analyze_group group
-			@groups << group if group
-		else
-			@unknown << entry
-		end
-
-		group
+		sort_infos infos
+		infos
 	end
 
 	# try to find all informations
@@ -134,7 +128,7 @@ module ProjectProperties
 		formalized = []
 		if @count.key? :firstname
 			require 'enumerator'
-			grp.each_slice(2) do |k,v|
+			infos.each_slice(2) do |k,v|
 				student = "#{k} #{v}"
 				formalized << student
 				@students << student
@@ -146,6 +140,14 @@ module ProjectProperties
 			end
 			grp
 		end
+	end
+
+	# Put all datas found to respective variable
+	# @param infos Informations found by regex
+	def sort_infos infos
+		@students << infos[:name]
+		@groups << infos[:group]
+		@binoms << infos[:name]
 	end
 
 end
