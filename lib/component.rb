@@ -2,7 +2,7 @@
 # Author:: Renan Strauss
 #
 require 'yaml'
-require_relative 'my_logger'
+require_relative 'loggers/logger'
 
 class Component
 	
@@ -22,7 +22,7 @@ class Component
 		# For now, we output to stderr if verbose option is not set
 		# In the future, it would be a good idea to always have logs,
 		# but to let the user change the level
-		@logger = MyLogger.new(options[:verbose] && log_file || STDERR)
+		@logger = Loggers::Logger.new(options[:verbose] && log_file || STDERR)
 	end 
 
 	# Place-holder
