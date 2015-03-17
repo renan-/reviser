@@ -2,7 +2,7 @@
 # Author:: Renan Strauss
 #
 require 'yaml'
-require_relative 'my_logger'
+require_relative 'loggers/logger'
 
 class Component
 	
@@ -15,14 +15,14 @@ class Component
 	# component accordingly to what you told to Reviser, and
 	# creates a hash for child to easily access config file values
 	#
-	def initialize(data)
+	def initialize(data = nil)
 		@data = data
 		ext = options.has_key?(:log_mode) && options[:log_mode] || 'txt'
 		log_file = File.join(options.has_key?(:log_dir) && options[:log_dir] || '.', "#{self.class.name}.#{ext}")
 		# For now, we output to stderr if verbose option is not set
 		# In the future, it would be a good idea to always have logs,
 		# but to let the user change the level
-		@logger = MyLogger.new(options[:verbose] && log_file || STDERR)
+		@logger = Loggers::Logger.new(options[:verbose] && log_file || STDERR)
 	end 
 
 	# Place-holder

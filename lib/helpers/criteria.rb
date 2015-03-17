@@ -1,4 +1,4 @@
-require_relative 'config'
+require_relative '../config'
 
 # Manage criteria and labels.
 
@@ -11,8 +11,7 @@ require_relative 'config'
 # @author Yann Prono
 # @author Renan Strauss
 #
-module CriteriaHelper
-
+module Helpers
 	# This module enables to 
 	# imports automaticlly all modules for the analysis
 	#
@@ -34,7 +33,7 @@ module CriteriaHelper
 		# Where I am ?	
 		PWD = File.dirname __FILE__
 		# Path of extensions
-		EXT = File.join File.dirname(PWD), 'ext'
+		EXT = File.join File.dirname(File.dirname(PWD)), 'ext'
 
 		attr_reader :criteria
 		attr_reader :output
@@ -81,13 +80,16 @@ module CriteriaHelper
 		# @param directory Directory where search of modules is done.
 		# @param regex regex to find name of modules.
 		def load directory, regex = '*'
-			modules =  Dir[File.join(directory, regex)]
 			@logger.h2 Logger::INFO, "Modules of #{directory}"
+			modules =  Dir[File.join(directory, regex)]
+
+			namespace = directory == EXT && 'Extensions' || 'Helpers'
 			modules.each do |m|
+				next if m =~ /(criteria)/
 
 				require_relative m
 				ext = File.extname m
-				module_name = Object.const_get "#{camelize(File.basename(m,ext))}", false
+				module_name = Object.const_get "#{namespace}::#{camelize(File.basename(m,ext))}", false
 				@logger.h3 Logger::INFO, "Load #{module_name}"
 				methods = module_name.instance_methods false
 				methods.each { |method| populate(method, module_name) }
@@ -104,7 +106,7 @@ module CriteriaHelper
 		# If the label doesn't exist, it will created with the name of the method.
 		# @param key Key of criteria in config file
 		def load_labels key 
-			labels = CriteriaHelper::LabelHelper.load
+			labels = Labels.load
 			
 			if Cfg.has_key?(key) && Cfg[key].respond_to?('each')
 				Cfg[key].each do |meth|
@@ -141,13 +143,13 @@ module CriteriaHelper
 	# known Labels are in the labels.yml file.
 	#
 	# @author Yann Prono
-	class LabelHelper
+	class Labels
 
 		# Current directory of this file
 		PWD = File.dirname __FILE__
 
 		# Path of label.yml file
-		LABELS = File.join(File.dirname(PWD), 'labels.yml')
+		LABELS = File.join(File.dirname(File.dirname(PWD)), 'labels.yml')
 
 		#
 		# Enable to associate a label to a criterion (method).
@@ -168,7 +170,7 @@ module CriteriaHelper
 		# @return Hash all known labels by reviser.
 		# :criterion => label
 		def self.load
-			LabelHelper.populate(YAML.load(File.open(LABELS)))
+			Labels.populate(YAML.load(File.open(LABELS)))
 		end
 
 		def self.populate hash
@@ -181,5 +183,4 @@ module CriteriaHelper
 			labels
 		end
   	end
-	
 end
