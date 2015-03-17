@@ -128,7 +128,7 @@ module ProjectProperties
 		formalized = []
 		if @count.key? :firstname
 			require 'enumerator'
-			infos.each_slice(2) do |k,v|
+			infos.each_slice 2 do |k,v|
 				student = "#{k} #{v}"
 				formalized << student
 				@students << student
@@ -145,9 +145,9 @@ module ProjectProperties
 	# Put all datas found to respective variable
 	# @param infos Informations found by regex
 	def sort_infos infos
-		@students << infos[:name]
+		infos[:name].respond_to?('each') && infos[:name].each { |n| @students << n } || @students << infos[:name]
 		@groups << infos[:group]
-		@binoms << infos[:name]
+		@binoms << infos[:name].respond_to?('each') && infos[:name] || [infos[:name]]
 	end
 
 end

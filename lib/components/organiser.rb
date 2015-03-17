@@ -27,6 +27,7 @@ module Components
 			@git = nil
 			@count = {}
 			@students = []
+			@binoms = []
 			@groups = []
 			@unknown = []
 		end
