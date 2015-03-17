@@ -20,7 +20,6 @@ class Exec < Thor
 
 	def initialize(*args)
 		super
-
 		# If config.yml already exists in the working
 		# directory, then we setup reviser here
 		config_file = File.expand_path('config.yml')
@@ -40,14 +39,12 @@ class Exec < Thor
 	desc 'init DIRECTORY', 'Create a new App project. By default,DIRECTORY is the current.'
 	def init(dir = '.')
 		pwd = FileUtils.pwd
-		msg = File.exist?(File.join(pwd,dir,File.basename($template_path))) ? 'Recreate' : 'Create'
-		FileUtils.mkdir_p dir unless Dir.exist?(File.join(pwd,dir))
+		msg = File.exist?(File.join(pwd,dir,File.basename($template_path))) && 'Recreate' || 'Create'
+		FileUtils.mkdir_p dir unless Dir.exist?(File.join(pwd, dir))
 		FileUtils.cp($template_path, dir)
 		message(msg, File.basename($template_path))
 
-    unless @@setup
-      setup File.expand_path(File.basename($template_path))
-    end
+    	setup File.expand_path(File.join(dir, File.basename($template_path))) unless @@setup
 	end
 
 
@@ -113,7 +110,7 @@ class Exec < Thor
 	# For the moment, associate a label to a criterion (method).
 	desc 'add METH "LABEL" ', 'Add to the method METH a associated LABEL'
 	def add meth, label
-		res = CriteriaHelper::LabelHelper.add meth, label
+		res = Criteria::Labels.add meth, label
 		message "#{res} label",meth + " => " + label
 	end
 
