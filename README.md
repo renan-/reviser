@@ -14,7 +14,7 @@ Le but est d'instaurer les bases essentielles du projet
 * Des résultats affichés dans la console.
 
 
-##Deuxième itération (en cours)
+##Deuxième itération
 
 Ajouter de nouvelles fonctionnalités
 * Construction du programme (compilation/interprétation, éxécution)
@@ -23,6 +23,14 @@ Ajouter de nouvelles fonctionnalités
 * Creation d'une interface en ligne de commande (nommé app provisoirement).
 
 Le but est aussi de finir la phase d'archivage et d'organiser.
+
+
+##Troisième itération (en cours)
+
+* Ajout de modules externes
+* Ajout de labels, determinant un critère
+* Support du HTML
+* Analyse des entrées pour récupérer l'ensemble des étudiants
 
 
 ##Auteurs

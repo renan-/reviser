@@ -46,8 +46,8 @@ class Reviser
 		@@loaded_components.each do |comp, conf|
 			puts "Reviser is now running #{Reviser.titleize comp}..."
 
-			require_relative "#{comp}"
-			c = eval("#{Reviser.titleize comp}").new ((conf[:inputFrom] != nil) && @@loaded_components[conf[:inputFrom]][:data]) || nil
+			require_relative "components/#{comp}"
+			c = eval("Components::#{Reviser.titleize comp}").new ((conf[:inputFrom] != nil) && @@loaded_components[conf[:inputFrom]][:data]) || nil
 
 			@@loaded_components[comp][:data] = c.work
 			

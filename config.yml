@@ -17,7 +17,11 @@ dest: projects
 ############  	Organiser config 	############
 
 # Projects naming, useful to rename folders
-projects_names: !ruby/regexp '/^[a-zA-Z]+[ ]+[a-zA-Z]+/'
+# NAME => Name of the student
+# FIRSTN => Firstname of the student
+# '^NAME_NAME' 	=> 2 names of students separated by a undescore
+# 'FIRSTN NAME' => a student with name and firstname, separated with a space.
+projects_names: '^FIRSTN NAME'
 
 
 ############ 	Generator config '	############
@@ -52,16 +56,21 @@ timeout: 5
 # Can be overriden or declared in
 # project's config file
 #
-criterias:
-  :all_files: Fichiers
-  :src_files: Fichiers sources
-  :lines_count: Nombre de lignes de code
-  :comments_count: Nombre de lignes de commentaires
-  :compile: Resultats compilation
-  :execute: Resultats execution
+criteria:
+  - all_files
+  - src_files
+  - lines_count
+  - comments_count
+  - compile
+  - execute
+
+extensions:
+  - memleaks
+
 
 # Options of all components
 # For the moment, there is just verbose option (for logger)
 options: 
   :verbose: true
   :log_dir: logs
+  :log_mode: org

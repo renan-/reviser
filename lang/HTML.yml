@@ -1,10 +1,15 @@
 ---
+
 # HTML language
 
 # List of source files extensions
 # !!!!! Recent changes make me think
 # we should actually think about
 # renaming it to ext for instance !!!!!!!!
+
+# HTML
+
+# List of source files extensions
 extension:
 - .html
 
@@ -33,3 +38,12 @@ extensions:
 # program_name: main.rb
 
 regex_comments: !ruby/regexp '/#([^{].*)$/'
+
+criteria:
+  - all_files
+  - src_files
+  - lines_count
+  - comments_count
+
+extensions:
+  - validate_html
