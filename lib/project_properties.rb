@@ -146,8 +146,8 @@ module ProjectProperties
 	# @param infos Informations found by regex
 	def sort_infos infos
 		infos[:name].respond_to?('each') && infos[:name].each { |n| @students << n } || @students << infos[:name]
-		@groups << infos[:group]
-		@binoms << infos[:name].respond_to?('each') && infos[:name] || [infos[:name]]
+		@groups << infos[:group] if infos.has_key? :group
+		@binoms << infos[:name]
 	end
 
 end

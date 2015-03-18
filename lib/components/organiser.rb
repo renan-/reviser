@@ -115,17 +115,13 @@ module Components
 
 			@logger.h1 Logger::INFO, "#{@groups.size} groups have been detected"
 			@logger.h1 Logger::INFO, "#{@students.size} students have been detected"
+			@logger.h1 Logger::INFO, "#{@binoms.size} binoms have been detected"
 
-			unless @unknown.empty?
-				@logger.newline
-				@logger.h1 Logger::ERROR, "#{@unknown.size} projects didn't matched with regex\n"
-				@unknown.each {|pro| @logger.h2 Logger::ERROR, "#{pro}" }
-			end
-			unless @students.empty?
-				@logger.newline
-				@logger.h1 Logger::INFO, "students:"
-				@students.each {|student| @logger.h2 Logger::INFO, "#{student}" }
-			end
+			log_resume(@groups, Logger::INFO, "Groups:")
+			log_resume(@students, Logger::INFO, "Students:")
+			log_resume(@binoms, Logger::INFO, "Binoms:")
+
+			log_resume(@unknown, Logger::ERROR, "\n#{@unknown.size} projects didn't matched with regex")
 		end
 
 	private
@@ -146,6 +142,14 @@ module Components
 		def chdir(dir)
 			base = @path
 			@path = File.join(base, dir)
+		end
+
+		def log_resume(data ,severity, sentence)
+			unless data.empty?
+				@logger.newline
+				@logger.h1 severity, sentence
+				data.each {|d| @logger.h2 severity, "#{d}" }
+			end
 		end
 		
 	end
