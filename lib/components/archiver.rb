@@ -83,15 +83,7 @@ module Components
 					destination = File.join(@destination,basename)
 
 	  				Archiver.extract(file_name, destination)
-	  				file_deleted = false 
-					while !file_deleted
-  						begin
-    						File.unlink file_name
-    						file_deleted = true
-  						rescue
-  						end
-  					end
-					#FileUtils.rm_f file_name
+  					FileUtils.rm_rf(file_name)					
 					extracted += 1
 
 					@logger.h2 Logger::INFO, "extracting #{file_name} to #{destination}"
@@ -106,4 +98,5 @@ module Components
 		end
 
 	end
+
 end
