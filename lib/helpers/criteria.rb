@@ -105,12 +105,12 @@ module Helpers
 		# Load labels given by the user.
 		# If the label doesn't exist, it will created with the name of the method.
 		# @param key Key of criteria in config file
-		def load_labels key 
+		def load_labels key
 			labels = Labels.load
-			
+
 			if Cfg.has_key?(key) && Cfg[key].respond_to?('each')
 				Cfg[key].each do |meth|
-					if meth.respond_to?('each')
+					if meth.respond_to?('each') && meth.respond_to?('[]')
 						label =  meth[meth.keys[0]]
 						@logger.h2(Logger::ERROR, "Undefined label for #{meth.keys[0]}, check your config file") if label == nil
 						label = create_label(meth.keys[0]) if label == nil

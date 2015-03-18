@@ -19,6 +19,7 @@ class Component
 		@data = data
 		ext = options.has_key?(:log_mode) && options[:log_mode] || 'txt'
 		log_file = File.join(options.has_key?(:log_dir) && options[:log_dir] || '.', "#{self.class.name}.#{ext}")
+
 		# For now, we output to stderr if verbose option is not set
 		# In the future, it would be a good idea to always have logs,
 		# but to let the user change the level

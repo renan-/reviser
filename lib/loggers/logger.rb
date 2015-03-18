@@ -14,12 +14,14 @@ module Loggers
 		# The extension determines the mode to use (logger mode).
 		# @filename
 		def initialize filename
+
 			ext = File.extname(filename).delete '.'
-			begin
-				self.class.send :include, Object.const_get("LoggerMode::#{ext.downcase.capitalize}")
-			rescue => e
+	#		begin
+				self.class.send :include, Object.const_get("Modes::#{ext.downcase.capitalize}")
+=begin			rescue => e
 				self.class.send :include, Modes::Txt
 			end
+=end
 			@logger = ::Logger.new filename
 			@logger.level = ::Logger::DEBUG
 	  	end
