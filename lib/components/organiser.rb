@@ -37,7 +37,11 @@ module Components
 			name = format entry
 			if name != nil
 				if name != entry
-					FileUtils.mv(File.join(@directory, entry), File.join(@directory,name))
+					new_path = File.join(@directory, name)
+
+					FileUtils.mkdir_p new_path.split(File.basename(new_path))[0]
+					FileUtils.mv(File.join(@directory, entry), new_path)
+					
 					@logger.h2 Logger::INFO, "renaming #{File.basename(entry)} to #{File.basename(name)}"
 				else
 					@logger.h2 Logger::INFO, "#{entry} has not been renamed}, already formatted"
@@ -113,9 +117,9 @@ module Components
 				@logger.newline
 			end
 
-			@logger.h1 Logger::INFO, "#{@groups.size} groups have been detected"
-			@logger.h1 Logger::INFO, "#{@students.size} students have been detected"
-			@logger.h1 Logger::INFO, "#{@binoms.size} binoms have been detected"
+			@logger.h1 Logger::INFO, "#{@groups.size} group#{'s' if @groups.size > 1} have been detected"
+			@logger.h1 Logger::INFO, "#{@students.size} student#{'s' if @students.size > 1} have been detected"
+			@logger.h1 Logger::INFO, "#{@binoms.size} binom#{'s' if @binoms.size > 1} have been detected"
 
 			log_resume(@groups, Logger::INFO, "Groups:")
 			log_resume(@students, Logger::INFO, "Students:")

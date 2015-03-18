@@ -58,7 +58,14 @@ module ProjectProperties
 	def generate_label infos
 		if !infos.empty?
 			label = ''
-			infos.reject{|k| k == :group }.each {|k,v| label += v.respond_to?('each') && v.each {|data| data +' ' } || v + ' ' }
+			infos.reject{|k| k == :group }.each { |k,v| 
+				if v.respond_to?('each')
+					v.each { |data|
+					 label += data +' ' }
+				else
+					label +=  v + ' '
+				end
+			}
 			# Inject group of project before name : group/name
 			label = infos.key?(:group) && File.join(infos[:group], label) || label
 			label
@@ -106,16 +113,18 @@ module ProjectProperties
 		# Apply created regex
 		entry.match Regexp.new(regex)
 		pos = 1
-		infos = {}
+		infos = {}		
 
 		# Get matched values
 		begin
 			tmp = eval "$#{pos}"
 			if tmp != nil
-				infos[position[pos]] = tmp
+				tmp = tmp.delete '_'
+				infos.has_key?(position[pos]) && infos[position[pos]] << tmp || infos[position[pos]] = [tmp]
 			end
 			pos += 1
 		end while pos <= position.size
+
 		sort_infos infos
 		infos
 	end
@@ -146,7 +155,8 @@ module ProjectProperties
 	# @param infos Informations found by regex
 	def sort_infos infos
 		infos[:name].respond_to?('each') && infos[:name].each { |n| @students << n } || @students << infos[:name]
-		@groups << infos[:group] if infos.has_key? :group
+		infos[:group] = infos[:group][0].upcase if infos.key? :group
+		@groups << infos[:group] if infos.has_key?(:group) && !@groups.include?(infos[:group])
 		@binoms << infos[:name]
 	end
 
