@@ -16,12 +16,13 @@ module Loggers
 		def initialize filename
 
 			ext = File.extname(filename).delete '.'
-	#		begin
-				self.class.send :include, Object.const_get("Modes::#{ext.downcase.capitalize}")
-=begin			rescue => e
+			# Include mode aksed by user (config file)
+			begin
+				self.class.send :include, Modes.const_get("#{ext.downcase.capitalize}")
+			rescue => e
 				self.class.send :include, Modes::Txt
 			end
-=end
+
 			@logger = ::Logger.new filename
 			@logger.level = ::Logger::DEBUG
 	  	end
