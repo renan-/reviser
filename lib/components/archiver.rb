@@ -83,13 +83,23 @@ module Components
 					destination = File.join(@destination,basename)
 
 	  				Archiver.extract(file_name, destination)
-					FileUtils.rm_rf(File.join(@destination,entry))
+	  				file_deleted = false 
+					while !file_deleted
+  						begin
+    						File.unlink file_name
+    						file_deleted = true
+  						rescue
+  						end
+  					end
+					#FileUtils.rm_f file_name
 					extracted += 1
+
 					@logger.h2 Logger::INFO, "extracting #{file_name} to #{destination}"
 				# In case of it can't extract 
 	  			rescue => e
 	  				@logger.h2 Logger::ERROR, "Can't extract #{entry}: #{e.message}"
 	  				FileUtils.rm_rf(File.join(@destination,entry))
+	  				puts e
 	  			end
 	  		end
 	  		@logger.h1 Logger::INFO, "[#{extracted}/#{entries.size}] projects have been processed"

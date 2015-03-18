@@ -37,7 +37,7 @@ module Components
 			name = format entry
 			if name != nil
 				if name != entry
-					FileUtils.mv(File.join(@directory, entry), File.join(@directory,name))
+					FileUtils.mv(File.join(@directory, entry), File.join(@directory,name), :force => true)
 					@logger.h2 Logger::INFO, "renaming #{File.basename(entry)} to #{File.basename(name)}"
 				else
 					@logger.h2 Logger::INFO, "#{entry} has not been renamed}, already formatted"
