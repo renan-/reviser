@@ -3,8 +3,8 @@
 #
 # Convention over configuration !
 #
-# To add a new format maybe you need to install the Gem.
-# Find a Gem which supports a specified format on rubygems.org.
+# To add a new format, you need maybe to install a gem.
+# Find a gem which supports a specified format on rubygems.org.
 # Add the line "gem <gem>" in the Gemfile and execute "bundle install"
 #
 # Now, you can write the method corresponding to the format.
@@ -18,12 +18,12 @@
 # 			...
 # 		end
 #
-# To write results, you have to go through the @data instance variable.
-# @data is a hashmap:
+# To write results, you have to go through in the data instance variable.
+# data is a [Hash]:
 # 		- key: 		The person's name.
 #		- value: 	Results of analysis
 #
-# Each value of @data is also a hashmap:
+# Each value of data is also a [Hash]:
 # 		- key: 		the name of criterion checked.
 #		- value: 	The result of criterion.
 #

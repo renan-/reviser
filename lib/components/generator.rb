@@ -1,13 +1,14 @@
 require_relative 'generators'
 
-#
-# Generator is used to create a file result after the analysis.
-# Currently, Generator supports HTML, XLS and CSV format.
-#
-# @author 	Renan Strauss
-# @author 	Yann Prono
-#
+
 module Components
+
+	# Generator is used to create a file result after the analysis.
+	# Currently, Generator supports HTML, XLS and CSV format.
+	#
+	# @author 	Renan Strauss
+	# @author 	Yann Prono
+	#
 	class Generator < Component
 		
 		# Include all supported formats
@@ -31,18 +32,16 @@ module Components
 		end
 
 		# Get all criterias of marking
-		# used to display informations in documents 
+		# used to display informations in documents.
 		# @return [Array] Array with all criterias.
 		def criterias
 			@data.values.first.keys.unshift.map! { |cri| Generator.titleize(cri.to_s) }
 		end
 
-		#
 		# Quite handy
-		#
 		def self.titleize(str)
-			str.split(/\_/).join(' ').capitalize
+			str.split(/_/).join(' ').capitalize
 		end
-		
+
 	end
 end

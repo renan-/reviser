@@ -1,38 +1,50 @@
 require 'fileutils'
-
 require_relative '../helpers/git'
-require_relative '../project_properties'
+require_relative '../project'
 
-# Class which organizes all directories to simplify projects'  analysis.
-# Organiser renames projects folders and organises the whole of projects
-# in order to have a structured folder (files at the root of folder).
-#
-# @author Yann Prono
-# @author Renan Strauss
-#
+
 module Components
+
+	# Class which organizes all directories to simplify projects' analysis.
+	# Organiser renames projects folders and organises the whole of projects
+	# in order to have a structured folder (files at the root of folder)
+	# During this step, a git repository will be created, with an initial commit.
+	#
+	# @author Yann Prono
+	# @author Renan Strauss
+	#
 	class Organiser < Component
+
+		# Include all tools
 		include Helpers::Git
-		include ProjectProperties
+		include Project
 
 		# All entries to ignore during sort and organization
 		$rejected_entries = ['.', '..', '__MACOSX']
 
-		# initialize tool
+		# initialize tool.
+		# Organiser has to :
+		#  - get all students
+		#  - get all groups (classes)
+		#  - get all teams (binoms)
+		#  - get all unknown soldiers ...
 		def initialize(data)
 			super data
 
 			@directory = Cfg[:dest]
 			@path = @directory
 			@git = nil
-			@count = {}
 			@students = []
 			@binoms = []
 			@groups = []
 			@unknown = []
+
+			# How many patterns are in the pseudo-regex?
+			@count_patterns = {}
 		end
 
-		# Rename directories more clearly
+		# Rename directories more clearly.
+		# @param entry [String] path of the entry to rename.
 		def rename(entry)
 			name = format entry
 			if name != nil
@@ -52,7 +64,8 @@ module Components
 		end
 
 		# Method which moves project's directories in order to
-		# have the same hierarchy for all.
+		# have the same hierarchy for all project.
+		# @param entry [String] path of the entry to structure.
 		def structure(entry)
 			chdir entry
 			@logger.h2 Logger::INFO, "#{entry} => #{@path}"
@@ -92,6 +105,8 @@ module Components
 			@path = @directory
 		end
 
+		# Initialize a git repo.
+		# @param entry [String] Directory to process.
 		def git(entry)
 			Dir.chdir File.join(@directory, entry) do
 				git_init
@@ -101,7 +116,8 @@ module Components
 		end
 
 
-		# Method which run the organiser
+		# Method which run the organiser.
+		# It will apply all importants methods of this class for each project.
 		def run
 			projects = Dir.entries(@directory) - $rejected_entries
 			projects.each do |entry|
@@ -148,10 +164,15 @@ module Components
 			@path = File.join(base, dir)
 		end
 
-		def log_resume(data ,severity, sentence)
+
+		# Shortuct for logs ...
+		# @param data [Array] to loop.
+		# @param severity [Integer] Severity of the log.
+		# @param message [String] Message to log before writing data..
+		def log_resume(data ,severity, message)
 			unless data.empty?
 				@logger.newline
-				@logger.h1 severity, sentence
+				@logger.h1 severity, message
 				data.each {|d| @logger.h2 severity, "#{d}" }
 			end
 		end
