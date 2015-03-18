@@ -1,11 +1,11 @@
 ---
 
 ################################################
-# 					Config file     		   #
+# 	           Config file   	       #
 ################################################
 
 
-############	Archiver config 	############
+########	Archiver config 	########
 
 # File name of the archive containing all projects
 src: projects.zip
@@ -14,17 +14,19 @@ src: projects.zip
 dest: projects
 
 
-############  	Organiser config 	############
+########	Organiser config 	########
 
-# Projects naming, useful to rename folders
-# NAME => Name of the student
-# FIRSTN => Firstname of the student
-# '^NAME_NAME' 	=> 2 names of students separated by a undescore
-# 'FIRSTN NAME' => a student with name and firstname, separated with a space.
+# Conventiong naming of projects, useful to rename folders 
+# You have to write a pseudo-regex with some constants:
+# 	      [ GROUP, FIRSTN, NAME ]
+#
+# '^GROUP_NAME_NAME'		=> Project starts with GROUP (S2A for example) and contains two names.
+# '^GROUP_NAME(_NAME)*'	   	=> Project starts with GROUP and contains minimum one name.
+# '^TP_html_NAME_FIRSTN' 	=> name starts by 'TP_html_' and contains a name and firstname.
 projects_names: '^FIRSTN NAME'
 
 
-############ 	Generator config '	############
+########	Generator config 	########
 
 # The file name for results which will be generated
 out: results
@@ -39,7 +41,7 @@ out_format:
 res_dir: res
 
 
-############	Reviser config 		############
+########	Reviser config		########
 
 # The type of project (<type>.yml must exists)
 type: Labyrinthe
@@ -49,13 +51,13 @@ type: Labyrinthe
 timeout: 5
 
 
-############	Global config 		############
+########	Global config		########
 
-#
-# Criterias you want for analysis
+# Criteria you want for analysis
 # Can be overriden or declared in
-# project's config file
+# project's config file
 #
+# Basics criteria, available in lib/helpers
 criteria:
   - all_files
   - src_files
@@ -64,13 +66,15 @@ criteria:
   - compile
   - execute
 
+# Extensions you want to use, available in ext/
 extensions:
   - memleaks
 
 
 # Options of all components
 # For the moment, there is just verbose option (for logger)
-options: 
+options:
   :verbose: true
   :log_dir: logs
+  # mode of logger	=> [org, txt ...]
   :log_mode: org
