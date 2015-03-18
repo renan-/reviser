@@ -118,13 +118,15 @@ module ProjectProperties
 		# Get matched values
 		begin
 			tmp = eval "$#{pos}"
-			if tmp != nil
+			if tmp != nil 
 				tmp = tmp.delete '_'
 				infos.has_key?(position[pos]) && infos[position[pos]] << tmp || infos[position[pos]] = [tmp]
+			else
+				ask entry
 			end
 			pos += 1
 		end while pos <= position.size
-
+				
 		sort_infos infos
 		infos
 	end
@@ -136,6 +138,10 @@ module ProjectProperties
 		infos[:group] = infos[:group][0].upcase if infos.key? :group
 		@groups << infos[:group] if infos.has_key?(:group) && !@groups.include?(infos[:group])
 		@binoms << infos[:name]
+	end
+
+	def ask entry
+		# TODO, ask to user if the entry is correctly written
 	end
 
 end
