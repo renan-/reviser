@@ -129,28 +129,6 @@ module ProjectProperties
 		infos
 	end
 
-	# try to find all informations
-	# about students which composed the group.
-	# This method update array of students.
-	# grp Array of matched informations
-	def analyze_group grp
-		formalized = []
-		if @count.key? :firstname
-			require 'enumerator'
-			infos.each_slice 2 do |k,v|
-				student = "#{k} #{v}"
-				formalized << student
-				@students << student
-			end
-			formalized
-		else
-			grp.each do |name|
-				@students << name
-			end
-			grp
-		end
-	end
-
 	# Put all datas found to respective variable
 	# @param infos Informations found by regex
 	def sort_infos infos
