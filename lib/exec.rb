@@ -36,7 +36,7 @@ class Exec < Thor
 
 	# Create a environnment for checking projects
 	# This method only copies the config file into the current directory.
-	desc 'init DIRECTORY', 'Create a new App project. By default,DIRECTORY is the current.'
+	desc 'init DIRECTORY', 'Initialise workspace. DIRECTORY ||= \'.\''
 	def init(dir = '.')
 		pwd = FileUtils.pwd
 		msg = File.exist?(File.join(pwd,dir,File.basename($template_path))) && 'Recreate' || 'Create'
@@ -49,7 +49,7 @@ class Exec < Thor
 
 
 	# Clean the directory of logs, projects and results.
-	desc 'clean', 'Delete datas creating by the App (logs, projects, results files ...).'
+	desc 'clean', 'Delete generated data (logs, projects, results files ...)'
 	def clean
 		if File.exist? 'config.yml'
 			FileUtils.rm_rf(Cfg[:dest], :verbose => true)
@@ -75,7 +75,7 @@ class Exec < Thor
 
 	# Let do it for analysis.
 	# @param current_dir [String] the directory where the programm has to be launched.
-	desc 'work', 'Run components to analysis computing projects.'
+	desc 'work', 'Run components to analysis computing projects'
 	def work
 		Reviser::load :component => 'archiver'
 		Reviser::load :component => 'organiser', :inputFrom => 'archiver'
@@ -85,30 +85,16 @@ class Exec < Thor
 		Reviser::run
 	end
 
-	# Launch archiver !
-	desc 'extract', 'Launch archiver and extract all projects.'
-	def extract
-		Reviser::load :component => 'archiver'
-		Reviser::run
-	end
-
-	# Launch organiser !
-	desc 'organise', 'Launch organiser and prepare all projects for analysis'
-	def organise
-		Reviser::load :component => 'organiser'
-		Reviser::run
-	end
-
-	# Launch checker and generator as well !
-	desc 'check', 'Launch checker for analysis and generate results.'
-	def check
-		Reviser::load :component => 'checker'
-		Reviser::load :component => 'generator', :inputFrom => 'checker'
-		Reviser::run
-	end
-
+	#
 	# For the moment, associate a label to a criterion (method).
-	desc 'add METH "LABEL" ', 'Add to the method METH a associated LABEL'
+	#
+	# Cette methode me fait penser qu'on devrait vraiment configurer
+	# le dossier de base ici, et le passer dans la config parce que,
+	# par defaut, les modifs sur le fichier labels.yml seront faites
+	# sur le fichier labels.yml dans le dossier ou est le programme,
+	# et non dans le dossier ou travaille l'utilisateur
+	#
+	desc 'add METH \'LABEL\'', 'Associates LABEL with METH analysis def'
 	def add meth, label
 		res = Criteria::Labels.add meth, label
 		message "#{res} label",meth + " => " + label
