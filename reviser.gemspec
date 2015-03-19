@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'reviser'
-  s.version     = '0.0.1'
+  s.version     = '0.0.1.1-beta'
   s.executables << 'reviser'
   s.date        = '2015-03-16'
   s.summary     = "Reviser"
@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
     # Sources
     'lib/component.rb', 'lib/config.rb', 'lib/exec.rb', 'lib/project.rb', 'lib/reviser.rb',
     'lib/loggers/logger.rb', 'lib/loggers/modes.rb',
-    'lib/helpers/code_analysis.rb', 'lib/helpers/compilation.rb', 'lib/helpers/criteria.rb', 'lib/helpers/execution.rb', 'lib/helpers/git.rb', 'lib/helpers/utils.rb',
+    'lib/helpers/code_analysis.rb', 'lib/helpers/compilation.rb', 'lib/helpers/criteria.rb', 'lib/helpers/execution.rb', 'lib/helpers/git.rb', 'lib/helpers/project.rb', 'lib/helpers/system.rb',
     'lib/components/archiver.rb', 'lib/components/checker.rb', 'lib/components/extractors.rb', 'lib/components/generator.rb', 'lib/components/generators.rb', 'lib/components/organiser.rb',
     'ext/html_validator.rb', 'ext/valgrind.rb',
     # Config files
