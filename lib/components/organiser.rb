@@ -50,9 +50,8 @@ module Components
 			if name != nil
 				if name != entry
 					new_path = File.join(@directory, name)
-
 					FileUtils.mkdir_p new_path.split(File.basename(new_path))[0]
-					FileUtils.mv(File.join(@directory, entry), new_path)
+					FileUtils.mv(File.join(@directory, entry), new_path, :force => true)
 					
 					@logger.h2 Logger::INFO, "renaming #{File.basename(entry)} to #{File.basename(name)}"
 				else

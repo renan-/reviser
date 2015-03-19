@@ -96,11 +96,13 @@ module Components
 					# Run extraction!
 	  				Archiver.extract(file_name, destination)
 					extracted += 1
+
 					@logger.h2 Logger::INFO, "extracting #{file_name} to #{destination}"
 
 				# In case of it can't extract the file
 	  			rescue => e
 	  				@logger.h2 Logger::ERROR, "Can't extract #{entry}: #{e.message}"
+	  				puts e
 	  			end
 				# Delete in all case the archive (useless after this step)
 				FileUtils.rm_rf file_name
@@ -109,4 +111,5 @@ module Components
 		end
 
 	end
+
 end
