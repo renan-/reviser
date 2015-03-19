@@ -30,7 +30,7 @@ module Components
 			@data.each_with_index do |proj, i|
 				path = File.join(Cfg[:dest], proj)
 				puts "\t[#{i+1}/#{@data.size}]\t#{proj}"
-				Dir.chdir(path) { check path }
+				Dir.chdir(path) { check proj }
 			end
 	
 			@results
