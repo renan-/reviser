@@ -8,7 +8,7 @@
 # instantiate components himself, nor worry
 # about the data these components exchange.
 #
-#require 'mkmf'
+require 'mkmf'
 
 require_relative 'component'
 require_relative 'config'

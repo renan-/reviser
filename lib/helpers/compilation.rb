@@ -1,5 +1,3 @@
-require_relative 'utils'
-
 #
 # @Author Yann Prono
 # @Author Renan Strauss
@@ -10,7 +8,8 @@ require_relative 'utils'
 
 module Helpers
 	module Compilation
-		include Utils
+		include Project
+		include System
 		
 		#
 		# Only here for compiled language,

@@ -1,12 +1,8 @@
-
-require_relative '../lib/helpers/utils'
-require_relative '../lib/helpers/execution'
-
 module Extensions
 	module Valgrind
 
 		include Helpers::Execution
-		include Helpers::Utils
+		include Helpers::System
 
 		VALGRIND_FILE = "valgrind.txt"
 
