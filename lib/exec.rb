@@ -7,7 +7,7 @@ require_relative 'helpers/criteria'
 #
 # Module used for managing all actions in command line
 # This module enables to user the programm in command line.
-# It use the powerful toolkit Thor for building  command line interfaces
+# It use the powerful toolkit Thor for building command line interfaces
 #
 # @author Yann Prono
 #
@@ -24,13 +24,6 @@ class Exec < Thor
 		# directory, then we setup reviser here
 		config_file = File.expand_path('config.yml')
     	setup config_file if File.exist? config_file
-	end
-
-
-	# Say hello to the user !
-	desc 'hello','Say hello to the user !'
-	def hello
-		puts 'Hello, I am reviser'
 	end
 
 
