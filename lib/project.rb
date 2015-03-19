@@ -124,7 +124,7 @@ module Project
 		# Get matched values
 		begin
 			tmp = eval "$#{pos}"
-			if tmp != nil 
+			if tmp != nil && tmp != ''
 				tmp = tmp.delete '_'
 				infos.has_key?(position[pos]) && infos[position[pos]] << tmp || infos[position[pos]] = [tmp]
 			else
