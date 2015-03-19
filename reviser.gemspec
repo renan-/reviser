@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.files       =
   [
     # Sources
-    'lib/component.rb', 'lib/config.rb', 'lib/exec.rb', 'lib/project_properties.rb', 'lib/reviser.rb',
+    'lib/component.rb', 'lib/config.rb', 'lib/exec.rb', 'lib/project.rb', 'lib/reviser.rb',
     'lib/loggers/logger.rb', 'lib/loggers/modes.rb',
     'lib/helpers/code_analysis.rb', 'lib/helpers/compilation.rb', 'lib/helpers/criteria.rb', 'lib/helpers/execution.rb', 'lib/helpers/git.rb', 'lib/helpers/utils.rb',
     'lib/components/archiver.rb', 'lib/components/checker.rb', 'lib/components/extractors.rb', 'lib/components/generator.rb', 'lib/components/generators.rb', 'lib/components/organiser.rb',
