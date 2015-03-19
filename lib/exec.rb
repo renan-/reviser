@@ -78,7 +78,7 @@ class Exec < Thor
 	desc 'work', 'Run components to analysis computing projects.'
 	def work
 		Reviser::load :component => 'archiver'
-		Reviser::load :component => 'organiser'
+		Reviser::load :component => 'organiser', :inputFrom => 'archiver'
 		Reviser::load :component => 'checker', :inputFrom => 'organiser'
 		Reviser::load :component => 'generator', :inputFrom => 'checker'
 

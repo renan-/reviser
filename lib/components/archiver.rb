@@ -28,6 +28,7 @@ module Components
 			super data
 			@src = Cfg[:src]
 			@destination = Cfg[:dest]
+			@results = []
 		end
 
 
@@ -98,18 +99,20 @@ module Components
 					extracted += 1
 
 					@logger.h2 Logger::INFO, "extracting #{file_name} to #{destination}"
+					@results << basename
 
 				# In case of it can't extract the file
 	  			rescue => e
 	  				@logger.h2 Logger::ERROR, "Can't extract #{entry}: #{e.message}"
 	  				puts e
 	  			end
-				# Delete in all case the archive (useless after this step)
+				# Delete in all case the archive (useless after this step				
 				FileUtils.rm_rf file_name
 	  		end
 	  		@logger.h1 Logger::INFO, "[#{extracted}/#{entries.size}] projects have been processed"
-		end
 
+			@results
+		end
 	end
 
 end

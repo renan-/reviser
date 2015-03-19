@@ -30,7 +30,6 @@ module Components
 		#  - get all unknown soldiers ...
 		def initialize(data)
 			super data
-
 			@directory = Cfg[:dest]
 			@path = @directory
 			@git = nil
@@ -118,7 +117,10 @@ module Components
 		# Method which run the organiser.
 		# It will apply all importants methods of this class for each project.
 		def run
-			projects = Dir.entries(@directory) - $rejected_entries
+			puts @data.inspect
+			projects = @data == nil && Dir.entries(@directory) - $rejected_entries || @data
+			puts projects.inspect
+			#projects =  if (projects == nil)
 			projects.each do |entry|
 				@logger.h1 Logger::INFO, "Work on #{entry}"
 				@logger.h1 Logger::INFO, "Structure project"
