@@ -92,8 +92,11 @@ module Components
 			              	f.print tarfile.read
 			          	end
 		     		end
+		     		tarfile.close unless tarfile.closed?
 		  		end
+		  		tar.close
 	  		end
+	  		stream.close
 		end
 
 		# Method which unrar a rar file, if it is possible (proprietary format grr ...)
