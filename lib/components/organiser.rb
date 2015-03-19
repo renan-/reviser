@@ -40,6 +40,7 @@ module Components
 			@binoms = []
 			@groups = []
 			@unknown = []
+			@results = []
 
 			# How many patterns are in the pseudo-regex?
 			@count_patterns = {}
@@ -62,6 +63,7 @@ module Components
 			else
 				@logger.h2 Logger::ERROR, "Can't rename #{File.basename(entry)} - Datas not found in name"
 			end
+			name
 		end
 
 		# Method which moves project's directories in order to
@@ -121,6 +123,7 @@ module Components
 		# It will apply all importants methods of this class for each project.
 		def run
 			@data.each do |entry|
+				
 				@logger.h1 Logger::INFO, "Work on #{entry}"
 				@logger.h1 Logger::INFO, "Structure project"
 				structure entry
@@ -129,8 +132,9 @@ module Components
 				git entry
 
 				@logger.h1 Logger::INFO, "Renaming directory"
-				rename entry
+				new_path = rename entry
 				@logger.newline
+				@results << new_path
 			end
 
 			@logger.h1 Logger::INFO, "#{@groups.size} group#{'s' if @groups.size > 1} have been detected"
@@ -142,6 +146,8 @@ module Components
 			log_resume(@binoms, Logger::INFO, "Binoms:")
 
 			log_resume(@unknown, Logger::ERROR, "\n#{@unknown.size} projects didn't matched with regex")
+
+			@results
 		end
 
 	private

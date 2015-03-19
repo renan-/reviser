@@ -27,15 +27,12 @@ module Components
 		# Je considere que tous les projets sont dans le dossier courant.
 		# TODO a voir si cela marche dans certains cas particuliers
 		def run
-			# We'll work in the dest directory
-			Dir.chdir Cfg[:dest] do
-				projects = Dir.entries('.') - ['.','..']
-				projects.each_with_index do |proj, i| 
-					puts "\t[#{i+1}/#{projects.size}]\t#{proj}"
-					Dir.chdir(proj) { check proj }
-				end
+			@data.each_with_index do |proj, i|
+				path = File.join(Cfg[:dest], proj)
+				puts "\t[#{i+1}/#{@data.size}]\t#{proj}"
+				Dir.chdir(path) { check path }
 			end
-
+	
 			@results
 		end
 
