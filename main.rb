@@ -8,7 +8,7 @@ Reviser::setup 'config.yml'
 # ensures that the hash is iterated
 # accordingly to the insertion order
 Reviser::load :component => 'archiver'
-Reviser::load :component => 'organiser'
+Reviser::load :component => 'organiser', :inputFrom => 'archiver'
 Reviser::load :component => 'checker', :inputFrom => 'organiser'
 Reviser::load :component => 'generator', :inputFrom => 'checker'
 

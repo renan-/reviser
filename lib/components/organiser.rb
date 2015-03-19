@@ -29,7 +29,10 @@ module Components
 		#  - get all teams (binoms)
 		#  - get all unknown soldiers ...
 		def initialize(data)
+			raise ArgumentError if data == nil || !data.respond_to?('each')
+
 			super data
+
 			@directory = Cfg[:dest]
 			@path = @directory
 			@git = nil
@@ -117,11 +120,7 @@ module Components
 		# Method which run the organiser.
 		# It will apply all importants methods of this class for each project.
 		def run
-			puts @data.inspect
-			projects = @data == nil && Dir.entries(@directory) - $rejected_entries || @data
-			puts projects.inspect
-			#projects =  if (projects == nil)
-			projects.each do |entry|
+			@data.each do |entry|
 				@logger.h1 Logger::INFO, "Work on #{entry}"
 				@logger.h1 Logger::INFO, "Structure project"
 				structure entry
