@@ -29,7 +29,6 @@ module Loggers
 
 	  	# Close the logger
 	  	def close
-	  		puts 'ok'
 	  		@logger.close
 	  	end
 
