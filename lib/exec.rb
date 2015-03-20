@@ -13,6 +13,11 @@ require_relative 'helpers/criteria'
 #
 class Exec < Thor
 
+	VERSION = '0.0.1.1'
+
+	map "--version" => :version
+	map "-v" => :version
+
 	@@setup = false
 
 	# path of config template file.
@@ -29,7 +34,7 @@ class Exec < Thor
 
 	# Create a environnment for checking projects
 	# This method only copies the config file into the current directory.
-	desc 'init DIRECTORY', 'Initialise workspace. DIRECTORY ||= \'.\''
+	desc 'init DIRECTORY', 'Initialize Reviser workspace. DIRECTORY ||= \'.\''
 	def init(dir = '.')
 		pwd = FileUtils.pwd
 		msg = File.exist?(File.join(pwd,dir,File.basename($template_path))) && 'Recreate' || 'Create'
@@ -38,11 +43,13 @@ class Exec < Thor
 		message(msg, File.basename($template_path))
 
     	setup File.expand_path(File.join(dir, File.basename($template_path))) unless @@setup
+		puts "\nYou have to configure your workspace by editing the config.yml configuration file."
+		puts 'After this, execute \'reviser work\' to launch analysis.'
 	end
 
 
 	# Clean the directory of logs, projects and results.
-	desc 'clean', 'Delete generated data (logs, projects, results files ...)'
+	desc 'clean', 'Remove generated files (logs, projects, results files ...)'
 	def clean
 		if File.exist? 'config.yml'
 			FileUtils.rm_rf(Cfg[:dest], :verbose => true)
@@ -91,6 +98,12 @@ class Exec < Thor
 	def add meth, label
 		res = Criteria::Labels.add meth, label
 		message "#{res} label",meth + " => " + label
+	end
+
+	desc 'version', 'Print out version information'
+	def version
+		puts "Reviser #{VERSION}"
+		puts 'Released under the MIT License.'
 	end
 
 
