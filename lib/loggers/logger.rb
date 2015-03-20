@@ -18,7 +18,7 @@ module Loggers
 			ext = File.extname(filename).delete '.'
 			# Include mode aksed by user (config file)
 			begin
-				self.class.send :include, Modes.const_get("#{ext.downcase.capitalize}")
+				self.class.send :prepend, Modes.const_get("#{ext.downcase.capitalize}")
 			rescue => e
 				self.class.send :include, Modes::Txt
 			end
@@ -29,6 +29,7 @@ module Loggers
 
 	  	# Close the logger
 	  	def close
+	  		puts 'ok'
 	  		@logger.close
 	  	end
 

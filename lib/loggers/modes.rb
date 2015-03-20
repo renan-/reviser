@@ -58,20 +58,40 @@ module Loggers
 		
 		module Html
 			include Modes
-			
+
+			@@add_header = false
+			def header
+				add_tag "<!DOCTYPE html><html><head>
+				<meta charset= \"UTF-8\">
+				<link rel=\"stylesheet\" href=\"#{Cfg[:res_dir]}/css/component.css\" />
+				<link rel=\"stylesheet\" href=\"#{Cfg[:res_dir]}/css/normalize.css\" />
+				<script src=\"res/js/component.css\"></script>
+				<title>Results</title>
+				</head>\n<body>"
+				@@add_header = true
+			end
+
 			def h1 severity,msg
+				header unless @@add_header
 				change_formatter '<h1>' , '</h1>'
 				@logger.add severity , msg
 			end
 			
 			def h2 severity,msg
+				header unless @@add_header
 				change_formatter '<h2>' , '</h2>'
 				@logger.add severity , msg
 			end
 			
 			def h3 severity,msg
+				header unless @@add_header
 				change_formatter '<h3>' , '</h3>'
 				@logger.add severity , msg
+			end
+
+			def close
+				add_tag '</body></html>'
+				@logger.close
 			end
 			
 		end
@@ -91,6 +111,13 @@ module Loggers
 				"\n#{msg}"
 			end
 			@logger.add(nil,"\n")
+		end
+
+		def add_tag tag
+			@logger.formatter = proc do |severity, datetime, progname, msg|
+				"\n#{msg}"
+			end
+			@logger.add(nil,tag)
 		end
 
 	end
