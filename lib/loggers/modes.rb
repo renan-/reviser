@@ -10,6 +10,8 @@ require 'logger'
 
 # @author Yann Prono
 # @author Anthony Cerf
+# @author Romain Ruez
+
 module Loggers
 	module Modes
 
@@ -53,12 +55,33 @@ module Loggers
 			end
 
 		end
-
+		
+		module Html
+			include Modes
+			
+			def h1 severity,msg
+				change_formatter '<h1>' , '</h1>'
+				@logger.add severity , msg
+			end
+			
+			def h2 severity,msg
+				change_formatter '<h2>' , '</h2>'
+				@logger.add severity , msg
+			end
+			
+			def h3 severity,msg
+				change_formatter '<h3>' , '</h3>'
+				@logger.add severity , msg
+			end
+			
+		end
+		
+		
 		# Change formatter
 		# @param prefix Prefix to put before all content
-		def change_formatter prefix
+		def change_formatter prefix , suffix = ''
 			@logger.formatter = proc do |severity, datetime, progname, msg|
-				"\n#{prefix} #{severity} #{msg}"
+				"\n#{prefix} #{severity} #{msg} #{suffix}"
 			end
 		end
 
