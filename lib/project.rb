@@ -17,7 +17,7 @@ module Project
 
 	# Regex to associate, depending the used word in Cfg
 	REGEX = {
-		:group 		=> '([A-Za-z0-9]+)',
+		:group 		=> '([A-Za-z0-9]{3,4})',
 		:firstname 	=> '([A-Za-z\-]+)',
 		:name 		=> '([A-Za-z]+)',
 		:user 		=> '([^_]*)',
@@ -147,8 +147,12 @@ module Project
 			infos[:name].respond_to?('each') && infos[:name].each { |n| @students << n } || @students << infos[:name] 
 			@binoms << infos[:name]
 		end
-		infos[:group] = infos[:group][0].upcase if infos.key? :group
-		@groups << infos[:group] if infos.has_key?(:group) && !@groups.include?(infos[:group])
+		if infos.has_key?(:group)
+			infos[:group] = infos[:group][0].upcase
+			sym_group = infos[:group].to_sym
+			@projects_per_group[sym_group] = @projects_per_group.key?(sym_group) && @projects_per_group[sym_group] + 1 || 1 
+		end
+		
 		@unknown << infos[:unknown] if infos.key? :unknown
 	end
 
