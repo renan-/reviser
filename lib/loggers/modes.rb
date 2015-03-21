@@ -12,118 +12,120 @@ require 'logger'
 # @author Anthony Cerf
 # @author Romain Ruez
 
-module Loggers
-	module Modes
+module Reviser
+	module Loggers
+		module Modes
 
-		module Txt
+			module Txt
 
-			include Modes
+				include Modes
 
-			def h1 severity, msg
-				change_formatter ''
-				@logger.add severity, msg
+				def h1 severity, msg
+					change_formatter ''
+					@logger.add severity, msg
+				end
+
+				def h2 severity, msg
+					change_formatter "\t\t"
+					@logger.add severity, msg
+				end
+
+				def h3 severity, msg
+					change_formatter "\t\t\t"
+					@logger.add severity, msg
+				end
 			end
 
-			def h2 severity, msg
-				change_formatter "\t\t"
-				@logger.add severity, msg
-			end
+			module Org
 
-			def h3 severity, msg
-				change_formatter "\t\t\t"
-				@logger.add severity, msg
-			end
-		end
+				include Modes
+				
+				def h1 severity, msg
+					change_formatter '*'
+					@logger.add severity, msg
+				end
 
-		module Org
+				def h2 severity, msg
+					change_formatter "**"
+					@logger.add severity, msg
+				end
 
-			include Modes
-			
-			def h1 severity, msg
-				change_formatter '*'
-				@logger.add severity, msg
-			end
+				def h3 severity, msg
+					change_formatter "***"
+					@logger.add severity, msg
+				end
 
-			def h2 severity, msg
-				change_formatter "**"
-				@logger.add severity, msg
-			end
-
-			def h3 severity, msg
-				change_formatter "***"
-				@logger.add severity, msg
-			end
-
-		end
-		
-		module Html
-			include Modes
-
-			@add_header = false
-			def header
-				add_tag "<!DOCTYPE html><html><head>
-				<meta charset= \"UTF-8\">
-				<link rel=\"stylesheet\" href=\"#{File.expand_path(File.join(Cfg[:res_dir],'/css/style_logs.css'))}\" />
-				<title>#{@basename} logs</title>
-				</head>\n<body>
-				<header>
-					<p>#{@basename} logs</p>\n</header>\n<section>"
-				@add_header = true
-			end
-
-			def h1 severity,msg
-				header unless @add_header
-				change_formatter "<h1 class=\"#{severity_to_s(severity)}\">" , '</h1>'
-				@logger.add severity , msg
 			end
 			
-			def h2 severity,msg
-				header unless @add_header
-				change_formatter "<h2 class=\"#{severity_to_s(severity)}\">" , '</h2>'
-				@logger.add severity , msg
+			module Html
+				include Modes
+
+				@add_header = false
+				def header
+					add_tag "<!DOCTYPE html><html><head>
+					<meta charset= \"UTF-8\">
+					<link rel=\"stylesheet\" href=\"#{File.expand_path(File.join(Cfg[:res_dir],'/css/style_logs.css'))}\" />
+					<title>#{@basename} logs</title>
+					</head>\n<body>
+					<header>
+						<p>#{@basename} logs</p>\n</header>\n<section>"
+					@add_header = true
+				end
+
+				def h1 severity,msg
+					header unless @add_header
+					change_formatter "<h1 class=\"#{severity_to_s(severity)}\">" , '</h1>'
+					@logger.add severity , msg
+				end
+				
+				def h2 severity,msg
+					header unless @add_header
+					change_formatter "<h2 class=\"#{severity_to_s(severity)}\">" , '</h2>'
+					@logger.add severity , msg
+				end
+				
+				def h3 severity,msg
+					header unless @add_header
+					change_formatter "<h3 class=\"#{severity_to_s(severity)}\">", '</h3>'
+					@logger.add severity , msg
+				end
+
+				def close
+					add_tag '</section></body></html>'
+					@logger.close
+				end
+				
 			end
 			
-			def h3 severity,msg
-				header unless @add_header
-				change_formatter "<h3 class=\"#{severity_to_s(severity)}\">", '</h3>'
-				@logger.add severity , msg
-			end
-
-			def close
-				add_tag '</section></body></html>'
-				@logger.close
-			end
 			
-		end
-		
-		
-		# Change formatter
-		# @param prefix Prefix to put before all content
-		def change_formatter prefix , suffix = ''
-			@logger.formatter = proc do |severity, datetime, progname, msg|
-				"\n#{prefix} #{severity} #{msg} #{suffix}"
+			# Change formatter
+			# @param prefix Prefix to put before all content
+			def change_formatter prefix , suffix = ''
+				@logger.formatter = proc do |severity, datetime, progname, msg|
+					"\n#{prefix} #{severity} #{msg} #{suffix}"
+				end
 			end
-		end
 
-		# Create new line
-		def newline
-			@logger.formatter = proc do |severity, datetime, progname, msg|
-				"\n#{msg}"
+			# Create new line
+			def newline
+				@logger.formatter = proc do |severity, datetime, progname, msg|
+					"\n#{msg}"
+				end
+				@logger.add(nil,"\n")
 			end
-			@logger.add(nil,"\n")
-		end
 
-		def add_tag tag
-			@logger.formatter = proc do |severity, datetime, progname, msg|
-				"\n#{msg}"
+			def add_tag tag
+				@logger.formatter = proc do |severity, datetime, progname, msg|
+					"\n#{msg}"
+				end
+				@logger.add(nil,tag)
 			end
-			@logger.add(nil,tag)
-		end
 
-		def severity_to_s severity
-			sev_labels = %w(DEBUG INFO WARN ERROR FATAL ANY)
-			sev_labels[severity].downcase
-		end
+			def severity_to_s severity
+				sev_labels = %w(DEBUG INFO WARN ERROR FATAL ANY)
+				sev_labels[severity].downcase
+			end
 
+		end
 	end
 end

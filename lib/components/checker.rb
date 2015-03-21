@@ -11,65 +11,62 @@ require 'open3'
 
 require_relative '../helpers/criteria'
 
-module Components
-	class Checker < Component
-		include Helpers::Criteria
+module Reviser
+	module Components
+		class Checker < Component
+			include Helpers::Criteria
 
-		def initialize(data)
-			super data
+			def initialize(data)
+				super data
 
-			init_criteria_helper
+				@criteria = Hash.new
+				@output = Hash.new
 
-			@results = {}
-		end
+				@logger.h1 Logger::INFO, "Loading modules"
 
-		# Yann : je ne recupere pas les datas de l'organiser,
-		# Je considere que tous les projets sont dans le dossier courant.
-		# TODO a voir si cela marche dans certains cas particuliers
-		def run
-			@data.each_with_index do |proj, i|
-				path = File.join(Cfg[:dest], proj)
-				puts "\t[#{i+1}/#{@data.size}]\t#{proj}"
-				Dir.chdir(path) { check proj }
+				load PWD, '../criteria/*'
+				load EXT, '*'
+
+				@logger.h1 Logger::INFO, "Loading labels"
+
+				[:criteria, :extensions].each { |x| load_labels x }
+
+				@results = {}
 			end
-	
-			@results
-		end
 
-	private
+			# Yann : je ne recupere pas les datas de l'organiser,
+			# Je considere que tous les projets sont dans le dossier courant.
+			# TODO a voir si cela marche dans certains cas particuliers
+			def run
+				@data.each_with_index do |proj, i|
+					path = File.join(Cfg[:dest], proj)
+					puts "\t[#{i+1}/#{@data.size}]\t#{proj}"
+					Dir.chdir(path) { check proj }
+				end
+		
+				@results
+			end
 
-		#
-		# Being called in the project's directory,
-		# this methods maps all the criterias to
-		# their analysis value
-		#
-		def check(proj)		
-			# Init results
-			@results[proj] = {}
-			
-			# for each method asked by user with its label
-			@output.each do |meth, label|
-				if @criteria.has_key? meth
-					@results[proj][label] = call meth 
-				else
-					@logger.h1(Logger::ERROR, "Unknown method '#{meth}'' for project #{proj}")
+		private
+
+			#
+			# Being called in the project's directory,
+			# this methods maps all the criterias to
+			# their analysis value
+			#
+			def check(proj)		
+				# Init results
+				@results[proj] = {}
+				
+				# for each method asked by user with its label
+				@output.each do |meth, label|
+					if @criteria.has_key? meth
+						@results[proj][label] = call meth 
+					else
+						@logger.h1(Logger::ERROR, "Unknown method '#{meth}'' for project #{proj}")
+					end
 				end
 			end
 		end
-
-		#
-		# This method is what would be the constructor
-		# of criteria_helper if it was a class
-		#
-		def init_criteria_helper
-			@criteria = Hash.new
-			@output = Hash.new
-			@logger.h1 Logger::INFO, "Loading modules"
-			load PWD, '../helpers/*'
-			load EXT, '*'
-			@logger.h1 Logger::INFO, "Loading labels"
-			[:criteria, :extensions].each { |x| load_labels x }
-		end
-
 	end
 end
