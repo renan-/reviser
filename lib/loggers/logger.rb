@@ -8,14 +8,21 @@ require_relative 'modes'
 # @author Yann Prono
 #
 module Loggers
+
+	class Logger::LogDevice
+		def add_log_header(file)
+		end
+	end
+
 	class Logger
 
 		# Create logger.
 		# The extension determines the mode to use (logger mode).
 		# @filename
 		def initialize filename
-
-			ext = File.extname(filename).delete '.'
+			ext = File.extname filename
+			@basename = File.basename filename, ext
+			ext = ext.delete '.'
 			# Include mode aksed by user (config file)
 			begin
 				self.class.send :prepend, Modes.const_get("#{ext.downcase.capitalize}")
