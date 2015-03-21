@@ -1,16 +1,9 @@
 GEM
   remote: http://rubygems.org/
   specs:
-    diff-lcs (1.2.5)
     ffi (1.9.8-x64-mingw32)
     ffi (1.9.8-x86-mingw32)
     git (1.2.9.1)
-    html5_validator (1.0.0)
-      json
-      rest-client
-      rspec
-      rspec-collection_matchers (~> 1.0.x)
-    json (1.8.2)
     mime-types (2.4.3)
     netrc (0.10.3)
     rake (10.4.2)
@@ -25,21 +18,6 @@ GEM
       ffi (~> 1.9)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
-    rspec (3.2.0)
-      rspec-core (~> 3.2.0)
-      rspec-expectations (~> 3.2.0)
-      rspec-mocks (~> 3.2.0)
-    rspec-collection_matchers (1.1.2)
-      rspec-expectations (>= 2.99.0.beta1)
-    rspec-core (3.2.2)
-      rspec-support (~> 3.2.0)
-    rspec-expectations (3.2.0)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.2.0)
-    rspec-mocks (3.2.1)
-      diff-lcs (>= 1.2.0, < 2.0)
-      rspec-support (~> 3.2.0)
-    rspec-support (3.2.2)
     ruby-ole (1.2.11.8)
     rubyzip (1.1.7)
     spreadsheet (1.0.3)
@@ -53,8 +31,8 @@ PLATFORMS
 
 DEPENDENCIES
   git (~> 1.2.9.1)
-  html5_validator
   rake (~> 10.4.2)
+  rest-client (~> 1.7.3)
   ruby-ole (>= 1.0)
   rubyzip (~> 1.1.6)
   spreadsheet (~> 1.0.1)
