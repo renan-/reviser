@@ -2,7 +2,7 @@
 # @author Renan Strauss
 #
 # A tool to validate what we call web languages,
-# in other words languages which can't be analysed
+# in other words languages that can't be analysed
 # by compilation nor by execution
 # It's very simple at that point, but feel free to
 # make the extension better :-)
@@ -13,10 +13,31 @@ module Extensions
 	module WebValidators
 		include Helpers::CodeAnalysis
 
+		#
+		# FIXME : Dirty ?
+		#
+		def validate_web
+			validate :html, sources.select { |x| File.extname(x) =~ /(html)/ }
+			validate :css, sources.select { |x| File.extname(x) =~ /(css)/ }
+		end
+
 		def validate_html
+			validate :html
+		end
+
+		def validate_css
+			validate :css
+		end
+
+		private
+
+		#
+		# @returns a hash matching all files for this lang to a resultset
+		#
+		def validate lang, files = sources
 			results = {}
-			sources.each do |f|
-				headers = W3C::validate(:html, f)
+			files.each do |f|
+				headers = W3C::validate(lang, f)
 
 				if headers.respond_to? 'each'
 					results[f] = {
@@ -33,9 +54,6 @@ module Extensions
 			results
 		end
 
-		def css
-		end
-
 		#
 		# This class is wrapping up
 		# W3C API
@@ -46,6 +64,13 @@ module Extensions
 				:css  => 'jigsaw.w3.org/css-validator/validator'
 			}
 
+			#
+			# Atm this only
+			# @returns headers from request to validator
+			# We could as well get the response body (html by default)
+			# and save that into a file.
+			# Tell me what's best to do in your opinion
+			#
 			def self::validate lang, file
 				raise ArgumentError unless VALIDATORS.include? lang
 

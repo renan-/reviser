@@ -8,7 +8,9 @@ module Extensions
 
 		#
 		# Check memory leaks of the program
-		# The module uses execution value written in the config file of the project 
+		# The module uses execution value written in the config file of the project
+		#
+		# Yann, execution_count shall be taken in count imo 
 		#
 		def memleaks
 			executable = find_executable
