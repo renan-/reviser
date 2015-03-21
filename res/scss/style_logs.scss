@@ -1,0 +1,134 @@
+/* Imports */
+@import "compass/css3/images";
+@import "compass/css3/background-size";
+@import "compass/css3/box-sizing";
+@import "compass/css3/transform";
+@import "compass/css3/border-radius";
+
+/** *****************
+ 	* 	Variables   *
+ 	*****************
+ */
+
+$background: #2c3e50;
+$background_log: #ecf0f1;
+$background_header: #1B3147;
+$font_color: darken(#dbe1e5,60%);
+
+$info: #27ae60;
+$error: #c0392b;
+$debug: #F49C37;
+
+html, body, h1, h2, h3, header {
+	padding: 0px;
+	margin: 0px;
+	font-family: sans-serif
+}
+
+body {
+	background-color: darken(white, 10%);
+}
+
+header {
+	display: inline-block;
+	width: 100%;
+	height: 4em;
+	margin-bottom: 4%;
+
+	background-color: $background_header;
+	border-bottom: 2px solid tint($background_header, 50%);
+	
+	p {
+		text-align: center;
+		text-transform: uppercase;
+		font-weight: bold;
+		color: rgba(255,255,255,1);		
+	}
+
+	&:before {
+		content: '';
+		display: inline-block;
+		width: 50px;
+		height: 50px;
+		position: absolute;
+		left: 50%;
+		top: 4em;
+		@include translate(-27px, -22px);
+		
+		background: white url("http://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Ruby_logo.svg/50px-Ruby_logo.svg.png");
+		background-repeat: no-repeat;
+		background-position: center;
+		@include background-size(32px, 32px);
+		border: 2px solid darken(red, 18%);		
+		@include border-radius(50%);
+	};
+
+}
+
+section {
+	display: inline-block;
+	width: 90%;
+	margin-left: 5%;
+	margin-bottom: 2%;
+	border-left: 4px solid $font_color;
+	@include box-sizing(border-box);
+}
+
+
+h1, h2, h3 {
+	display: block;
+	width: 100%;
+	position: relative;
+	padding-left: 1.2em;
+	margin-top: 15px;
+
+	@include box-sizing(border-box);
+	color: $font_color;
+	
+	&:before {
+		content: '';
+		display:inline-block;
+		width: 20px;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		left: -12px;
+		
+		border-radius: 4px;
+		background-color: $error;
+	}
+}
+
+h1 { font-size: 2em; }
+h2 { font-size: 1.2em; padding-left: 3em; }
+h3 { font-size: 0.8em; padding-left: 6em; }
+
+section h1:first-child {
+	margin-top: -1px;
+}
+section h1:last-child {
+	margin-bottom: -1px;
+}
+
+.info:before {
+	background-color: $info;
+}
+
+.error:before {
+	background-color: $error;
+}
+
+.debug:before {
+	background-color: $debug;
+}
+
+@media all and (max-width: 700px) {
+	h1 { font-size: 1.17em; }
+	h2 { font-size: 0.7em; }
+	h3 { font-size: 0.3em; padding-left: 3.17em; }
+	section {margin-top: 5%;}
+}
+
+@media all and (max-width: 300px) {
+	section {margin-top: 8%;}
+}

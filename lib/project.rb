@@ -17,7 +17,7 @@ module Project
 
 	# Regex to associate, depending the used word in Cfg
 	REGEX = {
-		:group 		=> '([A-Za-z0-9]+)',
+		:group 		=> '([A-Za-z0-9]{3,4})',
 		:firstname 	=> '([A-Za-z\-]+)',
 		:name 		=> '([A-Za-z]+)',
 		:user 		=> '([^_]*)',
@@ -62,20 +62,21 @@ module Project
 	# @return [String] the formatted name for directory project
 	#
 	def generate_label infos
-    unless infos.empty?
-      label = ''
-      infos.reject { |k| k == :group }.each { |_, v|
-        if v.respond_to?('each')
-          v.each { |data|
-            label += data +' ' }
-        else
-          label += v + ' '
-        end
-      }
-      # Inject group of project before name : group/name
-      label = infos.key?(:group) && File.join(infos[:group], label) || label
-      label
-    end
+		unless infos.empty?
+			label = ''
+			infos.reject { |k| k == :group }.each { |_, v|
+				if v.respond_to?('each')
+					v.each { |data|
+					label += data +' '
+				}
+				else
+					label += v + ' '
+				end
+			}
+			# Inject group of project before name : group/name
+			label = infos.key?(:group) && File.join(infos[:group], label) || label
+			label
+		end
 	end
 
 	# I'm not pround of this method ...
@@ -119,7 +120,7 @@ module Project
 		# Apply created regex
 		entry.match Regexp.new(regex)
 		pos = 1
-		infos = {}		
+		infos = {}
 
 		# Get matched values
 		begin
@@ -127,12 +128,13 @@ module Project
 			if tmp != nil && tmp != ''
 				tmp = tmp.delete '_'
 				infos.has_key?(position[pos]) && infos[position[pos]] << tmp || infos[position[pos]] = [tmp]
-			else
-				ask entry
 			end
 			pos += 1
 		end while pos <= position.size
-				
+
+		if infos.empty?
+			infos[:unknown] = entry
+		end
 		sort_infos infos
 		infos
 	end
@@ -141,15 +143,21 @@ module Project
 	# Put all datas found in respective variables (students, groups, teams ...).
 	# @param infos [Hash] Informations found by regex.
 	def sort_infos infos
-		infos[:name].respond_to?('each') && infos[:name].each { |n| @students << n } || @students << infos[:name]
-		infos[:group] = infos[:group][0].upcase if infos.key? :group
-		@groups << infos[:group] if infos.has_key?(:group) && !@groups.include?(infos[:group])
-		@binoms << infos[:name]
+		if infos.has_key?(:name)
+			infos[:name].respond_to?('each') && infos[:name].each { |n| @students << n } || @students << infos[:name] 
+			@binoms << infos[:name]
+		end
+		if infos.has_key?(:group)
+			infos[:group] = infos[:group][0].upcase
+			sym_group = infos[:group].to_sym
+			@projects_per_group[sym_group] = @projects_per_group.key?(sym_group) && @projects_per_group[sym_group] + 1 || 1 
+		end
+		
+		@unknown << infos[:unknown] if infos.key? :unknown
 	end
 
 
 	def ask entry
-		# TODO, ask to user if the entry is correctly written
 	end
 
 end

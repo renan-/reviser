@@ -38,7 +38,7 @@ module Components
 			@git = nil
 			@students = []
 			@binoms = []
-			@groups = []
+			@projects_per_group = {}
 			@unknown = []
 			@results = []
 
@@ -137,16 +137,18 @@ module Components
 				@results << new_path
 			end
 
-			@logger.h1 Logger::INFO, "#{@groups.size} group#{'s' if @groups.size > 1} have been detected"
+			@logger.h1 Logger::INFO, "#{@projects_per_group.keys.size} group#{'s' if @projects_per_group.keys.size > 1} have been detected"
 			@logger.h1 Logger::INFO, "#{@students.size} student#{'s' if @students.size > 1} have been detected"
 			@logger.h1 Logger::INFO, "#{@binoms.size} binom#{'s' if @binoms.size > 1} have been detected"
 
-			log_resume(@groups, Logger::INFO, "Groups:")
+			formalized = []
+			@projects_per_group.each { |k,v| formalized << "#{k.to_s}: #{v} project#{'s' if v > 1}" }
+			log_resume(formalized, Logger::INFO, "Groups:")
 			log_resume(@students, Logger::INFO, "Students:")
 			log_resume(@binoms, Logger::INFO, "Binoms:")
 
 			log_resume(@unknown, Logger::ERROR, "\n#{@unknown.size} projects didn't matched with regex")
-
+			
 			@results
 		end
 
