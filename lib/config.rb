@@ -13,12 +13,28 @@ module Reviser
 		@@loaded = false
 
 		def self.[](key)
-	    	@@mem[key] if @@loaded
+	    @@mem[key] if @@loaded
+		end
+
+		def self.[]=(key, value)
+			@@mem[key] = value if @@loaded
 		end
 
 		# @return true if there is the key in the config
 		def self.has_key?(key)
 			@@mem.has_key? key
+		end
+
+		#
+		# @returns The specified resource path
+		# TODO : put resources in dedicated folders
+		# for each component or extension, so that
+		# the user can omit <lang>/<ext_name>/ when
+		# calling this method
+		#
+		def self.resource path
+			abs = File.join(ROOT, 'res', path)
+			File.new abs if File.exists? abs
 		end
 
 		# Method class alias

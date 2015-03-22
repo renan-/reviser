@@ -20,8 +20,9 @@ module Reviser
 			# FIXME : Dirty ?
 			#
 			def validate_web
-				validate :html, sources.select { |x| File.extname(x) == '.html' }
-				validate :css, sources.select { |x| File.extname(x) == '.css' }
+				[:html, :css].each do |lang|
+					validate lang, sources.select { |x| File.extname(x) == ".#{lang}" }
+				end
 			end
 
 			def validate_html
@@ -40,18 +41,48 @@ module Reviser
 			def validate lang, files = sources
 				results = {}
 				files.each do |f|
-					headers = W3C::validate(lang, f)
+					response = W3C::validate(lang, f)
+					response.headers ||= []
 
-					if headers.respond_to? 'each'
-						results[f] = {
-							:status => headers.has_key?(:x_w3c_validator_status) && headers[:x_w3c_validator_status] || 'Error',
-							:errors => headers.has_key?(:x_w3c_validator_errors) && headers[:x_w3c_validator_errors] || 'Error',
-							:warnings => headers.has_key?(:x_w3c_validator_warnings) && headers[:x_w3c_validator_warnings] || 'Error'
-						}
+					if response.headers.empty?
+						results[f] = { :status => response.to_str }
 					else
-						results[f] = { :status => headers }
+						results[f] = {
+							:status => response.headers.has_key?(:x_w3c_validator_status) && response.headers[:x_w3c_validator_status] || 'Error',
+							:errors => response.headers.has_key?(:x_w3c_validator_errors) && response.headers[:x_w3c_validator_errors] || 'Error',
+							:warnings => response.headers.has_key?(:x_w3c_validator_warnings) && response.headers[:x_w3c_validator_warnings] || 'Error'
+						}
 					end
+
 					puts "\t\t#{f} => #{results[f][:status]}"
+
+					#
+					# Generate a file
+					# Simply add 'web_validators_save_results: true'
+					# in your project's type config file
+					#
+					Cfg[:web_validators_save_results] ||= false
+
+					#
+					# We generate only if config key is set and
+					# response is not a raw string
+					#
+					if Cfg[:web_validators_save_results] and not response.headers.empty?
+						body = response.to_str
+						#
+						# W3C uses scss so we need to replace imports by the
+						# actual css...
+						# But it only works for HTML analysis, because jigsaw uses
+						# includes 
+						#
+						body.sub! '@import "./style/base";', File.read(Cfg::resource 'css/web_validators/w3c-base.css')
+						body.sub! '@import "./style/results";', File.read(Cfg::resource 'css/web_validators/w3c-results.css')
+
+						body.sub! 'style/base.css', Cfg::resource('css/web_validators/w3c-base.css').to_path
+						body.sub! 'style/results.css', Cfg::resource('css/web_validators/w3c-results.css').to_path
+
+						File.open(f + '.WEB_VALIDATORS.html', 'w') { |x| x.write body }
+					end
 				end
 
 				results
@@ -68,29 +99,35 @@ module Reviser
 				}
 
 				#
-				# Atm this only
-				# @returns headers from request to validator
-				# We could as well get the response body (html by default)
-				# and save that into a file.
-				# Tell me what's best to do in your opinion
+				# @returns responses from the request made to the validator
 				#
 				def self::validate lang, file
 					raise ArgumentError unless VALIDATORS.include? lang
+					#
+					# W3C is a free service and we shall not overflow it
+					# with our requests so accordingly to their doc,
+					# we sleep 1s between each request
+					#
 					sleep 1
 					begin
-						response = send lang, file
-						response.headers
+						send lang, file
 					rescue Object => e
 						e.to_s
 					end
 				end
 
+				#
+				# W3C HTML Validator API expects a POST uploaded_file
+				#
 				def self::html file
 					RestClient.post(VALIDATORS[:html], :uploaded_file => File.new(file))
 				end
 
+				#
+				# Whereas W3C CSS Validator API doesn't accept uploaded
+				# files, so we need to pass the raw text
 				def self::css file
-					RestClient.get(VALIDATORS[:css], params: { :text => CGI.escape(File.read(file)) })
+					RestClient.get(VALIDATORS[:css] + '?text=' + CGI.escape(File.read(file)))
 				end
 			end
 		end
