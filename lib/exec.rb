@@ -29,7 +29,7 @@ module Reviser
 			# If config.yml already exists in the working
 			# directory, then we setup reviser here
 			config_file = File.expand_path('config.yml')
-	    	setup config_file if File.exist? config_file
+	    setup config_file if File.exist? config_file
 		end
 
 
@@ -43,9 +43,17 @@ module Reviser
 			FileUtils.cp($template_path, dir)
 			message(msg, File.basename($template_path))
 
-	    	setup File.expand_path(File.join(dir, File.basename($template_path))) unless @@setup
-			puts "\nYou have to configure your workspace by editing the config.yml configuration file."
-			puts 'After this, execute \'reviser work\' to launch analysis.'
+	    setup File.expand_path(File.join(dir, File.basename($template_path))) unless @@setup
+
+	    if not File.exists(File.join(FileUtils.pwd, Cfg[:res_dir]))
+	    	path_res = File.join(File.dirname(File.dirname(__FILE__)),"#{Cfg[:res_dir]}")
+				FileUtils.cp_r(path_res, FileUtils.pwd) unless 
+
+				message('Create', File.join(dir, Cfg[:res_dir]))
+			end
+
+			puts "Customize config.yml to your needs @see docs"
+			puts 'Then simply execute \'reviser work\' to launch analysis.'
 		end
 
 
@@ -66,7 +74,10 @@ module Reviser
 					FileUtils.rm_f(Dir["*.#{Cfg[:out_format]}"], :verbose => true)
 				end
 
-				FileUtils.rm_rf(Cfg[:res_dir], :verbose => true)
+				# We shall not delete it because the user is likely to
+				# add his own files and doesn't want to lose them every
+				# single time
+				#FileUtils.rm_rf(Cfg[:res_dir], :verbose => true)
 			else
 				message("Error", "'config.yml' doesn't exist! Check if you are in the good directory.")
 			end
@@ -116,9 +127,6 @@ module Reviser
 
 			def setup(config_file)
 				Reviser::setup config_file
-
-				path_res = File.join(File.dirname(File.dirname(__FILE__)),"#{Cfg[:res_dir]}")
-				FileUtils.cp_r(path_res, FileUtils.pwd)
 
 				@@setup = true
 			end

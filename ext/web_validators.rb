@@ -16,13 +16,8 @@ module Reviser
 		module WebValidators
 			include Helpers::Project
 
-			#
-			# FIXME : Dirty ?
-			#
 			def validate_web
-				[:html, :css].each do |lang|
-					validate lang, sources.select { |x| File.extname(x) == ".#{lang}" }
-				end
+				{ html: validate(:html), css: validate(:css) }
 			end
 
 			def validate_html
@@ -38,19 +33,20 @@ module Reviser
 			#
 			# @returns a hash matching all files for this lang to a resultset
 			#
-			def validate lang, files = sources
+			def validate lang
 				results = {}
+
+				files = sources.select { |s| File.extname(s) == ".#{lang}" }
 				files.each do |f|
 					response = W3C::validate(lang, f)
-					response.headers ||= []
 
 					if response.headers.empty?
 						results[f] = { :status => response.to_str }
 					else
 						results[f] = {
-							:status => response.headers.has_key?(:x_w3c_validator_status) && response.headers[:x_w3c_validator_status] || 'Error',
-							:errors => response.headers.has_key?(:x_w3c_validator_errors) && response.headers[:x_w3c_validator_errors] || 'Error',
-							:warnings => response.headers.has_key?(:x_w3c_validator_warnings) && response.headers[:x_w3c_validator_warnings] || 'Error'
+							:status => response.headers.has_key?(:x_w3c_validator_status) && response.headers[:x_w3c_validator_status] || 'Not available',
+							:errors => response.headers.has_key?(:x_w3c_validator_errors) && response.headers[:x_w3c_validator_errors] || 'Not available',
+							:warnings => response.headers.has_key?(:x_w3c_validator_warnings) && response.headers[:x_w3c_validator_warnings] || 'Not available'
 						}
 					end
 
@@ -72,14 +68,17 @@ module Reviser
 						#
 						# W3C uses scss so we need to replace imports by the
 						# actual css...
-						# But it only works for HTML analysis, because jigsaw uses
-						# includes 
 						#
-						body.sub! '@import "./style/base";', File.read(Cfg::resource 'css/web_validators/w3c-base.css')
-						body.sub! '@import "./style/results";', File.read(Cfg::resource 'css/web_validators/w3c-results.css')
+						case lang
+						when :html
+							body.sub! '@import "./style/base";', File.read(Cfg::resource 'css/web_validators/html-base.css')
+							body.sub! '@import "./style/results";', File.read(Cfg::resource 'css/web_validators/html-results.css')
+						when :css
+							body.sub! 'style/base.css', Cfg::resource('css/web_validators/css-base.css').to_path
+							body.sub! 'style/results.css', Cfg::resource('css/web_validators/css-results.css').to_path
 
-						body.sub! 'style/base.css', Cfg::resource('css/web_validators/w3c-base.css').to_path
-						body.sub! 'style/results.css', Cfg::resource('css/web_validators/w3c-results.css').to_path
+							body.sub! 'file://localhost/TextArea', f
+						end
 
 						File.open(f + '.WEB_VALIDATORS.html', 'w') { |x| x.write body }
 					end
@@ -111,8 +110,8 @@ module Reviser
 					sleep 1
 					begin
 						send lang, file
-					rescue Object => e
-						e.to_s
+					rescue => e
+						{ headers: [] }
 					end
 				end
 
