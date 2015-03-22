@@ -20,8 +20,8 @@ module Reviser
 			# FIXME : Dirty ?
 			#
 			def validate_web
-				validate :html, sources.select { |x| File.extname(x) =~ /(html)/ }
-				validate :css, sources.select { |x| File.extname(x) =~ /(css)/ }
+				validate :html, sources.select { |x| File.extname(x) == '.html' }
+				validate :css, sources.select { |x| File.extname(x) == '.css' }
 			end
 
 			def validate_html
@@ -76,13 +76,21 @@ module Reviser
 				#
 				def self::validate lang, file
 					raise ArgumentError unless VALIDATORS.include? lang
-
+					sleep 1
 					begin
-						response = RestClient.post(VALIDATORS[lang],:uploaded_file => File.new(file))
+						response = send lang, file
 						response.headers
 					rescue Object => e
 						e.to_s
 					end
+				end
+
+				def self::html file
+					RestClient.post(VALIDATORS[:html], :uploaded_file => File.new(file))
+				end
+
+				def self::css file
+					RestClient.get(VALIDATORS[:css], params: { :text => CGI.escape(File.read(file)) })
 				end
 			end
 		end
