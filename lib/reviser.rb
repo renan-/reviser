@@ -25,9 +25,12 @@ module Reviser
 		# TODO : check data
 		#
 		def self.load(data)
-			@@loaded_components[data[:component]] = {
+			data[:local] ||= false
+
+			@@loaded_components.store data[:component],
+			{
 				:inputFrom => data[:inputFrom],
-				:dir => data.has_key?(:dir) && data[:dir] || 'components'
+				:local => data[:local],
 				:data => nil
 			}
 		end
@@ -55,8 +58,13 @@ module Reviser
 			@@loaded_components.each do |comp, conf|
 				puts "Reviser is now running #{Reviser.titleize comp}..."
 
-				require_relative "components/#{comp}"
-				c = eval("Components::#{Reviser.titleize comp}").new ((conf[:inputFrom] != nil) && @@loaded_components[conf[:inputFrom]][:data]) || nil
+				puts conf.inspect
+				require_relative "components/#{comp}" unless conf[:local]
+
+				namespace = conf[:local] && '' || 'Components'
+				param = ((conf[:inputFrom] != nil) && @@loaded_components[conf[:inputFrom]][:data]) || nil
+				
+				c = eval("#{namespace}::#{Reviser.titleize comp}").new param
 
 				@@loaded_components[comp][:data] = c.work
 				
