@@ -31,7 +31,7 @@ module Reviser
 					self.class.send :include, Modes::Txt
 				end
 
-				@logger = ::Logger.new filename
+				@logger = ::Logger.new File.open(filename, 'w')
 				@logger.level = ::Logger::DEBUG
 		  	end
 

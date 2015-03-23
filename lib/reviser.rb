@@ -58,7 +58,6 @@ module Reviser
 			@@loaded_components.each do |comp, conf|
 				puts "Reviser is now running #{Reviser.titleize comp}..."
 
-				puts conf.inspect
 				require_relative "components/#{comp}" unless conf[:local]
 
 				namespace = conf[:local] && '' || 'Components'
