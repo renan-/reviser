@@ -45,7 +45,7 @@ module Reviser
 
 	    setup File.expand_path(File.join(dir, File.basename($template_path))) unless @@setup
 
-	    if not File.exists(File.join(FileUtils.pwd, Cfg[:res_dir]))
+	    if not File.exist?(File.join(FileUtils.pwd, Cfg[:res_dir]))
 	    	path_res = File.join(File.dirname(File.dirname(__FILE__)),"#{Cfg[:res_dir]}")
 				FileUtils.cp_r(path_res, FileUtils.pwd) unless 
 
