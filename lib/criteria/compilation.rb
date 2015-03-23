@@ -1,6 +1,3 @@
-require_relative '../helpers/project'
-require_relative '../helpers/system'
-
 #
 # @Author Yann Prono
 # @Author Renan Strauss

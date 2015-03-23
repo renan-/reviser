@@ -1,5 +1,7 @@
 source 'http://rubygems.org'
 
+gemspec
+
 # String.scrub for ruby 1.9.x
 gem 'scrub_rb' unless RUBY_VERSION.split('.')[0] == '2'
 

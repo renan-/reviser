@@ -9,8 +9,6 @@
 #
 require 'rest_client'
 
-require_relative '../lib/helpers/project'
-
 module Reviser
 	module Extensions
 		module WebValidators

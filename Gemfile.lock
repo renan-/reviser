@@ -1,3 +1,8 @@
+PATH
+  remote: .
+  specs:
+    reviser (0.0.1.1.pre.beta)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -33,6 +38,7 @@ DEPENDENCIES
   git (~> 1.2.9.1)
   rake (~> 10.4.2)
   rest-client (~> 1.7.3)
+  reviser!
   ruby-ole (>= 1.0)
   rubyzip (~> 1.1.6)
   spreadsheet (~> 1.0.1)

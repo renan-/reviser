@@ -1,5 +1,3 @@
-require_relative '../lib/helpers/system'
-
 module Reviser
 	module Extensions
 		module Valgrind

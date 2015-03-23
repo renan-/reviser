@@ -1,5 +1,3 @@
-require_relative '../config'
-
 # Manage criteria and labels.
 
 # @example Call a criterion (in the config File):

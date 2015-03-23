@@ -13,6 +13,10 @@ require 'mkmf'
 require_relative 'component'
 require_relative 'config'
 
+require_relative 'helpers/git'
+require_relative 'helpers/project'
+require_relative 'helpers/system'
+
 module Reviser
 	class Reviser
 		@@setup = false
