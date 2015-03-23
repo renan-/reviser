@@ -9,6 +9,7 @@
 # about the data these components exchange.
 #
 require 'mkmf'
+require 'colorize'
 
 require_relative 'component'
 require_relative 'config'
@@ -60,7 +61,7 @@ module Reviser
 			# let users load their own components
 			#
 			@@loaded_components.each do |comp, conf|
-				puts "Reviser is now running #{Reviser.titleize comp}..."
+				puts "Reviser is now running "+"#{Reviser.titleize comp}".green + "..."
 
 				require_relative "components/#{comp}" unless conf[:local]
 
