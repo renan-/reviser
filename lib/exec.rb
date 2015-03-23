@@ -98,7 +98,7 @@ module Reviser
 		end
 
 		desc 'extract', 'Extract and organise all computing projects'
-		def work
+		def extract
 			Reviser::load :component => 'archiver'
 			Reviser::load :component => 'organiser', :inputFrom => 'archiver'
 			
