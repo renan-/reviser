@@ -1,5 +1,6 @@
 require 'thor'
 require 'fileutils'
+require 'colorize'
 
 require_relative 'reviser'
 require_relative 'helpers/criteria'
@@ -16,8 +17,8 @@ module Reviser
 
 		VERSION = '0.0.1.1'
 
-		map "--version" => :version
-		map "-v" => :version
+		map '--version' => :version
+		map '-v' => :version
 
 		@@setup = false
 
@@ -29,7 +30,7 @@ module Reviser
 			# If config.yml already exists in the working
 			# directory, then we setup reviser here
 			config_file = File.expand_path('config.yml')
-	    setup config_file if File.exist? config_file
+	    	setup config_file if File.exist? config_file
 		end
 
 
@@ -52,8 +53,8 @@ module Reviser
 				message('Create', File.join(dir, Cfg[:res_dir]))
 			end
 
-			puts "Customize config.yml to your needs @see docs"
-			puts 'Then simply execute \'reviser work\' to launch analysis.'
+			puts "Customize config.yml to your needs @see docs".yellow
+			puts 'Then simply execute \'reviser work\' to launch analysis.'.yellow
 		end
 
 
@@ -79,7 +80,7 @@ module Reviser
 				# single time
 				#FileUtils.rm_rf(Cfg[:res_dir], :verbose => true)
 			else
-				message("Error", "'config.yml' doesn't exist! Check if you are in the good directory.")
+				message("Error".red, "'config.yml' doesn't exist! Check if you are in the good directory.")
 			end
 
 		end
@@ -89,12 +90,17 @@ module Reviser
 		# @param current_dir [String] the directory where the programm has to be launched.
 		desc 'work', 'Run components to analysis computing projects'
 		def work
-			Reviser::load :component => 'archiver'
-			Reviser::load :component => 'organiser', :inputFrom => 'archiver'
-			Reviser::load :component => 'checker', :inputFrom => 'organiser'
-			Reviser::load :component => 'generator', :inputFrom => 'checker'
 
-			Reviser::run
+			if File.exists? 'config.yml'
+				Reviser::load :component => 'archiver'
+				Reviser::load :component => 'organiser', :inputFrom => 'archiver'
+				Reviser::load :component => 'checker', :inputFrom => 'organiser'
+				Reviser::load :component => 'generator', :inputFrom => 'checker'
+
+				Reviser::run
+			else
+				message('Error'.red, "'config.yml' file doesn't exist! @see 'reviser init'")
+			end
 		end
 
 		desc 'extract', 'Extract and organise all computing projects'
@@ -116,8 +122,8 @@ module Reviser
 		#
 		desc 'add METH \'LABEL\'', 'Associates LABEL with METH analysis def'
 		def add meth, label
-			res = Criteria::Labels.add meth, label
-			message "#{res} label",meth + " => " + label
+			res = Helpers::Labels.add meth, label
+			message "#{res} label".green,meth + " => " + label
 		end
 
 		desc 'version', 'Print out version information'
@@ -142,5 +148,4 @@ module Reviser
 
 	end
 end
-
 Reviser::Exec.start(ARGV)
