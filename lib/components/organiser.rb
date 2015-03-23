@@ -11,6 +11,9 @@ module Reviser
 		# in order to have a structured folder (files at the root of folder)
 		# During this step, a git repository will be created, with an initial commit.
 		#
+		# The other important task of Organiser is to detect all students, all binoms and all groups, 
+		# thank to the directory name.
+		#
 		# @author Yann Prono
 		# @author Renan Strauss
 		#
@@ -23,12 +26,11 @@ module Reviser
 			# All entries to ignore during sort and organization
 			$rejected_entries = ['.', '..', '__MACOSX']
 
-			# initialize tool.
-			# Organiser has to :
-			#  - get all students
-			#  - get all groups (classes)
-			#  - get all teams (binoms)
-			#  - get all unknown soldiers ...
+			# initializes tool.
+			# The initialization will prepare all to 
+			# crate a git repo, save all detected students as well someone who 
+			# doesn't respect convention ...
+			Organiser 
 			def initialize(data)
 				raise ArgumentError if data == nil || !data.respond_to?('each')
 
@@ -47,7 +49,7 @@ module Reviser
 				@count_patterns = {}
 			end
 
-			# Rename directories more clearly.
+			# Renames directories more clearly.
 			# @param entry [String] path of the entry to rename.
 			def rename(entry)
 				name = format entry
@@ -109,7 +111,7 @@ module Reviser
 				@path = @directory
 			end
 
-			# Initialize a git repo.
+			# Initializes a git repo.
 			# @param entry [String] Directory to process.
 			def git(entry)
 				Dir.chdir File.join(@directory, entry) do
@@ -120,7 +122,7 @@ module Reviser
 			end
 
 
-			# Method which run the organiser.
+			# Method which runs the organiser.
 			# It will apply all importants methods of this class for each project.
 			def run
 				@data.each do |entry|
@@ -174,10 +176,10 @@ module Reviser
 			end
 
 
-			# Shortuct for logs ...
+			# Shortcut for logs ...
 			# @param data [Array] to loop.
 			# @param severity [Integer] Severity of the log.
-			# @param message [String] Message to log before writing data..
+			# @param message [String] Message to log before writing data.
 			def log_resume(data ,severity, message)
 				unless data.empty?
 					@logger.newline

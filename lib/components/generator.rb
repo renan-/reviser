@@ -18,7 +18,7 @@ module Reviser
 				super data
 			end
 
-			# Run the generation of results file in all asked formats by user.
+			# Runs the generation of results file in all asked formats by user.
 			def run
 				begin
 					if Cfg[:out_format].respond_to? 'each'
@@ -31,7 +31,7 @@ module Reviser
 				end
 			end
 
-			# Get all criterias of marking
+			# Gets all criterias of marking
 			# used to display informations in documents.
 			# @return [Array] Array with all criterias.
 			def criterias
@@ -39,6 +39,8 @@ module Reviser
 			end
 
 			# Quite handy
+			# @param str [String] string to titleize
+			# @return [String] cute string !
 			def self.titleize(str)
 				str.split(/_/).join(' ').capitalize
 			end

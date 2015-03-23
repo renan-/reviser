@@ -21,8 +21,7 @@ compiled: false
 # the html_validator extension
 #
 extensions:
-  html_validator:
-    :valid: Validite HTML 5
+  validate_html: Validite HTML 5
 
 # Program prefix, needed especially for C
 # The execution command will look like this :
@@ -36,14 +35,3 @@ extensions:
 # If not specified, the first
 # executable file found will be executed
 # program_name: main.rb
-
-regex_comments: !ruby/regexp '/#([^{].*)$/'
-
-criteria:
-  - all_files
-  - src_files
-  - lines_count
-  - comments_count
-
-extensions:
-  - validate_html

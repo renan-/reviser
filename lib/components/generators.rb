@@ -1,38 +1,37 @@
-
-# Module containing all methods for writing results.
-#
-# Convention over configuration !
-#
-# To add a new format, you need maybe to install a gem.
-# Find a gem which supports a specified format on rubygems.org.
-# Add the line "gem <gem>" in the Gemfile and execute "bundle install"
-#
-# Now, you can write the method corresponding to the format.
-# The name of the method corresponds to the format.
-# For example, if you want to generate a word file (.doc), the name of the method will be: "doc"
-# Don't forget to require the gem: "require <gem>" at the beginning of the method !
-# the header of method looks like the following block:
-#
-#  		def <format> (ext = '<format>')
-# 			require <gem>
-# 			...
-# 		end
-#
-# To write results, you have to go through in the data instance variable.
-# data is a [Hash]:
-# 		- key: 		The person's name.
-#		- value: 	Results of analysis
-#
-# Each value of data is also a [Hash]:
-# 		- key: 		the name of criterion checked.
-#		- value: 	The result of criterion.
-#
-#
-# @author Renan Strauss
-# @author Yann Prono
-#
 module Reviser
 	module Components
+
+		# Module containing all methods for writing results.
+		#
+		# Convention over configuration !
+		#
+		# To add a new format, you need maybe to install a gem.
+		# Find a gem which supports a specified format on rubygems.org.
+		# Add the line "gem <gem>" in the Gemfile and execute "bundle install"
+		#
+		# Now, you can write the method corresponding to the format.
+		# The name of the method corresponds to the format.
+		# For example, if you want to generate a word file (.doc), the name of the method will be: "doc"
+		# Don't forget to require the gem: "require <gem>" at the beginning of the method !
+		# the header of method looks like the following block:
+		#
+		#  		def <format> (ext = '<format>') require <gem>  ...  end
+		#
+		# To write results, you have to go through in the data instance variable.
+		# data is a [Hash]:
+		# 		
+		#	- key: 		The person's name.
+		#	- value: 	Results of analysis
+		#
+		# Each value of data is also a [Hash]:
+		# 		
+		#	- key: 		the name of criterion checked.
+		#	- value: 	The result of criterion.
+		#
+		#
+		# @author Renan Strauss
+		# @author Yann Prono
+		#
 		module Generators
 			
 			# Generates the CSV file
@@ -123,6 +122,9 @@ module Reviser
 				Cfg[:out] + ext
 			end
 
+			# Checks if result is a existing file.
+			# @param path [String] of possible file
+			# @return [Boolean] True if the path is a real file.
 			def file? path
 				File.exist? path.to_s
 			end

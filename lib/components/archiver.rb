@@ -11,6 +11,8 @@ module Reviser
 		# In case of the University of Lorraine,
 		# the archive contains all computing projects, compressed too.
 		#
+		# If you want to add support of archive format, @see Extractors.
+		#
 		# @example The simple way to extract a compressed file is :
 		#		Archiver.extract(myFile, myDirectory)
 		#
@@ -24,7 +26,7 @@ module Reviser
 			# Ignored entries
 			$rejected = ['.','..']
 			
-			# Initialize archive file and the directory of destination.
+			# Initializes archive file and the directory of destination.
 			def initialize(data)
 				super data
 				@src = Cfg[:src]
@@ -33,7 +35,7 @@ module Reviser
 			end
 
 
-			# Check if the directory destination exists.
+			# Checks if the destination directory exists.
 			# else create it.
 			# For the moment, if the directory exists // TODO little input to confirm
 			# @param destination [String] the destination directory
@@ -46,7 +48,7 @@ module Reviser
 			end
 			
 
-			# Extract the archive into the destination directory.
+			# Extracts the archive into the destination directory.
 			# @param file_name 		[String] The name of the archive.
 			# @param destination 	[String] The destination directory.
 			#
@@ -67,7 +69,7 @@ module Reviser
 			end
 
 
-			# Method which extract an archive
+			# Method which extracts an archive
 			# which contains all computing projects.
 			#
 			# This method extracts,in first time,the archive

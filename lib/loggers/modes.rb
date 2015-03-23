@@ -1,19 +1,20 @@
 require 'logger'
 
-#
-# Modules containing all methods to custom logger.
-# 
-# There are 3 main level of logger (as in HTML)
-# => h1
-# => h2
-# => h3
-
-# @author Yann Prono
-# @author Anthony Cerf
-# @author Romain Ruez
-
 module Reviser
 	module Loggers
+
+		#
+		# Module containing all methods to custom logger.
+		# 
+		# There are 3 main levels of logger
+		# => h1	: Big title
+		# => h2	: medium title
+		# => h3	: tiny title	
+		#
+		# @author Yann Prono
+		# @author Anthony Cerf
+		# @author Romain Ruez
+		#
 		module Modes
 
 			module Txt
@@ -98,15 +99,16 @@ module Reviser
 			end
 			
 			
-			# Change formatter
-			# @param prefix Prefix to put before all content
+			# Changes formatter of logger.
+			# @param prefix [String] Prefix to put before any content.
+			# @param suffix [String] Suffix to put after all contents.
 			def change_formatter prefix , suffix = ''
 				@logger.formatter = proc do |severity, datetime, progname, msg|
 					"\n#{prefix} #{severity} #{msg} #{suffix}"
 				end
 			end
 
-			# Create new line
+			# Creates a new line.
 			def newline
 				@logger.formatter = proc do |severity, datetime, progname, msg|
 					"\n#{msg}"
@@ -114,6 +116,8 @@ module Reviser
 				@logger.add(nil,"\n")
 			end
 
+			# Mainly used for HTML mode.
+			# @param tag [String] tag added.
 			def add_tag tag
 				@logger.formatter = proc do |severity, datetime, progname, msg|
 					"\n#{msg}"
@@ -121,6 +125,9 @@ module Reviser
 				@logger.add(nil,tag)
 			end
 
+			# converts a severity level to a String.
+			# @param severity [Integer] Level of severity.
+			# @return [String] String of severity.
 			def severity_to_s severity
 				sev_labels = %w(DEBUG INFO WARN ERROR FATAL ANY)
 				sev_labels[severity].downcase

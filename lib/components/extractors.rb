@@ -19,17 +19,16 @@ module Reviser
 		# Don't forget to require the gem: "require <gem>" at the beginning of the method!
 		# the header of method looks like the following block:
 		#
-		#  		def <format> (archive, destination)
-		# 			require <gem>
-		# 			...
-		# 		end
+		#  		def <format> (archive, destination)		require <gem> 	...		end
+		#
+		#
 		#
 		# @author 	Anthony Cerf
 		# @author 	Yann Prono
 		#
 		module Extractors	
 
-			# Method which unzip a file.
+			# Method which unzips a file.
 			# @param zip_file 		[String] the zip file.
 			# @param destination 	[String] Destination of extracted data.
 			def zip zip_file, destination
