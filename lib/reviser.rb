@@ -25,7 +25,11 @@ module Reviser
 		# TODO : check data
 		#
 		def self.load(data)
-			@@loaded_components[data[:component]] = {inputFrom: data[:inputFrom], data: nil}
+			@@loaded_components[data[:component]] = {
+				:inputFrom => data[:inputFrom],
+				:dir => data.has_key?(:dir) && data[:dir] || 'components'
+				:data => nil
+			}
 		end
 
 		def self.setup(config_file)

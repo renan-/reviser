@@ -97,6 +97,14 @@ module Reviser
 			Reviser::run
 		end
 
+		desc 'extract', 'Extract and organise all computing projects'
+		def work
+			Reviser::load :component => 'archiver'
+			Reviser::load :component => 'organiser', :inputFrom => 'archiver'
+			
+			Reviser::run
+		end
+
 		#
 		# For the moment, associate a label to a criterion (method).
 		#
