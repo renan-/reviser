@@ -1,6 +1,8 @@
 #
 # @author Renan Strauss
 #
+require 'open3'
+require 'timeout'
 
 module Reviser
 	module Helpers
