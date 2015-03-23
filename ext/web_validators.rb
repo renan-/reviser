@@ -40,8 +40,8 @@ module Reviser
 				files.each do |f|
 					response = W3C::validate(lang, f)
 
-					if response.headers.empty?
-						results[f] = { :status => response.to_str }
+					if response.is_a?(Hash) && response.has_key?(:exception)
+						results[f] = { :status => response[:exception].to_s }
 					else
 						results[f] = {
 							:status => response.headers.has_key?(:x_w3c_validator_status) && response.headers[:x_w3c_validator_status] || 'Not available',
@@ -111,7 +111,7 @@ module Reviser
 					begin
 						send lang, file
 					rescue => e
-						{ headers: [] }
+						{ exception: e }
 					end
 				end
 

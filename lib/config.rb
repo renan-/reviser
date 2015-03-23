@@ -33,7 +33,7 @@ module Reviser
 		# calling this method
 		#
 		def self.resource path
-			abs = File.join(ROOT, 'res', path)
+			abs = File.join(ROOT, Cfg[:res_dir], path)
 			File.new abs if File.exists? abs
 		end
 
