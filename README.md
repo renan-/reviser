@@ -29,8 +29,11 @@ To launch a complete cycle of analysis, run:
 Team
 ----
 [Anthony Cerf]()
+
 [Yann Prono](https://github.com/mcdostone)
-[Romain RUez]()
+
+[Romain Ruez]()
+
 [Renan Strauss](https://github.com/renan-)
 
 
