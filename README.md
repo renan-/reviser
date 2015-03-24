@@ -37,6 +37,6 @@ Team
 Other stuff
 -------------
 
-| <!--- hello --> 	|   	<!--- hello -->			 |
+|Question 	|   	Answer		 |
 | ------------- | ------------------------------ |
 | Requires      | Ruby 2.0.0 or later	 	 |
