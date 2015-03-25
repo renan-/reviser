@@ -65,10 +65,10 @@ module Reviser
 
 				require_relative "reviser/components/#{comp}" unless conf[:local]
 
-				namespace = conf[:local] && '' || 'Components'
+				namespace = conf[:local] && '' || 'Components::'
 				param = ((conf[:inputFrom] != nil) && @@loaded_components[conf[:inputFrom]][:data]) || nil
 				
-				c = eval("#{namespace}::#{Reviser.titleize comp}").new param
+				c = eval("#{namespace}#{Reviser.titleize comp}").new param
 
 				@@loaded_components[comp][:data] = c.work
 				

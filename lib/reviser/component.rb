@@ -19,7 +19,12 @@ module Reviser
 		def initialize(data = nil)
 			@data = data
 			ext = options.has_key?(:log_mode) && options[:log_mode] || 'txt'
-			log_file = File.join(options.has_key?(:log_dir) && options[:log_dir] || '.', "#{ self.class.name.split('::').last || ''}.#{ext}")
+			#
+			# self.class.name.split('::').last = 'MyComponent'
+			# with self.class.name == 'MyComponent'
+			# so no need to worry ;-)
+			#
+			log_file = File.join(options.has_key?(:log_dir) && options[:log_dir] || '.', "#{self.class.name.split('::').last}.#{ext}")
 
 			# For now, we output to stderr if verbose option is not set
 			# In the future, it would be a good idea to always have logs,
@@ -43,6 +48,21 @@ module Reviser
 			@logger.close
 
 			data
+		end
+
+		# Be kind to our childs and let them access
+		# ressources files easily
+		#
+		# @returns The specified resource path
+		# TODO : put resources in dedicated folders
+		# for each component or extension, so that
+		# the user can omit <lang>/<ext_name>/ when
+		# calling this method
+		#
+		def resource path
+			abs = File.join Cfg::ROOT, Cfg[:res_dir], path
+
+			File.new abs if File.exists? abs
 		end
 
 	protected

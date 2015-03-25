@@ -42,7 +42,7 @@ module Reviser
 
 		  	# In case of someone want to use methods of standard Logger ...
 		  	def method_missing(m, *args, &block)
-				@logger.send(m,*args, &block)
+				@logger.send m, *args, &block
 		  	end
 
 		end

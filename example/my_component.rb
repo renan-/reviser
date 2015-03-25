@@ -2,18 +2,19 @@
 # Here's a custom component
 #
 
+require 'json'
 require '../lib/reviser'
 
 class MyComponent < Reviser::Component 
 	def initialize data
 		super data
 
-		@logger.log "Initialized, got data => #{data}"
+		@logger.info { "Initialized, got data => #{data}" }
 	end
 
-	def work
+	def run
 		puts 'Hello World, from MyComponent'
-		my_resource = Cfg::resource 'example/my_component/data.json'
+		my_resource = resource 'example/data.json'
 
 		JSON.parse(File.read(my_resource)).each do |k, v|
 			puts "Got #{k} => #{v}"
@@ -21,7 +22,20 @@ class MyComponent < Reviser::Component
 	end
 end
 
-Reviser::Reviser::setup 'config.yml'
-Reviser::Reviser::load 'MyComponent'
+module MyApp
+	include Reviser
 
-Reviser::Reviser::run
+	def self.run config_file = '../config.yml'
+		Reviser::setup config_file
+		
+		#
+		# Tell reviser not to look for our component
+		# in its core ones but to let us include it
+		# ourselves
+		#
+		Reviser::load :component => 'my_component', :local => true
+		Reviser::run
+	end
+end
+
+MyApp.run
