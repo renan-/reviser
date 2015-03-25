@@ -24,8 +24,8 @@ module Reviser
 
 				@logger.h1 Logger::INFO, "Loading modules"
 
-				load PWD, '../criteria/*'
-				load EXT, '*'
+				load CRITERIA
+				load EXTENSIONS
 
 				@logger.h1 Logger::INFO, "Loading labels"
 

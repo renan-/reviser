@@ -3,7 +3,7 @@ require 'fileutils'
 require 'colorize'
 
 require_relative 'reviser'
-require_relative 'helpers/criteria'
+require_relative 'reviser/helpers/criteria'
 
 #
 # Module used for managing all actions in command line

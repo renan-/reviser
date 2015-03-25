@@ -17,6 +17,11 @@ extension:
 compiled: false
 
 #
+# Regex for HTML comments
+#
+regex_comments: !ruby/regexp '/<!--(.*?)-->/'
+
+#
 # In all HTML projects, we'll need
 # the html_validator extension
 #

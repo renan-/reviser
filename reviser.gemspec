@@ -5,13 +5,11 @@ Gem::Specification.new do |spec|
   spec.date        = '2015-03-25'
   spec.summary     = 'Reviser'
   spec.description = "A semi-automatic tool for student's projects evaluation"
-  spec.authors     = ["Renan Strauss", "Yann Prono", "Anthony Cerf", "Romain Ruez"]
+  spec.authors     = ['Renan Strauss', 'Yann Prono', 'Anthony Cerf', 'Romain Ruez']
   spec.email       = 'renan.strauss@gmail.com'
   spec.files       = Dir['{bin,ext,lang,lib,res,type}/**/*'] + %w(Gemfile README.md config.yml labels.yml)
   spec.homepage    = 'http://rubygemspec.org/gems/reviser'
   spec.license     = 'GPL-3'
-
-  spec.require_paths = ['lib', 'lib/helpers']
 
   spec.add_runtime_dependency 'colorize', '~> 0.7', '>= 0.7.5'
   spec.add_runtime_dependency 'thor', '~> 0.19', '>= 0.19.1'

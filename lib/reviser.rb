@@ -11,12 +11,12 @@
 require 'mkmf'
 require 'colorize'
 
-require_relative 'component'
-require_relative 'config'
+require_relative 'reviser/component'
+require_relative 'reviser/config'
 
-require_relative 'helpers/git'
-require_relative 'helpers/project'
-require_relative 'helpers/system'
+require_relative 'reviser/helpers/git'
+require_relative 'reviser/helpers/project'
+require_relative 'reviser/helpers/system'
 
 module Reviser
 	class Reviser
@@ -63,7 +63,7 @@ module Reviser
 			@@loaded_components.each do |comp, conf|
 				puts "Reviser is now running "+"#{Reviser.titleize comp}".green + "..."
 
-				require_relative "components/#{comp}" unless conf[:local]
+				require_relative "reviser/components/#{comp}" unless conf[:local]
 
 				namespace = conf[:local] && '' || 'Components'
 				param = ((conf[:inputFrom] != nil) && @@loaded_components[conf[:inputFrom]][:data]) || nil

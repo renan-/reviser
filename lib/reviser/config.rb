@@ -7,7 +7,7 @@ require 'yaml'
 module Reviser
 	class Cfg
 		# Path for specialized config files for projects
-		ROOT = File.join(File.dirname(File.dirname(__FILE__)))
+		ROOT = File.join(File.dirname(File.dirname(File.dirname(__FILE__))))
 
 		# Is the config is loaded ?
 		@@loaded = false

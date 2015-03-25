@@ -31,8 +31,11 @@ module Reviser
 			
 			# Where I am ?	
 			PWD = File.dirname __FILE__
+
+			# Path of criteria
+			CRITERIA = File.join File.dirname(PWD), 'criteria'
 			# Path of extensions
-			EXT = File.join File.dirname(File.dirname(PWD)), 'ext'
+			EXTENSIONS = File.join File.dirname(File.dirname(File.dirname(PWD))), 'ext'
 
 			attr_reader :criteria
 			attr_reader :output
@@ -82,7 +85,7 @@ module Reviser
 				@logger.h2 Logger::INFO, "Modules of #{directory}"
 				modules =  Dir[File.join(directory, regex)]
 
-				namespace = directory == EXT && 'Reviser::Extensions' || 'Reviser::Criteria'
+				namespace = directory == EXTENSIONS && 'Reviser::Extensions' || 'Reviser::Criteria'
 				modules.each do |m|
 					require_relative m
 					ext = File.extname m
@@ -146,7 +149,7 @@ module Reviser
 			PWD = File.dirname __FILE__
 
 			# Path of label.yml file
-			LABELS = File.join(File.dirname(File.dirname(PWD)), 'labels.yml')
+			LABELS = File.join File.dirname(File.dirname(File.dirname(PWD))), 'labels.yml'
 
 			#
 			# Enable to associate a label to a criterion (method).
