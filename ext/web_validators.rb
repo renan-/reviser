@@ -15,7 +15,19 @@ module Reviser
 			include Helpers::Project
 
 			def validate_web
-				{ html: validate(:html), css: validate(:css) }
+				results = validate(:html)
+				results.merge! validate(:css)
+
+				#
+				# Always returns html formatted output...
+				# We'd need something like Rails
+				# respond_to do |format|
+				# 	format.html { ... }
+				#   format.csv { ... }
+				# end
+				# To override the default behavior
+				#
+				prettify results
 			end
 
 			def validate_html
@@ -27,6 +39,26 @@ module Reviser
 			end
 
 			private
+
+			def prettify results
+				return "" unless results.first
+				headings = results.values.first.keys
+
+				html = '<table><caption>WebValidators results</caption><tr><th>File</th>'
+				headings.each { |heading| html << "<th>#{heading}</th>" }
+				html << '</tr>'
+
+				results.each do |file, data|
+					html << '<tr>'
+					html << "<th>#{file}</th>"
+					data.values.each { |value| html << "<td>#{value}</td>" }
+					html << '</tr>'
+				end
+
+				html << '</table>'
+
+				html
+			end
 
 			#
 			# @returns a hash matching all files for this lang to a resultset

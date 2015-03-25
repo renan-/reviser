@@ -25,6 +25,18 @@ module Reviser
 			@@mem.has_key? key
 		end
 
+		#
+		# @returns The specified resource path
+		# TODO : put resources in dedicated folders
+		# for each component or extension, so that
+		# the user can omit <lang>/<ext_name>/ when
+		# calling this method
+		#
+		def self.resource path
+			abs = File.join(ROOT, Cfg[:res_dir], path)
+			File.new abs if File.exists? abs
+		end
+
 		# Method class alias
 		# might remove this at some point ( sorry Yannou I know u worked hard :( )
 		self.singleton_class.send(:alias_method, :=~, :has_key?)
