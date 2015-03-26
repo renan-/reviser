@@ -24,11 +24,7 @@ module Reviser
 		def method_missing m, *args, &block
 			format = "@#{m}".to_sym
 
-			if block_given?
-				instance_variable_set(format, block.call)
-			else
-				instance_variable_get(format)
-			end
+			block_given? && instance_variable_set(format, block[]) || instance_variable_get(format)
 		end
 	end
 end
