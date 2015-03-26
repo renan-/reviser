@@ -9,6 +9,11 @@ module Reviser
 		# Path for specialized config files for projects
 		ROOT = File.join(File.dirname(File.dirname(File.dirname(__FILE__))))
 
+		#
+		# TODO : let the user dynamically add 
+		# 			 his own directories
+		#
+
 		# Resources dir
 		RES_DIR = 'res'
 		# Project's type dir
@@ -69,9 +74,6 @@ module Reviser
 			# So that project's type Cfg overrides
 			# lang Cfg
 			populate type_cfg
-
-			@@mem[:res_dir] ||= [RES_DIR]
-			@@mem[:lang_dir] ||= [TYPE_DIR]
 		end
 
 	private

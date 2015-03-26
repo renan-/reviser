@@ -38,12 +38,12 @@ module Reviser
 		def init(dir = '.')
 			pwd = FileUtils.pwd
 
-	    [:res_dir, :lang_dir].each do |dir|
-		    if not File.exist?(File.join(FileUtils.pwd, Cfg[dir]))
-		    	path = File.join File.dirname(File.dirname(__FILE__)), Cfg[dir]
+	    [Cfg::RES_DIR, Cfg::TYPE_DIR].each do |dir|
+		    if not File.exist?(File.join(FileUtils.pwd, dir))
+		    	path = File.join File.dirname(File.dirname(__FILE__)), dir
 					FileUtils.cp_r(path, FileUtils.pwd) unless not File.directory? path
 
-					message('Create', Cfg[dir])
+					message('Create', dir)
 				end
 			end
 
