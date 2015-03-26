@@ -43,23 +43,35 @@ Lives in *config.yml*.
 |*out_format*|The formats that will be generated|`html` `xls` `csv`|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
 |*type*|The type of the project|`my_project` (*type/my_project.yml* must exist)|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
 |*criteria*|The criteria you want for analysis|`all_files` `src_files` `lines_count` `comments_count` `compile` `execute`|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
-|*extensions*|The extensions (external criteria) you want for analysis|`memleaks` `validate_html` `validate_css` `validate_web`||
+|*extensions*|The list of extensions (see below) you want for analysis|`memleaks` `validate_html` `validate_css` `validate_web`||
 |*options*|A hash to set options|`:verbose` `:log_dir` `:log_mode`||
 
 ###Project configuration
 Lives in *type/my_project.yml*.
 
 |Key   |Description|Values|Required|
-|------|-----------|-----||:--------:|
+|------|-----------|-----|:--------:|
 |*language*|The target language|`C` `Java` `HTML` `Ruby`|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
+|*timeout*|In seconds. Compilation and execution will halt if not completed within the defined timeout||![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
 |*required_files*|A list of required files|Tip: you can use regular expressions||
 |*preferred_build_command*|The command to build the program with|`make`||
 |*execute_command*|The name of the interpreter|`java` `ruby`||
 |*program_prefix*|The program prefix|`pkg.` for Java||
 |*program_name*|The name of the program|`a.out` `Main`||
-|*execution_count*|The number of times to execute the program|default *1*||
-|*execution_value*|The optional parameter to pass to the program when executing|A list of values whose length shall be one if *execution_count* is not greater than 1||
-|*timeout*|In seconds. Compilation and execution will halt if not completed within the defined timeout||![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
+|*execution_count*|The amount of times to execute the program|default *1*||
+|*execution_value*|The optional parameter to pass to the program when executing|A list of values whose length shall be one if *execution_count* is not greater than 1|||
+
+###Extensions
+Extensions are in fact Criteria we didn't want to include into reviser's core.
+Reviser's core aims to rely as much as possible on native Ruby APIs to ensure its portability.
+That's why Extensions exist: they basically are Criteria which relies on platform-spefic-features.
+
+As of now, there are 2 extensions:
+
+|Extension|Description|Add it to your workspace extensions|
+|------------|--------------|----------------------------------------------|
+|Valgrind|Runs a memcheck through system call to valgrind|`memleaks`|
+|WebValidators|Validates HTML and CSS through W3C API calls|`validate_web` `validate_html` `validate_css`|
 
 ###Extending
 
@@ -141,9 +153,6 @@ end
 
 MyApp::run
 ```
-
-####Custom criterias
-*Coming soon...*
 
 Team
 ----
