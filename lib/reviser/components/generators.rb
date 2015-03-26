@@ -78,12 +78,10 @@ module Reviser
 			def html data, ext = '.html'
 				out = '<!DOCTYPE html><html><head>'
 				out += '<meta charset= "UTF-8">'
-				out += "<link rel=\"stylesheet\" href=\"#{Cfg[:res_dir]}/css/component.css\" />"
-				out += "<link rel=\"stylesheet\" href=\"#{Cfg[:res_dir]}/css/normalize.css\" />"
-				out += '<script src="res/js/component.css"></script>'
+				out += "<link rel=\"stylesheet\" href=\"#{resource('/css/component.css').to_path}\" />"
+				out += "<link rel=\"stylesheet\" href=\"#{resource('/css/normalize.css').to_path}\" />"
 				out += '<title>Results</title>'
-				out += "</head>\n<body><table><thead>"
-				out += '  <tr>'
+				out += "</head>\n<body><table><thead><tr>"
 
 				criterias.unshift('Projet').each { |crit| out += "<th>#{crit}</th>" }
 				
@@ -92,26 +90,12 @@ module Reviser
 				data.keys.each do |proj|
 					out += "<tr><th>#{proj}</th>"
 					data[proj].each do |k, v|
-						if k.to_s[/(compilation|execution)/]
-							out += '<td class="console">'
-						else 
-							out += '<td>'
-						end
-
-						# If file, generate a link, else do nothing !
-						out += file?(v) && "<pre><a href=\"#{v.gsub(' ','%20')}\" target=\"_blank\">#{v}</a></pre></td>" ||"<pre>#{v}</pre></td>"
-
+						out += "<td><pre>#{v}</pre></td>"
 					end
 					out += '</tr>'
 				end
 
-				out += '</tbody></table>'
-
-				out += '<script src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>'
-				out += '<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-throttle-debounce/1.1/jquery.ba-throttle-debounce.min.js"></script>'
-				#out += "<script src=\"#{Cfg[:res_dir]}/js/jquery.stickyheader.js\"></script>"
-
-				out += '</body></html>'
+				out += '</tbody></table></body></html>'
 
 		    File.open(out(ext), 'w') { |f| f.write(out) }
 			end

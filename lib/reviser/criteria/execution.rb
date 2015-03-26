@@ -40,11 +40,16 @@ module Reviser
 								outputs << exec
 							end
 						else
-							return exec
+							outputs << exec
 						end
 				end
 
-				outputs.join("\r")
+				result = outputs.join("\r")
+				manufacture do |format|
+					format.html { '<div class="console">' + result + '</div>' }
+					format.csv { result }
+					format.xls { result }
+				end
 			end
 
 		private

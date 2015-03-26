@@ -24,6 +24,7 @@ module Reviser
 				manufacture do |format|
 					format.html { prettify results }
 					format.csv { results }
+					format.xls { results }
 				end
 			end
 

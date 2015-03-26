@@ -9,7 +9,6 @@
 module Reviser
 	module Criteria
 		module Compilation
-			include Helpers::Project
 			include Helpers::System
 			
 			#
@@ -23,18 +22,26 @@ module Reviser
 				# understandable in the Cfg
 				#
 				if missing_files.empty?
+					result = ''
+
 					cmd = "#{Cfg[(Cfg.has_key? :preferred_build_command) && :preferred_build_command || :default_build_command]}"
 					out = exec_with_timeout cmd
 
 					if out.has_key? :process_status
-						return "Exit status: 0\r#{out[:stdout]}" unless out[:process_status].exitstatus != 0
+						result = "Exit status: 0\r#{out[:stdout]}" unless out[:process_status].exitstatus != 0
+					else
+						if Cfg.has_key? :preferred_build_command
+							out = exec_with_timeout Cfg[:default_build_command]
+						end
 					end
 
-					if Cfg.has_key? :preferred_build_command
-						out = exec_with_timeout Cfg[:default_build_command]
-					end
+					result = "#{out[:stdout]}\r#{out[:stderr]}"
 
-					(out[:process_status].exitstatus == 0) ? "Exit status: 0\r#{out[:stdout]}" : "#{out[:stdout]}\r#{out[:stderr]}"
+					manufacture do |format|
+						format.html { '<div class="console">' + result + '</div>' }
+						format.csv { result }
+						format.xls { result }
+					end
 				end
 			end
 		end
