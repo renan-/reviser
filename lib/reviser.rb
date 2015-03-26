@@ -34,7 +34,7 @@ module Reviser
 
 			@@loaded_components.store data[:component],
 			{
-				:inputFrom => data[:inputFrom],
+				:input_from => data[:input_from],
 				:local => data[:local],
 				:data => nil
 			}
@@ -66,7 +66,7 @@ module Reviser
 				require_relative "reviser/components/#{comp}" unless conf[:local]
 
 				namespace = conf[:local] && '' || 'Components::'
-				param = ((conf[:inputFrom] != nil) && @@loaded_components[conf[:inputFrom]][:data]) || nil
+				param = ((conf[:input_from] != nil) && @@loaded_components[conf[:input_from]][:data]) || nil
 				
 				c = eval("#{namespace}#{Reviser.titleize comp}").new param
 

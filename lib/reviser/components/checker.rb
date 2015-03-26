@@ -10,6 +10,7 @@
 require 'open3'
 
 require_relative '../result'
+require_relative '../helpers/criteria'
 
 module Reviser
 	module Components

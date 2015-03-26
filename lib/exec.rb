@@ -1,9 +1,7 @@
 require 'thor'
 require 'fileutils'
 require 'colorize'
-
 require_relative 'reviser'
-require_relative 'reviser/helpers/criteria'
 
 #
 # Module used for managing all actions in command line
@@ -93,9 +91,9 @@ module Reviser
 
 			if File.exists? 'config.yml'
 				Reviser::load :component => 'archiver'
-				Reviser::load :component => 'organiser', :inputFrom => 'archiver'
-				Reviser::load :component => 'checker', :inputFrom => 'organiser'
-				Reviser::load :component => 'generator', :inputFrom => 'checker'
+				Reviser::load :component => 'organiser', :input_from => 'archiver'
+				Reviser::load :component => 'checker', :input_from => 'organiser'
+				Reviser::load :component => 'generator', :input_from => 'checker'
 
 				Reviser::run
 			else
@@ -106,7 +104,7 @@ module Reviser
 		desc 'extract', 'Extract and organise all computing projects'
 		def extract
 			Reviser::load :component => 'archiver'
-			Reviser::load :component => 'organiser', :inputFrom => 'archiver'
+			Reviser::load :component => 'organiser', :input_from => 'archiver'
 			
 			Reviser::run
 		end
