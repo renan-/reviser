@@ -5,6 +5,8 @@
 # @author Renan Strauss
 # @author Yann Prono
 #
+require_relative '../result'
+
 module Reviser
 	module Helpers
 		module Project
@@ -37,17 +39,23 @@ module Reviser
 				Cfg[:required_files] - dir
 			end
 
-		#
-		# @return all the files in the project's folder
-		#
-		def files
-			Dir.glob("**/*").select { |f| (File.file?(f)) }
-		end
+			#
+			# @return all the files in the project's folder
+			#
+			def files
+				Dir.glob("**/*").select { |f| (File.file?(f)) }
+			end
 
-		def sources
-			files.select { |f| Cfg[:extension].include? File.extname(f) }
-		end
+			def sources
+				files.select { |f| Cfg[:extension].include? File.extname(f) }
+			end
 
+			def manufacture &block
+				format = Result.new
+				block.call format
+
+				format
+			end
 
 			# This modules is used to scan the name of project
 			# in order to get all students who worked.

@@ -9,7 +9,7 @@
 #
 require 'open3'
 
-require_relative '../helpers/criteria'
+require_relative '../result'
 
 module Reviser
 	module Components
@@ -61,7 +61,9 @@ module Reviser
 				# for each method asked by user with its label
 				@output.each do |meth, label|
 					if @criteria.has_key? meth
-						@results[proj][label] = call meth 
+						result = call meth
+						data = result.is_a?(Result) && result || Result.new(result)
+						@results[proj][label] = data
 					else
 						@logger.h1(Logger::ERROR, "Unknown method '#{meth}'' for project #{proj}")
 					end

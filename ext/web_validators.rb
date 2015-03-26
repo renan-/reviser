@@ -19,15 +19,12 @@ module Reviser
 				results.merge! validate(:css)
 
 				#
-				# Always returns html formatted output...
-				# We'd need something like Rails
-				# respond_to do |format|
-				# 	format.html { ... }
-				#   format.csv { ... }
-				# end
-				# To override the default behavior
-				#
-				prettify results
+				# We want a pretty HTML output :-)
+				# 
+				manufacture do |format|
+					format.html { prettify results }
+					format.csv { results }
+				end
 			end
 
 			def validate_html
@@ -137,7 +134,7 @@ module Reviser
 					# with our requests so accordingly to their doc,
 					# we sleep 1s between each request
 					#
-					sleep 1
+					#sleep 1
 					begin
 						send lang, file
 					rescue => e

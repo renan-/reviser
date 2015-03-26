@@ -35,21 +35,21 @@ module Reviser
 		module Generators
 			
 			# Generates the CSV file
-			def csv(ext = '.csv')
+			def csv data, ext = '.csv'
 				require 'csv'
 				CSV.open(out(ext), 'wb') do |f|
 					# Criterias as columns
 					f << (criterias).unshift('projet')
 
 					# Values for each project as rows
-					@data.keys.each do |proj|
-						f << @data[proj].values.unshift(proj)
+					data.keys.each do |proj|
+						f << data[proj].values.unshift(proj)
 					end
 				end
 			end
 
 			# Generates a Excel file
-			def xls(ext = '.xls')
+			def xls data, ext = '.xls'
 				require 'spreadsheet'
 				Spreadsheet.client_encoding = 'UTF-8'
 				book = Spreadsheet::Workbook.new
@@ -67,15 +67,15 @@ module Reviser
 				sheet.row(0).height = 18
 
 				# Values for each project as rows
-				@data.keys.each_with_index do |proj, i|
-					sheet.insert_row(i+1,@data[proj].values.unshift(proj))
+				data.keys.each_with_index do |proj, i|
+					sheet.insert_row(i+1, data[proj].values.unshift(proj))
 				end	
 
 				book.write out(ext)
 			end
 
 			# Generates an HTML file 
-			def html(ext = '.html')
+			def html data, ext = '.html'
 				out = '<!DOCTYPE html><html><head>'
 				out += '<meta charset= "UTF-8">'
 				out += "<link rel=\"stylesheet\" href=\"#{Cfg[:res_dir]}/css/component.css\" />"
@@ -89,9 +89,9 @@ module Reviser
 				
 				out += '</tr></thead><tbody>'
 		 		# Values for each project as rows
-				@data.keys.each do |proj|
+				data.keys.each do |proj|
 					out += "<tr><th>#{proj}</th>"
-					@data[proj].each do |k, v|
+					data[proj].each do |k, v|
 						if k.to_s[/(compilation|execution)/]
 							out += '<td class="console">'
 						else 
