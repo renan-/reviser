@@ -32,12 +32,12 @@ To perform the analysis, simply run:
 This tool was thought to be very adaptable, thus it relies on YAML configuration files.
 
 ####Global configuration
-
 Lives in *config.yml*.
+
 |Key   |Description|Values|
 |------|-----------|-----|
 |*src*|Path to the archive containing projects||
-|*dest*|Path to a directory where projects will be extract|     |
+|*dest*|Path to a directory where projects will be extracted||
 |*projects_names*|Naming convention for projects|- `^GROUP_NAME_NAME` `^GROUP_NAME(_NAME)*` `^TP_html_NAME_FIRSTN`|
 |*out*|The name of the analysis output file||
 |*out_format*|The formats that will be generated|- `html` `xls` `csv`|
