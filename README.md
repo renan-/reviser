@@ -52,7 +52,7 @@ Lives in *type/my_project.yml*.
 |Key   |Description|Values|
 |------|-----------|-----|
 |*language*|The target language|`C` `Java` `HTML` `Ruby`|
-|*required_files*|A list of required files|You can use regular expressions eg. `\\(M\|m)akefile\\`|
+|*required_files*|A list of required files|You can use regular expressions eg. `\\\(M&#124;m)akefile\\`|
 |*preferred_build_command*|The command to build the program with|`make`|
 |*execute_command*|The name of the interpreter|`java` `ruby`|
 |*program_prefix*|The program prefix|`pkg.` for Java|
