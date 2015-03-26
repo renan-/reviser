@@ -9,6 +9,11 @@ module Reviser
 		# Path for specialized config files for projects
 		ROOT = File.join(File.dirname(File.dirname(File.dirname(__FILE__))))
 
+		# Resources dir
+		RES_DIR = 'res'
+		# Project's type dir
+		TYPE_DIR = 'type'
+
 		# Is the config is loaded ?
 		@@loaded = false
 
@@ -45,13 +50,28 @@ module Reviser
 			@@loaded = true
 			@@mem = {}
 
+			#
+			# read our main config file
+			#
 			populate YAML.load(File.read(cfg_file))
-			type_file = File.join(ROOT,'type',"#{@@mem[:type]}.yml")
-			type_cfg  = YAML.load(File.read(type_file))
+
+			#
+			# look for types
+			type_file = File.join('type', "#{@@mem[:type]}.yml")
+			begin
+				type_cfg  = YAML.load(File.read(type_file))
+			rescue => e
+				puts "File #{type_file} not found. Aborting..."
+				exit
+			end
+
 			populate YAML.load(File.read(File.join(ROOT,'lang',"#{type_cfg['language']}.yml")))
 			# So that project's type Cfg overrides
 			# lang Cfg
 			populate type_cfg
+
+			@@mem[:res_dir] ||= [RES_DIR]
+			@@mem[:lang_dir] ||= [TYPE_DIR]
 		end
 
 	private

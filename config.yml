@@ -36,15 +36,10 @@ out_format:
 - csv
 - html
 
-# Ressources directory
-# (needed for html format)
-res_dir: res
-
-
 ########	Reviser config		########
 
 # The type of project (<type>.yml must exists)
-type: Labyrinthe
+type: example/Labyrinthe
 
 # Default timeout
 # shall be overriden in sorts

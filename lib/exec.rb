@@ -37,19 +37,22 @@ module Reviser
 		desc 'init DIRECTORY', 'Initialize Reviser workspace. DIRECTORY ||= \'.\''
 		def init(dir = '.')
 			pwd = FileUtils.pwd
+
+	    [:res_dir, :lang_dir].each do |dir|
+		    if not File.exist?(File.join(FileUtils.pwd, Cfg[dir]))
+		    	path = File.join File.dirname(File.dirname(__FILE__)), Cfg[dir]
+					FileUtils.cp_r(path, FileUtils.pwd) unless not File.directory? path
+
+					message('Create', Cfg[dir])
+				end
+			end
+
 			msg = File.exist?(File.join(pwd,dir,File.basename($template_path))) && 'Recreate' || 'Create'
 			FileUtils.mkdir_p dir unless Dir.exist?(File.join(pwd, dir))
 			FileUtils.cp($template_path, dir)
 			message(msg, File.basename($template_path))
 
 	    setup File.expand_path(File.join(dir, File.basename($template_path))) unless @@setup
-
-	    if not File.exist?(File.join(FileUtils.pwd, Cfg[:res_dir]))
-	    	path_res = File.join(File.dirname(File.dirname(__FILE__)),"#{Cfg[:res_dir]}")
-				FileUtils.cp_r(path_res, FileUtils.pwd) unless 
-
-				message('Create', File.join(dir, Cfg[:res_dir]))
-			end
 
 			puts "Customize config.yml to your needs @see docs".yellow
 			puts 'Then simply execute \'reviser work\' to launch analysis.'.yellow
@@ -86,9 +89,8 @@ module Reviser
 
 		# Let do it for analysis.
 		# @param current_dir [String] the directory where the programm has to be launched.
-		desc 'work', 'Run components to analysis computing projects'
+		desc 'work', 'Run components to analyse computing projects'
 		def work
-
 			if File.exists? 'config.yml'
 				Reviser::load :component => 'archiver'
 				Reviser::load :component => 'organiser', :input_from => 'archiver'
@@ -127,7 +129,7 @@ module Reviser
 		desc 'version', 'Print out version information'
 		def version
 			puts "Reviser #{VERSION}"
-			puts 'Released under the MIT License.'
+			puts 'Released under the GPLv3 License.'
 		end
 
 
