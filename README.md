@@ -63,6 +63,7 @@ Lives in *type/my_project.yml*.
 
 ###Extending
 
+####Custom components
 ```
 #!ruby
 
@@ -141,6 +142,8 @@ end
 MyApp::run
 ```
 
+####Custom criterias
+*Coming soon...*
 
 Team
 ----
