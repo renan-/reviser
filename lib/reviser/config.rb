@@ -43,7 +43,7 @@ module Reviser
 		# calling this method
 		#
 		def self.resource path
-			abs = File.join(ROOT, Cfg[:res_dir], path)
+			abs = File.join RES_DIR, path
 			File.new abs if File.exists? abs
 		end
 
@@ -62,7 +62,7 @@ module Reviser
 
 			#
 			# look for types
-			type_file = File.join('type', "#{@@mem[:type]}.yml")
+			type_file = File.join(File.dirname(cfg_file), TYPE_DIR, "#{@@mem[:type]}.yml")
 			begin
 				type_cfg  = YAML.load(File.read(type_file))
 			rescue => e

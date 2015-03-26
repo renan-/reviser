@@ -31,19 +31,19 @@ module Reviser
 	    	setup config_file if File.exist? config_file
 		end
 
-
 		# Create a environnment for checking projects
 		# This method only copies the config file into the current directory.
 		desc 'init DIRECTORY', 'Initialize Reviser workspace. DIRECTORY ||= \'.\''
 		def init(dir = '.')
 			pwd = FileUtils.pwd
 
-	    [Cfg::RES_DIR, Cfg::TYPE_DIR].each do |dir|
-		    if not File.exist?(File.join(FileUtils.pwd, dir))
-		    	path = File.join File.dirname(File.dirname(__FILE__)), dir
-					FileUtils.cp_r(path, FileUtils.pwd) unless not File.directory? path
-
-					message('Create', dir)
+			[Cfg::RES_DIR, Cfg::TYPE_DIR].each do |d|
+				path = File.join(Cfg::ROOT, d)
+				if File.directory? path
+					unless File.directory? File.join(dir, d)
+						FileUtils.cp_r(path, dir)
+						message('Create', dir == '.' && d || File.join(dir, d))
+					end
 				end
 			end
 

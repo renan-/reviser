@@ -60,9 +60,7 @@ module Reviser
 		# calling this method
 		#
 		def resource path
-			abs = File.join Cfg::ROOT, Cfg[:res_dir], path
-
-			File.new abs if File.exists? abs
+			Cfg::resource path
 		end
 
 	protected
