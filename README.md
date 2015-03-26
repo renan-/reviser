@@ -18,9 +18,15 @@ Download and install the gem with the following command line.
 
 To create a new workspace in the current directory, simply run the following command in a terminal: 
 
+
 	reviser init .
 
-Then you'll have to customize config.yml to your own needs. 
+	Create		res
+	Create		type
+	Create		config.yml
+
+You see reviser has created *res* and *type/example* folders for you.
+Now you'll have to customize *config.yml* to your own needs, and add a *type/your_project.yml*
 
 To perform the analysis, simply run:
 
@@ -43,7 +49,7 @@ Lives in *config.yml*.
 |*out_format*|The formats that will be generated|`html` `xls` `csv`|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
 |*type*|The type of the project|`my_project` (*type/my_project.yml* must exist)|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
 |*criteria*|The criteria you want for analysis|`all_files` `src_files` `lines_count` `comments_count` `compile` `execute`|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
-|*extensions*|The list of extensions (see below) you want for analysis|`memleaks` `validate_html` `validate_css` `validate_web`||
+|*extensions*|The list of extensions you want for analysis|See below||
 |*options*|A hash to set options|`:verbose` `:log_dir` `:log_mode`||
 
 ###Project configuration
