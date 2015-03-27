@@ -25,11 +25,11 @@ module Reviser
 
 		#
 		# Adds an entry with the specified data.
-		# At this time, we assume the user has given us
-		# a Cfg that makes sense.
-		# TODO : check data
 		#
 		def self.load(data)
+			raise ArgumentError unless data.has_key?(:component)
+
+			data[:input_from] ||= nil
 			data[:local] ||= false
 
 			@@loaded_components.store data[:component],
@@ -41,8 +41,8 @@ module Reviser
 		end
 
 		def self.setup(config_file)
-			@@setup = true
 			Cfg.load config_file
+			@@setup = true
 		end
 
 		#
@@ -50,7 +50,7 @@ module Reviser
 		# The exection order is based on the loading order.
 		#
 		def self.run
-			raise ArgumentError unless @@setup
+			raise RuntimeError unless @@setup
 
 			if Cfg.has_key?(:options) && Cfg[:options].has_key?(:log_dir)
 				FileUtils.mkdir Cfg[:options][:log_dir] unless Dir.exist? Cfg[:options][:log_dir]

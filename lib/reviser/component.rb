@@ -18,13 +18,9 @@ module Reviser
 		#
 		def initialize(data = nil)
 			@data = data
-			ext = options.has_key?(:log_mode) && options[:log_mode] || 'txt'
-			#
-			# self.class.name.split('::').last = 'MyComponent'
-			# with self.class.name == 'MyComponent'
-			# so no need to worry ;-)
-			#
-			log_file = File.join(options.has_key?(:log_dir) && options[:log_dir] || '.', "#{self.class.name.split('::').last}.#{ext}")
+			
+			ext = options[:log_mode]
+			log_file = File.join(options[:log_dir], "#{self.class.name.split('::').last}.#{ext}")
 
 			# For now, we output to stderr if verbose option is not set
 			# In the future, it would be a good idea to always have logs,
@@ -67,7 +63,7 @@ module Reviser
 		#
 		# @return all options for all components if they exist in config file.
 		def options
-			(Cfg.has_key? :options) && Cfg[:options] || { :verbose => false }
+			Cfg[:options]
 		end
 	end
 end

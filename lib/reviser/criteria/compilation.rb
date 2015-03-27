@@ -24,7 +24,7 @@ module Reviser
 				if missing_files.empty?
 					result = ''
 
-					cmd = "#{Cfg[(Cfg.has_key? :preferred_build_command) && :preferred_build_command || :default_build_command]}"
+					cmd = "#{Cfg[Cfg.has_key?(:preferred_build_command) && :preferred_build_command || :default_build_command]}"
 					out = exec_with_timeout cmd
 
 					if out.has_key? :process_status

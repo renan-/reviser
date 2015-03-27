@@ -20,10 +20,7 @@ module Reviser
 
 			# Check if the project has all files needed
 			def missing_files
-				return [] unless Cfg =~ :required_files
-
 				dir = Dir['*']
-
 				#
 				# Check if there is any regexp
 				# If it's the case, if any file
