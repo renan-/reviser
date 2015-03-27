@@ -58,13 +58,13 @@ Lives in *type/my_project.yml*.
 |Key   |Description|Values|Required|
 |------|-----------|-----|:--------:|
 |*language*|The target language|`C` `Java` `HTML` `Ruby`|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
-|*timeout*|In seconds. Compilation and execution will halt if not completed within the defined timeout||Default *4*|
+|*timeout*|In seconds. Compilation and execution will halt if not completed within the defined timeout|Default *4*||
 |*required_files*|A list of required files|Tip: you can use regular expressions||
 |*preferred_build_command*|The command to build the program with|`make`||
 |*execute_command*|The name of the interpreter|`java` `ruby`||
 |*program_prefix*|The program prefix|`pkg.` for Java||
 |*program_name*|The name of the program|`a.out` `Main`||
-|*execution_count*|The amount of times to execute the program|default *1*||
+|*execution_count*|The amount of times to execute the program|Default *1*||
 |*execution_value*|The optional parameter to pass to the program when executing|A list of values whose length shall be one if *execution_count* is not greater than 1|||
 
 ###Extensions
