@@ -28,7 +28,7 @@ module Reviser
 						arg = Marshal.load(Marshal.dump(@data))
 						arg.each do |project, results|
 							results.each do |criterion, value|
-								arg[project][criterion] = value.send(format.to_sym)
+								arg[project][criterion] = value.send(format.to_sym).to_s.encode! 'utf-8', :invalid => :replace
 							end
 						end
 

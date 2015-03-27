@@ -43,14 +43,14 @@ module Reviser
 		# calling this method
 		#
 		def self.resource path
-			abs = File.join FileUtils.pwd, RES_DIR, path
+			abs = File.join @@workspace_root, RES_DIR, path
 			File.new abs if File.exists? abs
 		end
 
 
 		def self.load(cfg_file)
-			@@loaded = true
 			@@mem = {}
+			@@workspace_root = File.dirname(cfg_file)
 
 			#
 			# read our main config file
@@ -58,8 +58,8 @@ module Reviser
 			populate YAML.load(File.read(cfg_file))
 
 			#
-			# look for types
-			type_file = File.join(File.dirname(cfg_file), TYPE_DIR, "#{@@mem[:type]}.yml")
+			# look for project's type
+			type_file = File.join(@@workspace_root, TYPE_DIR, "#{@@mem[:type]}.yml")
 			begin
 				type_cfg  = YAML.load(File.read(type_file))
 			rescue => e
@@ -67,12 +67,14 @@ module Reviser
 				exit
 			end
 
-			populate YAML.load(File.read(File.join(ROOT,'lang',"#{type_cfg['language']}.yml")))
+			populate YAML.load(File.read(File.join(ROOT, 'lang', "#{type_cfg['language']}.yml")))
 			# So that project's type Cfg overrides
 			# lang Cfg
 			populate type_cfg
 
 			setup_defaults
+
+			@@loaded = true
 		end
 
 		def self.setup_defaults

@@ -7,12 +7,13 @@
 # It's very simple at that point, but feel free to
 # make the extension better :-)
 #
-require 'rest_client'
+require 'w3c_validators'
 
 module Reviser
 	module Extensions
 		module WebValidators
 			include Helpers::Project
+			include W3CValidators
 
 			def validate_web
 				results = validate(:html)
@@ -37,9 +38,42 @@ module Reviser
 			end
 
 			private
+			#
+			# @returns a hash matching all files for this lang to a resultset
+			#
+			def validate lang
+				results = {}
+				validator = nil
+				case lang
+				when :html
+					validator = MarkupValidator.new
+				when :css
+					validator = CSSValidator.new
+				end
+
+				raise ArgumentError unless validator != nil
+
+				files = sources.select { |s| File.extname(s) == ".#{lang}" }
+				files.each do |f|
+					begin
+						response = validator.validate_file(File.new(f))
+						results[f] = {
+							:valid => response.errors.length == 0,
+							:errors => response.errors.length
+						}
+
+						puts "\t\t#{f} => #{results[f][:valid]}"
+					rescue ValidatorUnavailable => e
+						results[f] = { :status => 'Unknown', :errors => 'Unknown' }
+					end
+				end
+
+				results
+			end
 
 			def prettify results
-				return "" unless results.first
+				return results unless results.values.first
+
 				headings = results.values.first.keys
 
 				html = '<table><caption>WebValidators results</caption><tr><th>File</th>'
@@ -56,106 +90,6 @@ module Reviser
 				html << '</table>'
 
 				html
-			end
-
-			#
-			# @returns a hash matching all files for this lang to a resultset
-			#
-			def validate lang
-				results = {}
-
-				files = sources.select { |s| File.extname(s) == ".#{lang}" }
-				files.each do |f|
-					response = W3C::validate(lang, f)
-
-					if response.is_a?(Hash) && response.has_key?(:exception)
-						results[f] = { :status => response[:exception].to_s }
-					else
-						results[f] = {
-							:status => response.headers.has_key?(:x_w3c_validator_status) && response.headers[:x_w3c_validator_status] || 'Not available',
-							:errors => response.headers.has_key?(:x_w3c_validator_errors) && response.headers[:x_w3c_validator_errors] || 'Not available',
-							:warnings => response.headers.has_key?(:x_w3c_validator_warnings) && response.headers[:x_w3c_validator_warnings] || 'Not available'
-						}
-					end
-
-					puts "\t\t#{f} => #{results[f][:status]}"
-
-					#
-					# Generate a file
-					# Simply add 'web_validators_save_results: true'
-					# in your project's type config file
-					#
-					Cfg[:web_validators_save_results] ||= false
-
-					#
-					# We generate only if config key is set and
-					# response is not a raw string
-					#
-					if Cfg[:web_validators_save_results] and not response.headers.empty?
-						body = response.to_str
-						#
-						# W3C uses scss so we need to replace imports by the
-						# actual css...
-						#
-						case lang
-						when :html
-							body.sub! '@import "./style/base";', File.read(Cfg::resource 'css/web_validators/html-base.css')
-							body.sub! '@import "./style/results";', File.read(Cfg::resource 'css/web_validators/html-results.css')
-						when :css
-							body.sub! 'style/base.css', Cfg::resource('css/web_validators/css-base.css').to_path
-							body.sub! 'style/results.css', Cfg::resource('css/web_validators/css-results.css').to_path
-
-							body.sub! 'file://localhost/TextArea', f
-						end
-
-						File.open(f + '.WEB_VALIDATORS.html', 'w') { |x| x.write body }
-					end
-				end
-
-				results
-			end
-
-			#
-			# This class is wrapping up
-			# W3C API
-			#
-			class W3C
-				VALIDATORS = {
-					:html => 'validator.w3.org/check',
-					:css  => 'jigsaw.w3.org/css-validator/validator'
-				}
-
-				#
-				# @returns responses from the request made to the validator
-				#
-				def self::validate lang, file
-					raise ArgumentError unless VALIDATORS.include? lang
-					#
-					# W3C is a free service and we shall not overflow it
-					# with our requests so accordingly to their doc,
-					# we sleep 1s between each request
-					#
-					#sleep 1
-					begin
-						send lang, file
-					rescue => e
-						{ exception: e }
-					end
-				end
-
-				#
-				# W3C HTML Validator API expects a POST uploaded_file
-				#
-				def self::html file
-					RestClient.post(VALIDATORS[:html], :uploaded_file => File.new(file))
-				end
-
-				#
-				# Whereas W3C CSS Validator API doesn't accept uploaded
-				# files, so we need to pass the raw text
-				def self::css file
-					RestClient.get(VALIDATORS[:css] + '?text=' + CGI.escape(File.read(file)))
-				end
 			end
 		end
 	end
