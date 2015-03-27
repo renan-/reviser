@@ -92,12 +92,16 @@ module Reviser
 		desc 'work', 'Run components to analyse computing projects'
 		def work
 			if File.exists? 'config.yml'
-				Reviser::load :component => 'archiver'
-				Reviser::load :component => 'organiser', :input_from => 'archiver'
-				Reviser::load :component => 'checker', :input_from => 'organiser'
-				Reviser::load :component => 'generator', :input_from => 'checker'
+				begin
+					Reviser::load :component => 'archiver'
+					Reviser::load :component => 'organiser', :input_from => 'archiver'
+					Reviser::load :component => 'checker', :input_from => 'organiser'
+					Reviser::load :component => 'generator', :input_from => 'checker'
 
-				Reviser::run
+					Reviser::run
+				rescue Exception => e
+					message('Error'.red, "#{e.message}")
+				end
 			else
 				message('Error'.red, "'config.yml' file doesn't exist! @see 'reviser init'")
 			end

@@ -53,14 +53,15 @@ module Reviser
 			# @param destination 	[String] The destination directory.
 			#
 			def self.extract(file_name, destination = '.')
-				raise Errno::ENOENT unless File.exist? file_name
+				raise "#{file_name} not found, please check in the current directory." unless File.exist? file_name
 
 				# Get extension of file_name to know which method calls
 				ext = File.extname(file_name)
 				ext = ext.delete('.')
 
 				# Raise exception if the format is unknown by Archiver
-				raise "Unknown format '#{r}'" unless respond_to?(ext)
+				raise "Unknown compression format '#{ext}'" unless respond_to?(ext)
+
 				# Check if destination exists
 				self::destination? destination
 
@@ -93,7 +94,7 @@ module Reviser
 
 					ext = File.extname entry
 					basename = File.basename entry, ext
-					begin
+					#begin
 						file_name = File.join(@destination,File.basename(entry))
 						destination = File.join(@destination,basename)
 
@@ -103,11 +104,6 @@ module Reviser
 
 						@logger.h2 Logger::INFO, "extracting #{file_name} to #{destination}"
 						@results << basename
-
-					# In case of it can't extract the file
-		  			rescue => e
-		  				@logger.h2 Logger::ERROR, "Can't extract #{entry}: #{e.message}"
-		  			end
 
 					# Delete in all case the archive (useless after this step)
 					FileUtils.rm_rf file_name

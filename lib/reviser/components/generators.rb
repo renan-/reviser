@@ -78,8 +78,8 @@ module Reviser
 			def html data, ext = '.html'
 				out = '<!DOCTYPE html><html><head>'
 				out += '<meta charset= "UTF-8">'
-				out += "<link rel=\"stylesheet\" href=\"#{resource('/css/component.css').to_path}\" />"
-				out += "<link rel=\"stylesheet\" href=\"#{resource('/css/normalize.css').to_path}\" />"
+				out += "<link rel=\"stylesheet\" href=\"#{Cfg.resource('/css/component.css').to_path}\" />"
+				out += "<link rel=\"stylesheet\" href=\"#{Cfg.resource('/css/normalize.css').to_path}\" />"
 				out += '<title>Results</title>'
 				out += "</head>\n<body><table><thead><tr>"
 
@@ -104,13 +104,6 @@ module Reviser
 
 			def out(ext)
 				Cfg[:out] + ext
-			end
-
-			# Checks if result is a existing file.
-			# @param path [String] of possible file
-			# @return [Boolean] True if the path is a real file.
-			def file? path
-				File.exist? path.to_s
 			end
 
 		end
