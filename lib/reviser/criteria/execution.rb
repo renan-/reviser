@@ -22,25 +22,21 @@ module Reviser
 				if  Cfg.has_key? :execution_value
 					if Cfg[:execution_value].respond_to? 'each'
 						Cfg[:execution_value].each do |v|
-							outputs << exec(v)
+							outputs << make_exec(v)
 						end
 					else
 						if Cfg.has_key? :execution_count
 							outputs[Cfg[:execution_value]] = []
 							Cfg[:execution_count].times do
-								outputs << exec(Cfg[:execution_value])
+								outputs << make_exec(Cfg[:execution_value])
 							end
 						else
-							outputs << exec(Cfg[:execution_value])
+							outputs << make_exec(Cfg[:execution_value])
 						end
 					end
 				else
-						if Cfg.has_key? :execution_count
-							Cfg[:execution_count].times do
-								outputs << exec
-							end
-						else
-							outputs << exec
+						Cfg[:execution_count].times do
+							outputs << make_exec
 						end
 				end
 
@@ -65,15 +61,14 @@ module Reviser
 			# might not be a good idea regarding
 			# security
 			#
-			def exec(param = nil)
+			def make_exec param = ''
 				program = (Cfg.has_key? :program_name) && Cfg[:program_name] || find_executable
 
 				return 'Program not found' unless program != nil
 
 				program = "#{Cfg[:program_prefix]}#{program}"
-				argument = (param == nil) && '' || param
 
-				cmd = "#{(Cfg.has_key? :execute_command) && Cfg[:execute_command] || ''} #{program} #{argument}"
+				cmd = "#{Cfg[:execute_command]} #{program} #{param}"
 				out = exec_with_timeout cmd
 				
 				"$ #{cmd}\r#{out[:stdout]}\r#{out[:stderr]}"

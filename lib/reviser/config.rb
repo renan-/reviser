@@ -71,6 +71,23 @@ module Reviser
 			# So that project's type Cfg overrides
 			# lang Cfg
 			populate type_cfg
+
+			setup_defaults
+		end
+
+		def self.setup_defaults
+			#
+			# Default values for optional keys
+			#
+			Cfg[:options] ||= { verbose: true, log_dir:'logs', log_mode: 'org' }
+			Cfg[:timeout] ||= 4
+			Cfg[:out] ||= 'results'
+			Cfg[:out_format] ||= ['html', 'csv', 'xls']
+			Cfg[:required_files] ||= []
+
+			Cfg[:program_prefix] ||= ''
+			Cfg[:execution_command] ||= ''
+			Cfg[:execution_count] ||= 1
 		end
 
 	private

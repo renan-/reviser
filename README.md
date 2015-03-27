@@ -45,11 +45,11 @@ Lives in *config.yml*.
 |*src*|Path to the archive containing projects||![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
 |*dest*|Path to a directory where projects will be extracted||![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
 |*projects_names*|Naming convention for projects|`^GROUP_NAME_NAME` `^GROUP_NAME(_NAME)*` `^TP_NAME_FIRSTN`|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
-|*out*|The name of the analysis output file||![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
-|*out_format*|The formats that will be generated|`html` `xls` `csv`|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
 |*type*|The type of the project|`my_project` (*type/my_project.yml* must exist)|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
 |*criteria*|The criteria you want for analysis|`all_files` `src_files` `lines_count` `comments_count` `compile` `execute`|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
 |*extensions*|The list of extensions you want for analysis|See below||
+|*out*|The name of the analysis output file|Default *results*||
+|*out_format*|The formats that will be generated|Default `html` `xls` `csv`||
 |*options*|A hash to set options|`:verbose` `:log_dir` `:log_mode`||
 
 ###Project configuration
@@ -58,13 +58,13 @@ Lives in *type/my_project.yml*.
 |Key   |Description|Values|Required|
 |------|-----------|-----|:--------:|
 |*language*|The target language|`C` `Java` `HTML` `Ruby`|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
-|*timeout*|In seconds. Compilation and execution will halt if not completed within the defined timeout||![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
+|*timeout*|In seconds. Compilation and execution will halt if not completed within the defined timeout|Default *4*||
 |*required_files*|A list of required files|Tip: you can use regular expressions||
 |*preferred_build_command*|The command to build the program with|`make`||
 |*execute_command*|The name of the interpreter|`java` `ruby`||
 |*program_prefix*|The program prefix|`pkg.` for Java||
 |*program_name*|The name of the program|`a.out` `Main`||
-|*execution_count*|The amount of times to execute the program|default *1*||
+|*execution_count*|The amount of times to execute the program|Default *1*||
 |*execution_value*|The optional parameter to pass to the program when executing|A list of values whose length shall be one if *execution_count* is not greater than 1|||
 
 ###Extensions
