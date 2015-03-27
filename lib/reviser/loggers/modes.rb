@@ -65,7 +65,7 @@ module Reviser
 				def header
 					add_tag "<!DOCTYPE html><html><head>
 					<meta charset= \"UTF-8\">
-					<link rel=\"stylesheet\" href=\"#{File.expand_path(File.join(Cfg[:res_dir],'/css/style_logs.css'))}\" />
+					<link rel=\"stylesheet\" href=\"#{File.join(FileUtils.pwd , Cfg.resource('/css/style_logs.css').to_path)}\" />
 					<title>#{@basename} logs</title>
 					</head>\n<body>
 					<header>

@@ -43,13 +43,10 @@ module Reviser
 		# calling this method
 		#
 		def self.resource path
-			abs = File.join RES_DIR, path
+			abs = File.join FileUtils.pwd, RES_DIR, path
 			File.new abs if File.exists? abs
 		end
 
-		# Method class alias
-		# might remove this at some point ( sorry Yannou I know u worked hard :( )
-		self.singleton_class.send(:alias_method, :=~, :has_key?)
 
 		def self.load(cfg_file)
 			@@loaded = true
