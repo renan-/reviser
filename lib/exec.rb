@@ -99,6 +99,8 @@ module Reviser
 					Reviser::load :component => 'generator', :input_from => 'checker'
 
 					Reviser::run
+				rescue Interrupt => i
+					message("...".yellow, "Bye bye")
 				rescue Exception => e
 					message('Error'.red, "#{e.message}")
 				end
@@ -109,10 +111,16 @@ module Reviser
 
 		desc 'extract', 'Extract and organise all computing projects'
 		def extract
-			Reviser::load :component => 'archiver'
-			Reviser::load :component => 'organiser', :input_from => 'archiver'
-			
-			Reviser::run
+			begin
+				Reviser::load :component => 'archiver'
+				Reviser::load :component => 'organiser', :input_from => 'archiver'
+				
+				Reviser::run
+			rescue Interrupt => i
+				message("...".yellow, "Bye bye")
+			rescue Exception => e
+				message('Error'.red, "#{e.message}")
+			end
 		end
 
 		#

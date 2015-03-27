@@ -110,7 +110,7 @@ module Reviser
 		 			destination = Shellwords.escape(destination)
 		 			`unrar e #{src} #{destination}`
 				else
-					puts 'Please install unrar : sudo apt-get install unrar'
+					raise 'Please install unrar : sudo apt-get install unrar (winRar for Windows)'
 				end
 			end
 
