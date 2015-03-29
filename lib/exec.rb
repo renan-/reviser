@@ -37,24 +37,10 @@ module Reviser
 		# This method only copies the config file into the current directory.
 		desc 'init DIRECTORY', 'Initialize Reviser workspace. DIRECTORY ||= \'.\''
 		def init(dir = '.')
-			pwd = FileUtils.pwd
+			# Import all files and directories
+			init_workspace dir
 
-			[Cfg::RES_DIR, Cfg::TYPE_DIR].each do |d|
-				path = File.join(Cfg::ROOT, d)
-				if File.directory? path
-					unless File.directory? File.join(dir, d)
-						FileUtils.cp_r(path, dir)
-						message('Create', dir == '.' && d || File.join(dir, d))
-					end
-				end
-			end
-
-			msg = File.exist?(File.join(pwd,dir,File.basename($template_path))) && 'Recreate' || 'Create'
-			FileUtils.mkdir_p dir unless Dir.exist?(File.join(pwd, dir))
-			FileUtils.cp($template_path, dir)
-			message(msg, File.basename($template_path))
-
-	    setup File.expand_path(File.join(dir, File.basename($template_path))) unless @@setup
+	    	setup File.expand_path(File.join(dir, File.basename($template_path))) unless @@setup
 
 			puts "Customize config.yml to your needs @see docs".yellow
 			puts 'Then simply execute \'reviser work\' to launch analysis.'.yellow
@@ -101,10 +87,10 @@ module Reviser
 					Reviser::load :component => 'generator', :input_from => 'checker'
 
 					Reviser::run
-				rescue Interrupt => i
-					message("...".yellow, "Bye bye")
-				rescue Exception => e
-					message('Error'.red, "#{e.message}")
+#				rescue Interrupt => i
+#					message("...".yellow, "Bye bye")
+#				rescue Exception => e
+#					message('Error'.red, "#{e.message}")
 				end
 			else
 				message('Error'.red, "'config.yml' file doesn't exist! @see 'reviser init'")
@@ -158,6 +144,26 @@ module Reviser
 
 				@@setup = true
 			end
+
+			# Initialize workspace copying all files et directories.
+			# @param dir Directory to init.
+			def init_workspace dir
+				[Cfg::RES_DIR, Cfg::TYPE_DIR, $template_path].each do |d|
+					path = File.join(Cfg::ROOT, d)
+					if File.directory? path
+						unless File.directory? File.join(dir, d)
+							FileUtils.mkdir_p File.join(dir,File.basename(path))
+							FileUtils.cp_r path, dir 
+							message('Create', dir == '.' && d || File.join(dir, d))
+						end
+					else
+						FileUtils.mkdir_p dir
+						FileUtils.cp $template_path, dir
+						message('Create', dir == '.' && d || File.join(dir, File.basename(d)))
+					end
+				end
+			end
+
 		end
 
 	end
