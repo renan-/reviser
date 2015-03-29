@@ -1,6 +1,5 @@
 ---
-# Labyrinthe
-# (test data we got)
+# C Project sort
 
 language: C
 
@@ -8,9 +7,10 @@ language: C
 preferred_build_command: make
 
 # Required files
-# Can also be a regex
+# Here, it's only the Makefile
+# Can also be a regex.
 required_files:
-- !ruby/regexp '/(M|m)akefile/'
+- /(M|m)akefile/
 
 # For interpreted languages
 # execute_command: 
@@ -19,9 +19,9 @@ required_files:
 # executable file found will be executed
 # program_name:
 
-# Number of times to execute
+# Number of times to run execute_command
 # (not needed here, as explained below)
-# execution_count:
+# execution_count: 3
 
 # One arg per execution,
 # only one value will be passed
@@ -29,5 +29,4 @@ required_files:
 # program.
 # But if it's a list, execution_count
 # will be replaced by its size
-execution_value:
-- ../../res/labys/labfich11.txt
+# execution_value:

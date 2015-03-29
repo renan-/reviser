@@ -65,7 +65,18 @@ Lives in *type/my_project.yml*.
 |*program_prefix*|The program prefix|`pkg.` for Java||
 |*program_name*|The name of the program|`a.out` `Main`||
 |*execution_count*|The amount of times to execute the program|Default *1*||
-|*execution_value*|The optional parameter to pass to the program when executing|A list of values whose length shall be one if *execution_count* is not greater than 1|||
+|*execution_value*|The optional parameter to pass to the program when executing|A list of values whose length shall be one if *execution_count* is not greater than *1*|||
+
+###Labels configuration
+
+Each criterion is associated with a label. A label is some words, describing the criterion's result. For example, a criterion which checks the existence of a Makefile could have a label like 'Existence of Makefile'.
+
+By default, labels are generated with the name of the called method. You have the possibility to customize this label thanks to the command line tool:
+	
+	reviser add makefile? 'Existence of makefile'
+	#            method       associated label
+
+Labels are stored in reviser's installation directory, in a file called *labels.yml*. We don't include them in the workspace at this point, but we could later depending on feedback.
 
 ###Extensions
 Extensions are in fact Criteria we didn't want to include into reviser's core.
@@ -79,21 +90,16 @@ As of now, there are 2 extensions:
 |Valgrind|Runs a memcheck through system call to valgrind|`memleaks`|
 |WebValidators|Validates HTML and CSS through W3C API calls|`validate_web` `validate_html` `validate_css`|
 
-###Custom labels
+###Working on your own
 
-Each criterion is associated with a label. A label is some words, describing the criterion's result. For example, a criterion which check the existence of a Makefile could have for label 'Existence of Makefile'.
-
-By default, labels are generated with the name of the called method. You have the possibility to customize this label thanks to the command line:
-	
-	reviser add makefile? 'Existence of makefile'
-	#            method       associated label
-
-###Extending
+If you have very special needs, you may need to create your own components or extensions.
+You'll then need to load your components at the right time, and register your extensions for them to be available.
 
 ####Custom components
+
+*example/my_component.rb*
 ```
 #!ruby
-
 require 'json'
 require 'reviser'
 
@@ -126,18 +132,88 @@ class MyComponent < Reviser::Component
 		end
 	end
 end
+```
 
+####Custom extensions
+
+*example/my_extension.rb*
+```
+#!ruby
 #
-# Then we run it
+# A custom criteria for reviser
 #
+require 'reviser'
+
+module MyExtension
+	#
+	# This helper has the 'sources' methods
+	# that allow you to retrieve all sources
+	# files (files matching language extension)
+	#
+	include Reviser::Helpers::Project
+
+	def my_criteria
+		results = []
+		sources.each do |f|
+			results << f
+		end
+
+		#
+		# The manufacture method excepts
+		# a block which must describe the result contents
+		# for EACH format.
+		# You can also return raw data, then it'll be as it is
+		# for all formats.
+		#
+		manufacture do |format|
+			format.html { to_html results }
+			format.csv { ['This', 'is', 'power', 'of', 'Ruby', 'blocks'] }
+			format.xls { results }
+		end
+	end
+
+	private
+		#
+		# We just create a HTML list
+		#
+		def to_html data
+			html = '<ul>'
+			data.each do |el|
+				html << "<li>#{el}</li>"
+			end
+			html << '</ul>'
+
+			html
+		end
+end
+```
+
+### Putting it together
+*example/config.yml*
+```
+#!yaml
+extensions:
+  - my_criteria
+```
+
+*example/my_app.rb*
+```
+#!ruby
+require 'reviser'
+
+require_relative 'my_component'
+require_relative 'my_extension'
+
 module MyApp
 	include Reviser
 
-	def self.run config_file = '../config.yml'
+	def self.run config_file = 'config.yml'
 		#
 		# Setup reviser
 		#
 		Reviser::setup config_file
+
+		Reviser::register :extension => 'MyExtension'
 		
 		#
 		# You can load any built-in component (archiver, organiser, checker, generator)
@@ -146,18 +222,18 @@ module MyApp
 		# If you don't respect that, nothing will work.
 		# But you can run your component at any step, this won't break the process.
 		#
-		# Reviser::load :component => 'archiver'
-		# Reviser::load :component => 'organiser', :input_from => 'archiver'
+		Reviser::load :component => 'archiver'
+		Reviser::load :component => 'organiser', :input_from => 'archiver'
 
 		#
 		# Tell reviser not to look for our component
 		# in its core ones but to let us include it
 		# ourselves instead
 		#
-		Reviser::load :component => 'my_component', :local => true #, :input_from => 'archiver'
+		Reviser::load :component => 'my_component', :input_from => 'archiver', :local => true
 
-		# Reviser::load :component => 'checker', :input_from => 'organiser'
-		# Reviser::load :component => 'generator', :input_from => 'checker'
+		Reviser::load :component => 'checker', :input_from => 'organiser'
+		Reviser::load :component => 'generator', :input_from => 'checker'
 
 		#
 		# Run reviser
@@ -165,12 +241,23 @@ module MyApp
 		Reviser::run
 	end
 end
+```
 
+*example/main.rb*
+```
+#!ruby
+require_relative 'my_app'
+
+#
+# You can then run your app (don't forget you still need to be in a reviser workspace,
+# so type/ and res/ folders must exist, as well as config.yml)
+#
 MyApp::run
 ```
 
+
 Team
-----
+--------
 [Anthony Cerf]()
 
 [Yann Prono](https://github.com/mcdostone)

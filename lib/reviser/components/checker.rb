@@ -25,8 +25,15 @@ module Reviser
 
 				@logger.h1 Logger::INFO, "Loading modules"
 
-				load CRITERIA
-				load EXTENSIONS
+				load_modules CRITERIA
+				load_modules EXTENSIONS
+
+				#
+				# We also load user-registered extensions if any
+				#
+				Reviser.registered_extensions.each do |ext|
+					load_module_methods ext
+				end
 
 				@logger.h1 Logger::INFO, "Loading labels"
 

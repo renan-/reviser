@@ -1,7 +1,9 @@
 require 'thor'
 require 'fileutils'
 require 'colorize'
+
 require_relative 'reviser'
+require_relative 'reviser/helpers/criteria'
 
 #
 # Module used for managing all actions in command line
@@ -134,7 +136,7 @@ module Reviser
 		#
 		desc 'add METH \'LABEL\'', 'Associates LABEL with METH analysis def'
 		def add meth, label
-			res = Helpers::Labels.add meth, label
+			res = Helpers::Criteria::Labels.add meth, label
 			message "#{res} label".green,meth + " => " + label
 		end
 

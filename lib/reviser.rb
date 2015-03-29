@@ -21,7 +21,13 @@ require_relative 'reviser/helpers/system'
 module Reviser
 	class Reviser
 		@@setup = false
+
 		@@loaded_components = {}
+		@@registered_extensions = []
+
+		def self.registered_extensions
+			@@registered_extensions
+		end
 
 		#
 		# Adds an entry with the specified data.
@@ -38,6 +44,16 @@ module Reviser
 				:local => data[:local],
 				:data => nil
 			}
+		end
+		
+		#
+		# Registers the specified extension
+		# (its methods will be available for analysis)
+		#
+		def self.register(data)
+			raise ArgumentError unless data.has_key?(:extension)
+
+			@@registered_extensions << data[:extension]
 		end
 
 		def self.setup(config_file)

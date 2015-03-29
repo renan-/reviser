@@ -55,7 +55,7 @@ module Reviser
 					@logger.h1(Logger::INFO, "Include methods of #{@criteria[meth]}") unless respond_to? meth
 					self.class.send(:include, @criteria[meth]) unless respond_to? meth
 
-					send meth 
+					send meth
 				else
 					nil
 				end
@@ -81,7 +81,7 @@ module Reviser
 			# Load all of modules available for the analysis
 			# @param directory Directory where search of modules is done.
 			# @param regex regex to find name of modules.
-			def load directory, regex = '*'
+			def load_modules directory, regex = '*'
 				@logger.h2 Logger::INFO, "Modules of #{directory}"
 				modules =  Dir[File.join(directory, regex)]
 
@@ -89,11 +89,19 @@ module Reviser
 				modules.each do |m|
 					require_relative m
 					ext = File.extname m
-					module_name = Object.const_get "#{namespace}::#{camelize(File.basename(m,ext))}", false
-					@logger.h3 Logger::INFO, "Load #{module_name}"
-					methods = module_name.instance_methods false
-					methods.each { |method| populate(method, module_name) }
+					module_name = "#{namespace}::#{camelize(File.basename(m,ext))}"
+					
+					load_module_methods module_name
 		 		end	
+		 	end
+
+		 	def load_module_methods module_name
+					mod = Object.const_get module_name, false
+
+					@logger.h3 Logger::INFO, "Load #{module_name}"
+
+					methods = mod.instance_methods false
+					methods.each { |method| populate(method, mod) }
 		 	end
 
 			# Gets the name of module 
@@ -116,7 +124,7 @@ module Reviser
 							label = create_label(meth.keys[0]) if label == nil
 							@output[meth.keys[0].to_sym] = label
 						else
-							label = (labels.respond_to?('[]') && labels.key?(meth.to_sym)) ? labels[meth.to_sym] : create_label(meth)
+							label = ((labels.respond_to?('[]') && labels.key?(meth.to_sym))) && labels[meth.to_sym] || create_label(meth)
 							@output[meth.to_sym] = label
 						end
 					end
@@ -130,58 +138,57 @@ module Reviser
 				@logger.h2 Logger::ERROR, "Create label for #{meth}. You should custom your label (see 'reviser add')"
 				meth.to_s.split('_').each {|s| s.capitalize! }.join(' ')
 			end
-		end
 
-
-		# Manage all actions for adding, updating or getting labels of Reviser.
-		# A label is a a group of words, describing the associated criterion (method).
-		#
-		# @example  
-		#  	criterion => label
-		# 	all_files => all files of project
-		#
-		# known Labels are in the labels.yml file.
-		#
-		# @author Yann Prono
-		class Labels
-
-			# Current directory of this file
-			PWD = File.dirname __FILE__
-
-			# Path of label.yml file
-			LABELS = File.join File.dirname(File.dirname(File.dirname(PWD))), 'labels.yml'
-
+			# Manage all actions for adding, updating or getting labels of Reviser.
+			# A label is a a group of words, describing the associated criterion (method).
 			#
-			# Enable to associate a label to a criterion (method).
-			# The label will be saved in the 'labels.yml' file
-			# @param meth Method to link.
-			# @param label Label to link with the method.
-		    def self.add meth, label
-		    	res = "Create"
-				labels = YAML.load File.open(LABELS)
-				if labels.respond_to? '[]'
-					res = "Update" if labels.key? meth
-					labels[meth] = label
-					File.open(LABELS, 'w') { |f| f.write labels.to_yaml }
-				end
-				res
-			end
+			# @example  
+			#  	criterion => label
+			# 	all_files => all files of project
+			#
+			# known Labels are in the labels.yml file.
+			#
+			# @author Yann Prono
+			module Labels
 
-			# @return Hash all known labels by reviser.
-			# :criterion => label
-			def self.load
-				Labels.populate(YAML.load(File.open(LABELS)))
-			end
+				# Current directory of this file
+				PWD = File.dirname __FILE__
 
-			def self.populate hash
-				labels = {}
-				if hash.respond_to?('each')
-					hash.each do |meth, label|
-						labels[meth.to_sym] = label
+				# Path of label.yml file
+				LABELS = File.join File.dirname(File.dirname(File.dirname(PWD))), 'labels.yml'
+
+				#
+				# Enable to associate a label to a criterion (method).
+				# The label will be saved in the 'labels.yml' file
+				# @param meth Method to link.
+				# @param label Label to link with the method.
+				def self.add meth, label
+					res = "Create"
+					labels = YAML.load File.open(LABELS)
+					if labels.respond_to? '[]'
+						res = "Update" if labels.key? meth
+						labels[meth] = label
+						File.open(LABELS, 'w') { |f| f.write labels.to_yaml }
 					end
+					res
 				end
-				labels
+
+				# @return Hash all known labels by reviser.
+				# :criterion => label
+				def self.load
+					Labels.populate(YAML.load(File.open(LABELS)))
+				end
+
+				def self.populate hash
+					labels = {}
+					if hash.respond_to?('each')
+						hash.each do |meth, label|
+							labels[meth.to_sym] = label
+						end
+					end
+					labels
+				end
 			end
-	  	end
+		end
 	end
 end

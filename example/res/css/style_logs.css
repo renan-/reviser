@@ -1,0 +1,166 @@
+/* Imports */
+/** *****************
+ 	* 	Variables   *
+ 	*****************
+ */
+/* line 22, ../scss/style_logs.scss */
+html, body, h1, h2, h3, header {
+  padding: 0px;
+  margin: 0px;
+  font-family: sans-serif;
+}
+
+/* line 28, ../scss/style_logs.scss */
+body {
+  background-color: #e6e6e6;
+}
+
+/* line 32, ../scss/style_logs.scss */
+header {
+  display: inline-block;
+  width: 100%;
+  height: 4em;
+  margin-bottom: 4%;
+  background-color: #1B3147;
+  border-bottom: 2px solid #8d98a3;
+}
+/* line 41, ../scss/style_logs.scss */
+header p {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: white;
+}
+/* line 48, ../scss/style_logs.scss */
+header:before {
+  content: '';
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  left: 50%;
+  top: 4em;
+  -moz-transform: translate(-27px, -22px);
+  -ms-transform: translate(-27px, -22px);
+  -webkit-transform: translate(-27px, -22px);
+  transform: translate(-27px, -22px);
+  background: white url("http://upload.wikimedia.org/wikipedia/commons/thumb/7/73/Ruby_logo.svg/50px-Ruby_logo.svg.png");
+  background-repeat: no-repeat;
+  background-position: center;
+  -moz-background-size: 32px, 32px;
+  -o-background-size: 32px, 32px;
+  -webkit-background-size: 32px, 32px;
+  background-size: 32px, 32px;
+  border: 2px solid #a30000;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+  border-radius: 50%;
+}
+
+/* line 68, ../scss/style_logs.scss */
+section {
+  display: inline-block;
+  width: 90%;
+  margin-left: 5%;
+  margin-bottom: 2%;
+  border-left: 4px solid #3c4952;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+/* line 78, ../scss/style_logs.scss */
+h1, h2, h3 {
+  display: block;
+  width: 100%;
+  position: relative;
+  padding-left: 1.2em;
+  margin-top: 15px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #3c4952;
+}
+/* line 88, ../scss/style_logs.scss */
+h1:before, h2:before, h3:before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: -12px;
+  border-radius: 4px;
+  background-color: #c0392b;
+}
+
+/* line 102, ../scss/style_logs.scss */
+h1 {
+  font-size: 2em;
+}
+
+/* line 103, ../scss/style_logs.scss */
+h2 {
+  font-size: 1.2em;
+  padding-left: 3em;
+}
+
+/* line 104, ../scss/style_logs.scss */
+h3 {
+  font-size: 0.8em;
+  padding-left: 6em;
+}
+
+/* line 106, ../scss/style_logs.scss */
+section h1:first-child {
+  margin-top: -1px;
+}
+
+/* line 109, ../scss/style_logs.scss */
+section h1:last-child {
+  margin-bottom: -1px;
+}
+
+/* line 113, ../scss/style_logs.scss */
+.info:before {
+  background-color: #27ae60;
+}
+
+/* line 117, ../scss/style_logs.scss */
+.error:before {
+  background-color: #c0392b;
+}
+
+/* line 121, ../scss/style_logs.scss */
+.debug:before {
+  background-color: #F49C37;
+}
+
+@media all and (max-width: 700px) {
+  /* line 126, ../scss/style_logs.scss */
+  h1 {
+    font-size: 1.17em;
+  }
+
+  /* line 127, ../scss/style_logs.scss */
+  h2 {
+    font-size: 0.7em;
+  }
+
+  /* line 128, ../scss/style_logs.scss */
+  h3 {
+    font-size: 0.3em;
+    padding-left: 3.17em;
+  }
+
+  /* line 129, ../scss/style_logs.scss */
+  section {
+    margin-top: 5%;
+  }
+}
+@media all and (max-width: 300px) {
+  /* line 133, ../scss/style_logs.scss */
+  section {
+    margin-top: 8%;
+  }
+}

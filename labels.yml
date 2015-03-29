@@ -6,3 +6,4 @@ comments_count: Nombre de lignes de commentaires
 compile: Resultats compilation
 execute: Resultats execution
 memleaks: Fuites memoires
+validate_web: Validite HTML/CSS W3C
