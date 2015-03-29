@@ -55,7 +55,7 @@ module Reviser
 					@logger.h1(Logger::INFO, "Include methods of #{@criteria[meth]}") unless respond_to? meth
 					self.class.send(:include, @criteria[meth]) unless respond_to? meth
 
-					send meth 
+					send meth
 				else
 					nil
 				end
@@ -81,7 +81,7 @@ module Reviser
 			# Load all of modules available for the analysis
 			# @param directory Directory where search of modules is done.
 			# @param regex regex to find name of modules.
-			def load directory, regex = '*'
+			def load_modules directory, regex = '*'
 				@logger.h2 Logger::INFO, "Modules of #{directory}"
 				modules =  Dir[File.join(directory, regex)]
 
@@ -89,11 +89,19 @@ module Reviser
 				modules.each do |m|
 					require_relative m
 					ext = File.extname m
-					module_name = Object.const_get "#{namespace}::#{camelize(File.basename(m,ext))}", false
-					@logger.h3 Logger::INFO, "Load #{module_name}"
-					methods = module_name.instance_methods false
-					methods.each { |method| populate(method, module_name) }
+					module_name = "#{namespace}::#{camelize(File.basename(m,ext))}"
+					
+					load_module_methods module_name
 		 		end	
+		 	end
+
+		 	def load_module_methods module_name
+					mod = Object.const_get module_name, false
+
+					@logger.h3 Logger::INFO, "Load #{module_name}"
+
+					methods = mod.instance_methods false
+					methods.each { |method| populate(method, mod) }
 		 	end
 
 			# Gets the name of module 
@@ -116,7 +124,7 @@ module Reviser
 							label = create_label(meth.keys[0]) if label == nil
 							@output[meth.keys[0].to_sym] = label
 						else
-							label = (labels.respond_to?('[]') && labels.key?(meth.to_sym)) ? labels[meth.to_sym] : create_label(meth)
+							label = ((labels.respond_to?('[]') && labels.key?(meth.to_sym))) && labels[meth.to_sym] || create_label(meth)
 							@output[meth.to_sym] = label
 						end
 					end
