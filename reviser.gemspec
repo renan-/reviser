@@ -1,15 +1,17 @@
 Gem::Specification.new do |spec|
   spec.name        = 'reviser'
-  spec.version     = '0.0.2.rc1'
+  spec.version     = '0.0.2'
   spec.executables << 'reviser'
-  spec.date        = '2015-03-25'
+  spec.date        = '2015-03-27'
   spec.summary     = 'Reviser'
   spec.description = "A semi-automatic tool for student's projects evaluation"
   spec.authors     = ['Renan Strauss', 'Yann Prono', 'Anthony Cerf', 'Romain Ruez']
   spec.email       = 'renan.strauss@gmail.com'
   spec.files       = Dir['{bin,ext,lang,lib,res,type}/**/*'] + %w(Gemfile README.md config.yml labels.yml)
-  spec.homepage    = 'http://rubygemspec.org/gems/reviser'
+  spec.homepage    = 'https://bitbucket.org/renan-/reviser'
   spec.license     = 'GPL-3'
+
+  spec.required_ruby_version = '>= 1.9.3'
 
   spec.add_runtime_dependency 'colorize', '~> 0.7', '>= 0.7.5'
   spec.add_runtime_dependency 'thor', '~> 0.19', '>= 0.19.1'
