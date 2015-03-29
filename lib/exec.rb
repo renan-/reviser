@@ -104,7 +104,7 @@ module Reviser
 				rescue Interrupt => i
 					message("...".yellow, "Bye bye")
 				rescue Exception => e
-					message('Error'.red, "#{e.to_s}")
+					message('Error'.red, "#{e.message}")
 				end
 			else
 				message('Error'.red, "'config.yml' file doesn't exist! @see 'reviser init'")

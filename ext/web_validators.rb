@@ -54,7 +54,6 @@ module Reviser
 				raise ArgumentError unless validator != nil
 
 				files = sources.select { |s| File.extname(s) == ".#{lang}" }
-				puts files.inspect
 				files.each do |f|
 					begin
 						response = validator.validate_file(File.new(f))
