@@ -42,11 +42,11 @@ Our tool is divided into 4 main components :
 |Archiver|Extracting all computing projects|
 |Organiser|Parsing students names and renaming directories appropriately|
 |Checker|Running the analysis based upon selected criteria and extensions|
-|Generator|Generates the analysis results in various formats|
+|Generator|Generating the analysis results in various formats|
 
 The basic idea is that each component can receive data from any of the components run before it.
 It shall requests that input upon loading. The *work* command actually runs the above components
-with the appropriate input data for each of them.
+with the appropriate input data (e.g. *Generator* relies on *Checker* results).
 
 ###Configuration
 ---------------
