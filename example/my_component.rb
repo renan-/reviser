@@ -1,8 +1,6 @@
 require 'json'
 require '../lib/reviser'
 
-require_relative 'my_extension'
-
 #
 # Let's build a custom component !
 # It just parses an example JSON file and prints it
