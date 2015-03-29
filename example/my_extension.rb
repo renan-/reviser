@@ -4,6 +4,11 @@
 require '../lib/reviser'
 
 module MyExtension
+	#
+	# This helper has the 'sources' methods
+	# that allow you to retrieve all sources
+	# files (files matching language extension)
+	#
 	include Reviser::Helpers::Project
 
 	def my_criteria
@@ -27,6 +32,9 @@ module MyExtension
 	end
 
 	private
+		#
+		# We just create a HTML list
+		#
 		def to_html data
 			html = '<ul>'
 			data.each do |el|
