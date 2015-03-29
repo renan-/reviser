@@ -1,7 +1,6 @@
 #
 # Author:: Renan Strauss
 #
-require 'yaml'
 require_relative 'loggers/logger'
 
 module Reviser

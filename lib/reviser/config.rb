@@ -90,6 +90,8 @@ module Reviser
 			Cfg[:program_prefix] ||= ''
 			Cfg[:execution_command] ||= ''
 			Cfg[:execution_count] ||= 1
+
+			Cfg[:create_git_repo] ||= false
 		end
 
 	private

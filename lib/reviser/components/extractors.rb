@@ -118,7 +118,8 @@ module Reviser
 			# @param seven_zip_file	[String] the 7zip file.
 			# @param destination 	[String] Destination of extracted data.
 			def seven_zip seven_zip_file, destination
-				require 'seven_zip_ruby'
+				require_gem 'seven_zip' unless defined? SevenZipRuby
+
 				File.open(seven_zip_file, 'rb') do |file|
 		  			SevenZipRuby::Reader.open(file) do |szr|
 		    			szr.extract_all destination

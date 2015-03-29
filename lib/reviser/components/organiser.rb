@@ -1,7 +1,7 @@
 require 'fileutils'
-require_relative '../helpers/git'
-require_relative '../helpers/project'
+require 'rubygems'
 
+require_relative '../helpers/project'
 
 module Reviser
 	module Components
@@ -18,9 +18,6 @@ module Reviser
 		# @author Renan Strauss
 		#
 		class Organiser < Component
-
-			# Include all tools
-			include Helpers::Git
 			include Helpers::Project::Naming
 
 			# All entries to ignore during sort and organization
@@ -47,6 +44,14 @@ module Reviser
 
 				# How many patterns are in the pseudo-regex?
 				@count_patterns = {}
+
+				# Is git present ?
+				if Cfg[:create_git_repo]
+					require_gem 'git'
+					require_relative '../helpers/git'
+
+					self.class.send(:include, Helpers::Git)
+				end
 			end
 
 			# Renames directories more clearly.
@@ -131,8 +136,10 @@ module Reviser
 					@logger.h1 Logger::INFO, "Structure project"
 					structure entry
 
-					@logger.h1 Logger::INFO, "Initializing git repo"
-					git entry
+					if Cfg[:create_git_repo]
+						@logger.h1 Logger::INFO, "Initializing git repo"
+						git entry
+					end
 
 					@logger.h1 Logger::INFO, "Renaming directory"
 					new_path = rename entry

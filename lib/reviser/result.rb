@@ -3,6 +3,8 @@
 # It allows us to easily output well-formatted results for certain output formats
 # (eg HTML)
 #
+# @author Renan Strauss
+#
 module Reviser
 	class Result
 		#

@@ -7,15 +7,26 @@
 # It's very simple at that point, but feel free to
 # make the extension better :-)
 #
-require 'w3c_validators'
 
 module Reviser
 	module Extensions
 		module WebValidators
 			include Helpers::Project
-			include W3CValidators
 
+			#
+			# Validates HTML and CSS
+			# if any
+			#
 			def validate_web
+				#
+				# TODO : explain the exception to the user
+				#
+				unless defined? W3CValidators
+					require_gem 'w3c_validators'
+
+					self.class.send(:include, W3CValidators)
+				end
+
 				results = validate(:html)
 				results.merge! validate(:css)
 
@@ -29,14 +40,6 @@ module Reviser
 				end
 			end
 
-			def validate_html
-				validate :html
-			end
-
-			def validate_css
-				validate :css
-			end
-
 			private
 			#
 			# @returns a hash matching all files for this lang to a resultset
@@ -46,9 +49,9 @@ module Reviser
 				validator = nil
 				case lang
 				when :html
-					validator = MarkupValidator.new
+					validator = W3CValidators::MarkupValidator.new
 				when :css
-					validator = CSSValidator.new
+					validator = W3CValidators::CSSValidator.new
 				end
 
 				raise ArgumentError unless validator != nil
@@ -63,7 +66,7 @@ module Reviser
 						}
 
 						puts "\t\t#{f} => #{results[f][:valid]}"
-					rescue ValidatorUnavailable => e
+					rescue W3CValidators::ValidatorUnavailable => e
 						results[f] = e.message
 					rescue Exception => e
 						results[f] = e.message

@@ -10,15 +10,26 @@
 #
 require 'mkmf'
 require 'colorize'
+require 'rubygems'
 
 require_relative 'reviser/component'
 require_relative 'reviser/config'
 
-require_relative 'reviser/helpers/git'
 require_relative 'reviser/helpers/project'
 require_relative 'reviser/helpers/system'
 
 module Reviser
+	#
+	# Raise an exception unless the given gem is installed
+	#
+	def require_gem gem_name
+		unless Gem::Specification::find_all_by_name(gem_name).any?
+			raise Gem::LoadError, "#{gem_name}".yellow + " => ".white + "gem install #{gem_name}".magenta
+		end
+
+		require gem_name
+	end
+
 	class Reviser
 		@@setup = false
 
