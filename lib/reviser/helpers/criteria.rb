@@ -130,58 +130,57 @@ module Reviser
 				@logger.h2 Logger::ERROR, "Create label for #{meth}. You should custom your label (see 'reviser add')"
 				meth.to_s.split('_').each {|s| s.capitalize! }.join(' ')
 			end
-		end
 
-
-		# Manage all actions for adding, updating or getting labels of Reviser.
-		# A label is a a group of words, describing the associated criterion (method).
-		#
-		# @example  
-		#  	criterion => label
-		# 	all_files => all files of project
-		#
-		# known Labels are in the labels.yml file.
-		#
-		# @author Yann Prono
-		class Labels
-
-			# Current directory of this file
-			PWD = File.dirname __FILE__
-
-			# Path of label.yml file
-			LABELS = File.join File.dirname(File.dirname(File.dirname(PWD))), 'labels.yml'
-
+			# Manage all actions for adding, updating or getting labels of Reviser.
+			# A label is a a group of words, describing the associated criterion (method).
 			#
-			# Enable to associate a label to a criterion (method).
-			# The label will be saved in the 'labels.yml' file
-			# @param meth Method to link.
-			# @param label Label to link with the method.
-		    def self.add meth, label
-		    	res = "Create"
-				labels = YAML.load File.open(LABELS)
-				if labels.respond_to? '[]'
-					res = "Update" if labels.key? meth
-					labels[meth] = label
-					File.open(LABELS, 'w') { |f| f.write labels.to_yaml }
-				end
-				res
-			end
+			# @example  
+			#  	criterion => label
+			# 	all_files => all files of project
+			#
+			# known Labels are in the labels.yml file.
+			#
+			# @author Yann Prono
+			module Labels
 
-			# @return Hash all known labels by reviser.
-			# :criterion => label
-			def self.load
-				Labels.populate(YAML.load(File.open(LABELS)))
-			end
+				# Current directory of this file
+				PWD = File.dirname __FILE__
 
-			def self.populate hash
-				labels = {}
-				if hash.respond_to?('each')
-					hash.each do |meth, label|
-						labels[meth.to_sym] = label
+				# Path of label.yml file
+				LABELS = File.join File.dirname(File.dirname(File.dirname(PWD))), 'labels.yml'
+
+				#
+				# Enable to associate a label to a criterion (method).
+				# The label will be saved in the 'labels.yml' file
+				# @param meth Method to link.
+				# @param label Label to link with the method.
+				def self.add meth, label
+					res = "Create"
+					labels = YAML.load File.open(LABELS)
+					if labels.respond_to? '[]'
+						res = "Update" if labels.key? meth
+						labels[meth] = label
+						File.open(LABELS, 'w') { |f| f.write labels.to_yaml }
 					end
+					res
 				end
-				labels
+
+				# @return Hash all known labels by reviser.
+				# :criterion => label
+				def self.load
+					Labels.populate(YAML.load(File.open(LABELS)))
+				end
+
+				def self.populate hash
+					labels = {}
+					if hash.respond_to?('each')
+						hash.each do |meth, label|
+							labels[meth.to_sym] = label
+						end
+					end
+					labels
+				end
 			end
-	  	end
+		end
 	end
 end
