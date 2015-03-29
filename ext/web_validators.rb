@@ -54,6 +54,7 @@ module Reviser
 				raise ArgumentError unless validator != nil
 
 				files = sources.select { |s| File.extname(s) == ".#{lang}" }
+				puts files.inspect
 				files.each do |f|
 					begin
 						response = validator.validate_file(File.new(f))
@@ -64,7 +65,9 @@ module Reviser
 
 						puts "\t\t#{f} => #{results[f][:valid]}"
 					rescue ValidatorUnavailable => e
-						results[f] = { :status => 'Unknown', :errors => 'Unknown' }
+						results[f] = e.message
+					rescue Exception => e
+						results[f] = e.message
 					end
 				end
 
@@ -76,17 +79,19 @@ module Reviser
 
 				headings = results.values.first.keys
 
-				html = '<table><caption>WebValidators results</caption><tr><th>File</th>'
-				headings.each { |heading| html << "<th>#{heading}</th>" }
+				html = '<table><tr><th>File</th>'
+				headings.each { |heading| html << "<th>#{heading.to_s.capitalize!}</th>" }
 				html << '</tr>'
 
 				results.each do |file, data|
-					html << '<tr>'
-					html << "<th>#{file}</th>"
-					data.values.each { |value| html << "<td>#{value}</td>" }
+					html << "<tr><th>#{file}</th>"
+					if data.is_a?(Hash)
+						data.values.each { |value| html << "<td>#{value}</td>" }
+					else
+						html << "<td>#{data}</td>"
+					end
 					html << '</tr>'
 				end
-
 				html << '</table>'
 
 				html
