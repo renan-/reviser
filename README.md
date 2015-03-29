@@ -65,7 +65,7 @@ Lives in *type/my_project.yml*.
 |*program_prefix*|The program prefix|`pkg.` for Java||
 |*program_name*|The name of the program|`a.out` `Main`||
 |*execution_count*|The amount of times to execute the program|Default *1*||
-|*execution_value*|The optional parameter to pass to the program when executing|A list of values whose length shall be one if *execution_count* is not greater than 1|||
+|*execution_value*|The optional parameter to pass to the program when executing|A list of values whose length shall be one if *execution_count* is not greater than *1*|||
 
 ###Labels configuration
 
