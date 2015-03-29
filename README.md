@@ -101,8 +101,6 @@ You'll then need to load your components at the right time, and register your ex
 require 'json'
 require 'reviser'
 
-require_relative 'my_extension'
-
 #
 # Let's build a custom component !
 # It just parses an example JSON file and prints it
