@@ -142,6 +142,11 @@ end
 require 'reviser'
 
 module MyExtension
+	#
+	# This helper has the 'sources' methods
+	# that allow you to retrieve all sources
+	# files (files matching language extension)
+	#
 	include Reviser::Helpers::Project
 
 	def my_criteria
@@ -156,7 +161,7 @@ module MyExtension
 		# for EACH format.
 		# You can also return raw data, then it'll be as it is
 		# for all formats.
-                #
+		#
 		manufacture do |format|
 			format.html { to_html results }
 			format.csv { ['This', 'is', 'power', 'of', 'Ruby', 'blocks'] }
@@ -165,6 +170,9 @@ module MyExtension
 	end
 
 	private
+		#
+		# We just create a HTML list
+		#
 		def to_html data
 			html = '<ul>'
 			data.each do |el|
@@ -175,7 +183,6 @@ module MyExtension
 			html
 		end
 end
-
 ```
 
 ### Putting it together
