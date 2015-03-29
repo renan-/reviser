@@ -79,6 +79,15 @@ As of now, there are 2 extensions:
 |Valgrind|Runs a memcheck through system call to valgrind|`memleaks`|
 |WebValidators|Validates HTML and CSS through W3C API calls|`validate_web` `validate_html` `validate_css`|
 
+###Custom labels
+
+Each criterion is associated with a label. A label is some words, describing the criterion's result. For example, a criterion which check the existence of a Makefile could have for label 'Existence of Makefile'.
+
+By default, labels are generated with the name of the called method. You have the possibility to customize this label thanks to the command line:
+	
+	reviser add makefile? 'Existence of makefile'
+	#            method       associated label
+
 ###Extending
 
 ####Custom components
