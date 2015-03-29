@@ -1,0 +1,75 @@
+---
+
+################################################
+# 	           Config file   	       #
+################################################
+
+
+########	Archiver config 	########
+
+# File name of the archive containing all projects
+src: projects.zip
+
+# The destination directory for these projects
+dest: projects
+
+
+########	Organiser config 	########
+
+# Conventiong naming of projects, useful to rename folders 
+# You have to write a pseudo-regex with some constants:
+# 	      [ GROUP, FIRSTN, NAME ]
+#
+# '^GROUP_NAME_NAME'		=> Project starts with GROUP (S2A for example) and contains two names.
+# '^GROUP_NAME(_NAME)*'	   	=> Project starts with GROUP and contains minimum one name.
+# '^TP_html_NAME_FIRSTN' 	=> name starts by 'TP_html_' and contains a name and firstname.
+projects_names: '^FIRSTN NAME'
+
+
+########	Generator config 	########
+
+# The file name for results which will be generated
+out: results
+
+# The type/format of the previous file => currently supported: [csv, html, xls]
+out_format:
+- csv
+- html
+
+########	Reviser config		########
+
+# The type of project (<type>.yml must exists)
+type: example/Labyrinthe
+
+# Default timeout
+# shall be overriden in sorts
+timeout: 5
+
+
+########	Global config		########
+
+# Criteria you want for analysis
+# Can be overriden or declared in
+# project's config file
+#
+# Basics criteria, available in lib/helpers
+criteria:
+  - all_files
+  - src_files
+  - lines_count
+  - comments_count
+  - compile
+  - execute
+
+# Extensions you want to use (those in ext/ or the one you've registered)
+extensions:
+  - my_criteria
+
+
+# Options of all components
+# For the moment, there is just verbose option (for logger)
+options:
+  :verbose: true
+  :log_dir: logs
+  # mode of logger	=> [org, txt ...]
+  :log_mode: org

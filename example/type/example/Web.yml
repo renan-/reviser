@@ -1,0 +1,23 @@
+language: HTML
+
+#
+# The list of project's sources extensions
+#
+extension:
+- .html 
+- .css
+
+#
+# The criteria's extensions.
+# Here we're using web_validators
+#
+extensions:
+- validate_web
+
+#
+# Let's configure it!
+# We tell the extension to save analysis details files
+# it got from W3C validator, so that we can check those
+# files ourselves for analysis :-)
+#
+web_validators_save_results: true

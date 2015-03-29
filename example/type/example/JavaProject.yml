@@ -1,0 +1,18 @@
+---
+# Java Project sort
+
+language: Java
+
+preferred_build_command: javac src/*/*.java
+
+# For interpreted languages
+execute_command: java -cp src/
+
+program_name: pkg.Principale
+
+# Uncomment if it's a GUI app
+# timeout: 0
+
+# Number of times to run execute_command
+# If it's 1, no need to specify
+# execution_count: 1
