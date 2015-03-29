@@ -134,7 +134,7 @@ class MyComponent < Reviser::Component
 end
 ```
 
-####Custom extension
+####Custom extensions
 
 *example/my_extension.rb*
 ```
