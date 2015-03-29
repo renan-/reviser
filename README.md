@@ -96,6 +96,8 @@ If you have very special needs, you may need to create your own components or ex
 You'll then need to load your components at the right time, and register your extensions for them to be available.
 
 ####Custom components
+
+*example/my_component.rb*
 ```
 #!ruby
 require 'json'
@@ -134,6 +136,7 @@ end
 
 ####Custom extension
 
+*example/my_extension.rb*
 ```
 #!ruby
 #
@@ -186,6 +189,14 @@ end
 ```
 
 ### Putting it together
+*example/config.yml*
+```
+#!yaml
+extensions:
+  - my_criteria
+```
+
+*example/my_app.rb*
 ```
 #!ruby
 require 'reviser'
@@ -230,6 +241,12 @@ module MyApp
 		Reviser::run
 	end
 end
+```
+
+*example/main.rb*
+```
+#!ruby
+require_relative 'my_app'
 
 #
 # You can then run your app (don't forget you still need to be in a reviser workspace,
@@ -238,8 +255,9 @@ end
 MyApp::run
 ```
 
+
 Team
-----
+--------
 [Anthony Cerf]()
 
 [Yann Prono](https://github.com/mcdostone)
