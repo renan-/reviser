@@ -1,3 +1,0 @@
-Pour les tests, nous avons tester les différentes possibilités pour la position des entrées et des sorties.
-Nous avons aussi testé plusieurs sorties et/ou plusieurs entrées pour voir s'il prenait bien la plus courte distance entre l'entrée et la sortie.
-Le test avec un labyrinthe sans sortie à était fait, ainsi que sans entrée.
