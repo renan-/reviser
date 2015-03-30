@@ -24,7 +24,7 @@ require 'fileutils'
 
 module Reviser
 	module Components
-
+		#
 		# The module contains all methods to extract an archive
 		# regardless the format.
 		#

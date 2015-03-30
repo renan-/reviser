@@ -25,7 +25,7 @@ require_relative 'extractors'
 
 module Reviser
 	module Components
-
+		#
 		# Manages uncompression of archive.
 		# Archiver extracts all data in a given compressed file.
 		#

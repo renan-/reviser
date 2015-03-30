@@ -42,18 +42,18 @@ def require_gem gem_name
 	require gem_name
 end
 
-#
-# @author Renan Strauss
-#
-# This class is basically here to give the user
-# a generic and comprehensive way to use and
-# customize the behavior of our tool.
-# The main idea is that the user should not
-# instantiate components himself, nor worry
-# about the data these components exchange.
-# It is the API entry point.
-#
 module Reviser
+	#
+	# @author Renan Strauss
+	#
+	# This class is basically here to give the user
+	# a generic and comprehensive way to use and
+	# customize the behavior of our tool.
+	# The main idea is that the user should not
+	# instantiate components himself, nor worry
+	# about the data these components exchange.
+	# It is the API entry point.
+	#
 	class Reviser
 		@@setup = false
 

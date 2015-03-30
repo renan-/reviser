@@ -21,15 +21,15 @@
 #
 require_relative '../result'
 
-#
-# Provide useful methods for projects evaluation
-# as well as a naming module for custom regexes
-#
-# @author Renan Strauss
-# @author Yann Prono
-#
 module Reviser
 	module Helpers
+		#
+		# Provide useful methods for projects evaluation
+		# as well as a naming module for custom regexes
+		#
+		# @author Renan Strauss
+		# @author Yann Prono
+		#
 		module Project
 			#
 			# For interpreted languages
@@ -88,7 +88,6 @@ module Reviser
 			#
 			# @author Yann Prono
 			#
-
 			module Naming
 
 				# Dictionnary for regex in config file

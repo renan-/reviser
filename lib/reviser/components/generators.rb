@@ -21,7 +21,7 @@
 #
 module Reviser
 	module Components
-
+		#
 		# Module containing all methods for writing results.
 		#
 		# Convention over configuration !

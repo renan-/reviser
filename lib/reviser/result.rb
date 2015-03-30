@@ -20,14 +20,14 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-#
-# This class represents an analysis result
-# It allows us to easily output well-formatted results for certain output formats
-# (eg HTML)
-#
-# @author Renan Strauss
-#
 module Reviser
+	#
+	# This class represents an analysis result
+	# It allows us to easily output well-formatted results for certain output formats
+	# (eg HTML)
+	#
+	# @author Renan Strauss
+	#
 	class Result
 		#
 		# In case no call to manufacture was made,

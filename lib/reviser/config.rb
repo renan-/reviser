@@ -21,14 +21,14 @@
 #
 require 'yaml'
 
-#
-# Externalises the configuration
-# Cfg acts like a hash whose entries are config keys
-# associated with their values
-#
-# @author Renan Strauss
-#
 module Reviser
+	#
+	# Externalises the configuration
+	# Cfg acts like a hash whose entries are config keys
+	# associated with their values
+	#
+	# @author Renan Strauss
+	#
 	class Cfg
 		# Path for specialized config files for projects
 		ROOT = File.join(File.dirname(File.dirname(File.dirname(__FILE__))))

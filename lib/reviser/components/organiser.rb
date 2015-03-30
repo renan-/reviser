@@ -26,7 +26,7 @@ require_relative '../helpers/project'
 
 module Reviser
 	module Components
-
+		#
 		# Class which organizes all directories to simplify projects' analysis.
 		# Organiser renames projects folders and organises the whole of projects
 		# in order to have a structured folder (files at the root of folder)

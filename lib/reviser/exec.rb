@@ -26,14 +26,14 @@ require 'colorize'
 require_relative '../reviser'
 require_relative 'helpers/criteria'
 
-#
-# Module used for managing all actions in command line
-# This module enables to user the programm in command line.
-# It use the powerful toolkit Thor for building command line interfaces
-#
-# @author Yann Prono
-#
 module Reviser
+	#
+	# Class used for managing all actions in command line
+	# This class enables the user to interact with the programm in command line.
+	# It use the powerful toolkit Thor for building command line interfaces
+	#
+	# @author Yann Prono
+	#
 	class Exec < Thor
 
 		VERSION = '0.0.3.1'

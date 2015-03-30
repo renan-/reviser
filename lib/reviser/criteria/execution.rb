@@ -21,16 +21,16 @@
 #
 require 'timeout'
 
-#
-# @author Renan Strauss
-#
-# Needed stuff for Checker
-# when it comes to executing
-# both compiled and interpreted
-# languages
-#
 module Reviser
 	module Criteria
+		#
+		# @author Renan Strauss
+		#
+		# Needed stuff for Checker
+		# when it comes to executing
+		# both compiled and interpreted
+		# languages
+		#
 		module Execution
 			#
 			# Determines how to execute the program

@@ -24,7 +24,7 @@ require_relative '../result'
 
 module Reviser
 	module Components
-
+		#
 		# Generator is used to create a file result after the analysis.
 		# Currently, Generator supports HTML, XLS and CSV format.
 		#
