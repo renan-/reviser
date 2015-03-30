@@ -29,5 +29,7 @@ required_files:
 # program.
 # But if it's a list, execution_count
 # will be replaced by its size
+# if it's a file, then we'll look for it
+# in res/
 execution_value:
-- ../../res/labys/labfich11.txt
+- example/labfich11.txt
