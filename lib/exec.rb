@@ -15,7 +15,7 @@ require_relative 'reviser/helpers/criteria'
 module Reviser
 	class Exec < Thor
 
-		VERSION = '0.0.2'
+		VERSION = '0.0.3.rc1'
 
 		map '--version' => :version
 		map '-v' => :version
@@ -153,12 +153,11 @@ module Reviser
 			# @param dir Directory to init.
 			def init_workspace dir
 				# First copy directories
-				[Cfg::RES_DIR, Cfg::TYPE_DIR, $template_path].each do |d|
+				[Cfg::RES_DIR, Cfg::TYPE_DIR].each do |d|
 					path = File.join(Cfg::ROOT, d)
 					if File.directory? path
 						unless File.directory? File.join(dir, d)
-							FileUtils.mkdir_p File.join(dir,File.basename(path))
-							FileUtils.cp_r Dir[path + '/**/*'], dir 
+							FileUtils.cp_r path, dir
 							message('Create', dir == '.' && d || File.join(dir, d))
 						end
 					end
@@ -166,7 +165,8 @@ module Reviser
 
 				# Then the config file
 				FileUtils.cp $template_path, dir
-				message('Create', 'config.yml')
+				basename = File.basename($template_path)
+				message('Create', dir == '.' && basename || File.join(dir, basename))
 			end
 
 		end

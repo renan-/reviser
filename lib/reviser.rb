@@ -1,5 +1,5 @@
 #
-# Author:: Renan Strauss
+# @author Renan Strauss
 #
 # This class is basically here to give the user
 # a generic and comprehensive way to use and
@@ -16,20 +16,25 @@ require_relative 'reviser/component'
 require_relative 'reviser/config'
 
 require_relative 'reviser/helpers/project'
-require_relative 'reviser/helpers/system'
+require_relative 'reviser/helpers/system'	
 
-module Reviser
-	#
-	# Raise an exception unless the given gem is installed
-	#
-	def require_gem gem_name
-		unless Gem::Specification::find_all_by_name(gem_name).any?
-			raise Gem::LoadError, "#{gem_name}".yellow + " => ".white + "gem install #{gem_name}".magenta
-		end
-
-		require gem_name
+#
+# Very handy (that's why it's in global scope)
+# Raises an exception unless the given gem is installed
+# Requires the gem if it is installed
+#
+def require_gem gem_name
+	unless Gem::Specification::find_all_by_name(gem_name).any?
+		raise Gem::LoadError, "#{gem_name}".yellow + " => ".white + "gem install #{gem_name}".magenta
 	end
 
+	require gem_name
+end
+
+#
+# The API entry point
+#
+module Reviser
 	class Reviser
 		@@setup = false
 
@@ -67,6 +72,9 @@ module Reviser
 			@@registered_extensions << data[:extension]
 		end
 
+		#
+		# Loads the configuration from given config_file
+		#
 		def self.setup(config_file)
 			Cfg.load config_file
 			@@setup = true

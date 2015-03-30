@@ -21,13 +21,6 @@ compiled: false
 #
 regex_comments: !ruby/regexp '/<!--(.*?)-->/'
 
-#
-# In all HTML projects, we'll need
-# the html_validator extension
-#
-extensions:
-  validate_html: Validite HTML 5
-
 # Program prefix, needed especially for C
 # The execution command will look like this :
 # [execute_command=(java, ruby, python, ...)] [program_prefix]<program> [args]

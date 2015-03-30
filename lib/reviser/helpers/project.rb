@@ -43,16 +43,23 @@ module Reviser
 				Dir.glob("**/*").select { |f| (File.file?(f)) }
 			end
 
+			#
+			# @return all the files matching the project's language extension(s)
+			#
 			def sources
 				files.select { |f| Cfg[:extension].include? File.extname(f) }
 			end
 
+			#
+			# Yields a new Result for the criteria
+			# to define an out value for each format
+			#
 			def manufacture &block
 				format = Result.new
 				block.call format
 
 				format
-			end
+			end		
 
 			# This modules is used to scan the name of project
 			# in order to get all students who worked.
