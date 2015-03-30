@@ -105,7 +105,7 @@ As of now, there are 2 extensions:
 |Extension|Description|Add it to your workspace extensions|
 |------------|--------------|----------------------------------------------|
 |Valgrind|Runs a memcheck through system call to valgrind|`memleaks`|
-|WebValidators|Validates HTML and CSS through W3C API calls|`validate_web` `validate_html` `validate_css`|
+|WebValidators|Validates HTML and CSS through W3C API calls|`validate_web`|
 
 ###Working on your own
 
