@@ -115,8 +115,8 @@ You'll then need to load your components at the right time, and register your ex
 ####Custom components
 
 *example/my_component.rb*
-```
-#!ruby
+
+``` ruby
 require 'json'
 require 'reviser'
 
@@ -154,8 +154,8 @@ end
 ####Custom extensions
 
 *example/my_extension.rb*
-```
-#!ruby
+
+``` ruby
 #
 # A custom criteria for reviser
 #
@@ -207,15 +207,15 @@ end
 
 ### Putting it together
 *example/config.yml*
-```
-#!yaml
+
+``` yaml
 extensions:
   - my_criteria
 ```
 
 *example/my_app.rb*
-```
-#!ruby
+
+``` ruby
 require 'reviser'
 
 require_relative 'my_component'
