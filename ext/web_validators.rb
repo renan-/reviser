@@ -56,6 +56,7 @@ module Reviser
 
 				raise ArgumentError unless validator != nil
 
+				print "\t\t#{lang.upcase}\t["
 				files = sources.select { |s| File.extname(s) == ".#{lang}" }
 				files.each do |f|
 					begin
@@ -65,13 +66,14 @@ module Reviser
 							:errors => response.errors.length
 						}
 
-						puts "\t\t#{f} => #{results[f][:valid]}"
+						print "="
 					rescue W3CValidators::ValidatorUnavailable => e
 						results[f] = e.message
 					rescue Exception => e
 						results[f] = e.message
 					end
 				end
+				puts "]"
 
 				results
 			end
