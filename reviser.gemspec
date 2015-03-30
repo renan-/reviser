@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name        = 'reviser'
-  spec.version     = '0.0.3.1'
+  spec.version     = '0.0.3.2'
   spec.executables << 'reviser'
   spec.date        = '2015-03-30'
   spec.summary     = 'Reviser'
