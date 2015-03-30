@@ -23,6 +23,7 @@ require '../lib/reviser'
 
 require_relative 'my_component'
 require_relative 'my_extension'
+require_relative 'my_generator'
 
 module MyApp
 	include Reviser
@@ -50,9 +51,13 @@ module MyApp
 		# in its core ones but to let us include it
 		# ourselves instead
 		#
-		Reviser::load :component => 'my_component', :input_from => 'archiver', :local => true
+		#Reviser::load :component => 'my_component', :input_from => 'archiver', :local => true
 
 		Reviser::load :component => 'checker', :input_from => 'organiser'
+
+		# We run our custom generator instead :-)
+		Reviser::load :component => 'my_generator', :input_from => 'checker', :local => true
+
 		Reviser::load :component => 'generator', :input_from => 'checker'
 
 		#
