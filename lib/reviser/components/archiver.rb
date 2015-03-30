@@ -112,6 +112,7 @@ module Reviser
 				extracted = 0
 
 				entries.each do |entry|
+					puts "----[#{extracted+1}/#{entries.size}]\t#{entry}"
 
 					ext = File.extname entry
 					basename = File.basename entry, ext

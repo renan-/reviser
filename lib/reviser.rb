@@ -115,7 +115,7 @@ module Reviser
 			# let users load their own components
 			#
 			@@loaded_components.each do |comp, conf|
-				puts "Reviser is now running "+"#{Reviser.titleize comp}".green + "..."
+				puts "[ " + "Running ".yellow + "#{Reviser.titleize comp}".blue + " ]"
 
 				require_relative "reviser/components/#{comp}" unless conf[:local]
 
@@ -126,7 +126,7 @@ module Reviser
 
 				@@loaded_components[comp][:data] = c.work
 				
-				puts 'Done'
+				puts "[ " + "Done".green + " ]"
 			end
 
 			# To handle multiple loads

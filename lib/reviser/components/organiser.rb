@@ -92,7 +92,7 @@ module Reviser
 				else
 					@logger.h2 Logger::ERROR, "Can't rename #{File.basename(entry)} - Datas not found in name"
 				end
-				name
+				@results << name
 			end
 
 			# Method which moves project's directories in order to
@@ -152,21 +152,17 @@ module Reviser
 			# Method which runs the organiser.
 			# It will apply all importants methods of this class for each project.
 			def run
-				@data.each do |entry|
-					
-					@logger.h1 Logger::INFO, "Work on #{entry}"
-					@logger.h1 Logger::INFO, "Structure project"
-					structure entry
+				to_do = [:structure, :git, :rename]
+				to_do.delete(:git) unless Cfg[:create_git_repo]
 
-					if Cfg[:create_git_repo]
-						@logger.h1 Logger::INFO, "Initializing git repo"
-						git entry
+				i = 0
+				to_do.each do |method|
+					puts "----[#{i+1}/#{to_do.size}] #{method.capitalize}"
+					@logger.h1 Logger::INFO, "#{method.capitalize}"
+					@data.each do |entry|
+						send method, entry
 					end
-
-					@logger.h1 Logger::INFO, "Renaming directory"
-					new_path = rename entry
-					@logger.newline
-					@results << new_path
+					i += 1
 				end
 
 				@logger.h1 Logger::INFO, "#{@projects_per_group.keys.size} group#{'s' if @projects_per_group.keys.size > 1} have been detected"

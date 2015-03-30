@@ -43,9 +43,12 @@ module Reviser
 			# Runs the generation of results file in all asked formats by user.
 			def run
 				#begin
+					i = 0
 					Cfg[:out_format].each do |format|
 						# Deep copy !!!
 						arg = Marshal.load(Marshal.dump(@data))
+
+						puts "----[#{i+1}/#{Cfg[:out_format].size}] #{format.upcase}"
 						arg.each do |project, results|
 							results.each do |criterion, value|
 								arg[project][criterion] = value.send(format.to_sym).to_s.encode! 'utf-8', :invalid => :replace
@@ -53,6 +56,8 @@ module Reviser
 						end
 
 						send format.to_sym, arg
+
+						i += 1
 					end
 				#rescue Object => e
 				#	@logger.h1 Logger::FATAL, "Wrong format : #{e.to_s}"
