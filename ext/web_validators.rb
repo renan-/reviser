@@ -78,7 +78,7 @@ module Reviser
 				files = sources.select { |s| File.extname(s) == ".#{lang}" }
 				files.each do |f|
 					begin
-						response = validator.validate_file(File.new(f))
+						response = validator.validate_file(File.new(f, :encoding => 'utf-8'))
 						results[f] = {
 							:valid => response.errors.length == 0,
 							:errors => response.errors.length
@@ -86,9 +86,9 @@ module Reviser
 
 						print "="
 					rescue W3CValidators::ValidatorUnavailable => e
-						results[f] = e.message
+						results[f] = { valid: e.message, errors: 1 }
 					rescue Exception => e
-						results[f] = e.message
+						results[f] = { valid: e.message, errors: 1 }
 					end
 				end
 				puts "]"
@@ -97,21 +97,13 @@ module Reviser
 			end
 
 			def prettify results
-				return results unless results.values.first
-
-				headings = results.values.first.keys
-
 				html = '<table><tr><th>File</th>'
-				headings.each { |heading| html << "<th>#{heading.to_s.capitalize!}</th>" }
+				results.values.first.keys.each { |heading| html << "<th>#{heading.to_s.capitalize!}</th>" }
 				html << '</tr>'
 
 				results.each do |file, data|
 					html << "<tr><th>#{file}</th>"
-					if data.is_a?(Hash)
-						data.values.each { |value| html << "<td>#{value}</td>" }
-					else
-						html << "<td>#{data}</td>"
-					end
+					data.values.each { |value| html << "<td>#{value}</td>" }
 					html << '</tr>'
 				end
 				html << '</table>'
