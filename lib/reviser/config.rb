@@ -1,6 +1,9 @@
 #
-# @author Renan Strauss
 # Externalises the configuration
+# Cfg acts like a hash whose entries are config keys
+# associated with their values
+#
+# @author Renan Strauss
 #
 require 'yaml'
 
@@ -18,6 +21,9 @@ module Reviser
 		RES_DIR = 'res'
 		# Project's type dir
 		TYPE_DIR = 'type'
+
+		# The available out formats
+		OUT_FORMATS = [:csv, :html, :xls]
 
 		# Is the config is loaded ?
 		@@loaded = false
