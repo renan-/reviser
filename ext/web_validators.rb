@@ -78,7 +78,7 @@ module Reviser
 				files = sources.select { |s| File.extname(s) == ".#{lang}" }
 				files.each do |f|
 					begin
-						response = validator.validate_file(File.new(f, :encoding => 'utf-8'))
+						response = validator.validate_file(File.new(f))
 						results[f] = {
 							:valid => response.errors.length == 0,
 							:errors => response.errors.length
