@@ -60,6 +60,14 @@ module Reviser
 		# @return true if there is the key in the config
 		def self.has_key?(key)
 			@@mem.has_key? key
+
+		end
+
+		#
+		# @return The specified 
+		def self.workspace_file f
+			path = File.join @@workspace_root, f
+			File.exists?(path) && File.new(path) || nil
 		end
 
 		#
@@ -70,8 +78,7 @@ module Reviser
 		# calling this method
 		#
 		def self.resource path
-			abs = File.join @@workspace_root, RES_DIR, path
-			File.new abs if File.exists? abs
+			self.workspace_file File.join(RES_DIR, path)
 		end
 
 

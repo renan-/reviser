@@ -43,9 +43,6 @@ module Reviser
 
 		@@setup = false
 
-		# path of config template file.
-		$template_path = File.join(Cfg::ROOT, 'config.yml')
-
 		def initialize(*args)
 			super
 			# If config.yml already exists in the working
@@ -61,7 +58,7 @@ module Reviser
 			# Import all files and directories
 			init_workspace dir
 			
-			setup File.expand_path(File.join(dir, File.basename($template_path))) unless @@setup
+			setup File.expand_path(File.join(dir, 'config.yml')) unless @@setup
 
 			puts "Customize config.yml to your needs @see docs".yellow
 			puts 'Then simply execute \'reviser work\' to launch analysis.'.yellow
@@ -172,6 +169,8 @@ module Reviser
 			# Initialize workspace copying all files et directories.
 			# @param dir Directory to init.
 			def init_workspace dir
+				FileUtils.mkdir dir unless File.directory? dir
+
 				# First copy directories
 				[Cfg::RES_DIR, Cfg::TYPE_DIR].each do |d|
 					path = File.join(Cfg::ROOT, d)
@@ -184,9 +183,10 @@ module Reviser
 				end
 
 				# Then the config file
-				FileUtils.cp $template_path, dir
-				basename = File.basename($template_path)
-				message('Create', dir == '.' && basename || File.join(dir, basename))
+				['config.yml', 'labels.yml'].each do |tpl|
+					FileUtils.cp File.join(Cfg::ROOT, tpl), dir
+					message('Create', dir == '.' && tpl || File.join(dir, tpl))
+				end
 			end
 
 		end
