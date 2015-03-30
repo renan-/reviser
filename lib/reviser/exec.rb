@@ -23,8 +23,8 @@ require 'thor'
 require 'fileutils'
 require 'colorize'
 
-require_relative 'reviser'
-require_relative 'reviser/helpers/criteria'
+require_relative '../reviser'
+require_relative 'helpers/criteria'
 
 #
 # Module used for managing all actions in command line
@@ -36,7 +36,7 @@ require_relative 'reviser/helpers/criteria'
 module Reviser
 	class Exec < Thor
 
-		VERSION = '0.0.3'
+		VERSION = '0.0.3.1'
 
 		map '--version' => :version
 		map '-v' => :version
@@ -44,7 +44,7 @@ module Reviser
 		@@setup = false
 
 		# path of config template file.
-		$template_path = File.join(File.dirname(File.dirname(__FILE__)),'config.yml')
+		$template_path = File.join(Cfg::ROOT, 'config.yml')
 
 		def initialize(*args)
 			super

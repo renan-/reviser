@@ -88,6 +88,14 @@ module Reviser
 
 				program = "#{Cfg[:program_prefix]}#{program}"
 
+				#
+				# if it's a file, we change the param to its path
+				#
+				file = Cfg.resource(param).to_path
+				if File.exists? file
+					param = file
+				end
+
 				cmd = "#{Cfg[:execute_command]} #{program} #{param}"
 				out = exec_with_timeout cmd
 				

@@ -77,9 +77,14 @@ criteria:
   - compile
   - execute
 
-# Extensions you want to use, available in ext/
-extensions:
-  - memleaks
+# Extensions you want to use
+# Some are already available in ext/
+# but you can also define your own
+# and add your criteria here
+# (don't forget to register it with Reviser::register)
+# extensions:
+# - my_custom_criterion
+#
 
 # Whether to create a git repository for each project
 # relies on 'git' gem
