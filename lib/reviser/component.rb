@@ -50,7 +50,7 @@ module Reviser
 		# Be kind to our childs and let them access
 		# ressources files easily
 		#
-		# @returns The specified resource path
+		# @return The specified resource path
 		# TODO : put resources in dedicated folders
 		# for each component or extension, so that
 		# the user can omit <lang>/<ext_name>/ when

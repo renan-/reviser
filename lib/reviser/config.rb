@@ -42,7 +42,7 @@ module Reviser
 		end
 
 		#
-		# @returns The specified resource path
+		# @return The specified resource path
 		# TODO : put resources in dedicated folders
 		# for each component or extension, so that
 		# the user can omit <lang>/<ext_name>/ when

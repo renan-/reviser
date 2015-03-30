@@ -20,7 +20,7 @@ module Reviser
 			# Executes the given command
 			# and kills it if its execution
 			# time > timeout
-			# @returns stdout, stderr & process_status
+			# @return stdout, stderr & process_status
 			#
 			def exec_with_timeout(cmd, timeout = Cfg[:timeout])
 				stdin, stdout, stderr, wait_thr = Open3.popen3(cmd)
