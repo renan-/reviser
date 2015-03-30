@@ -1,10 +1,10 @@
 #
-# Author:: Renan Strauss
+# @author Renan Strauss
 #
 # The Checker is a component that wraps
 # all required tools to do the analysis.
 # It adapts itself dynamically
-# to the language Cfg.
+# to the configuration
 #
 #
 require 'open3'
@@ -42,9 +42,10 @@ module Reviser
 				@results = {}
 			end
 
-			# Yann : je ne recupere pas les datas de l'organiser,
-			# Je considere que tous les projets sont dans le dossier courant.
-			# TODO a voir si cela marche dans certains cas particuliers
+			#
+			# For each project processed by Organiser,
+			# we run analysis and store results
+			#
 			def run
 				@data.each_with_index do |proj, i|
 					path = File.join(Cfg[:dest], proj)

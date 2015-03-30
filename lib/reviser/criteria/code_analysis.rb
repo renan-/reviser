@@ -1,5 +1,5 @@
 #
-# @Author Renan Strauss
+# @author Renan Strauss
 #
 # Basic stuff needed for Checker
 #

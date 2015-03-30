@@ -118,15 +118,8 @@ module Reviser
 
 				if Cfg.has_key?(key) && Cfg[key].respond_to?('each')
 					Cfg[key].each do |meth|
-						if meth.respond_to?('each') && meth.respond_to?('[]')
-							label =  meth[meth.keys[0]]
-							@logger.h2(Logger::ERROR, "Undefined label for #{meth.keys[0]}, check your config file") if label == nil
-							label = create_label(meth.keys[0]) if label == nil
-							@output[meth.keys[0].to_sym] = label
-						else
-							label = ((labels.respond_to?('[]') && labels.key?(meth.to_sym))) && labels[meth.to_sym] || create_label(meth)
-							@output[meth.to_sym] = label
-						end
+						label = ((labels.respond_to?('each') && labels.key?(meth.to_sym))) && labels[meth.to_sym] || create_label(meth)
+						@output[meth.to_sym] = label
 					end
 				end
 			end

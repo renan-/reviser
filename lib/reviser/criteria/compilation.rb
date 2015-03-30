@@ -1,6 +1,6 @@
 #
-# @Author Yann Prono
-# @Author Renan Strauss
+# @author Yann Prono
+# @author Renan Strauss
 #
 # Needed stuff for compiled languages
 # such as C, Java, and so on.

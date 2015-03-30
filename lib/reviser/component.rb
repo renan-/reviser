@@ -1,15 +1,15 @@
 #
-# Author:: Renan Strauss
+# The abstract class Component
+# Even though Ruby doesn't have abstract classes,
+# we force inheriting classes to implement the run
+# method that will be called during reviser's execution
 #
-require 'yaml'
+# @author Renan Strauss
+#
 require_relative 'loggers/logger'
 
 module Reviser
 	class Component
-		
-		# Each component has a logger (currently a txt file)
-		# $logger
-
 		#
 		# Don't forget to call super in your component's initializer !
 		# This method is all about : it stores the data from another
@@ -46,10 +46,11 @@ module Reviser
 			data
 		end
 
+		#
 		# Be kind to our childs and let them access
 		# ressources files easily
 		#
-		# @returns The specified resource path
+		# @return The specified resource path
 		# TODO : put resources in dedicated folders
 		# for each component or extension, so that
 		# the user can omit <lang>/<ext_name>/ when
@@ -62,6 +63,7 @@ module Reviser
 	protected
 		#
 		# @return all options for all components if they exist in config file.
+		#
 		def options
 			Cfg[:options]
 		end

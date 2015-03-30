@@ -1,6 +1,9 @@
 #
-# @author Renan Strauss
 # Externalises the configuration
+# Cfg acts like a hash whose entries are config keys
+# associated with their values
+#
+# @author Renan Strauss
 #
 require 'yaml'
 
@@ -19,6 +22,9 @@ module Reviser
 		# Project's type dir
 		TYPE_DIR = 'type'
 
+		# The available out formats
+		OUT_FORMATS = [:csv, :html, :xls]
+
 		# Is the config is loaded ?
 		@@loaded = false
 
@@ -36,7 +42,7 @@ module Reviser
 		end
 
 		#
-		# @returns The specified resource path
+		# @return The specified resource path
 		# TODO : put resources in dedicated folders
 		# for each component or extension, so that
 		# the user can omit <lang>/<ext_name>/ when
@@ -90,6 +96,8 @@ module Reviser
 			Cfg[:program_prefix] ||= ''
 			Cfg[:execution_command] ||= ''
 			Cfg[:execution_count] ||= 1
+
+			Cfg[:create_git_repo] ||= false
 		end
 
 	private

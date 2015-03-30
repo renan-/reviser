@@ -65,6 +65,9 @@ criteria:
 extensions:
   - memleaks
 
+# Whether to create a git repository for each project
+# relies on 'git' gem
+create_git_repo: true
 
 # Options of all components
 # For the moment, there is just verbose option (for logger)

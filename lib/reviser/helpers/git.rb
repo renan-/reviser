@@ -4,8 +4,6 @@
 # @author Romain Ruez
 # @author Anthony Cerf
 #
-require 'git'
-
 module Reviser
 	module Helpers
 		module Git

@@ -50,7 +50,8 @@ module Reviser
 
 			# Generates a Excel file
 			def xls data, ext = '.xls'
-				require 'spreadsheet'
+				require_gem 'spreadsheet' unless defined? Spreadsheet
+
 				Spreadsheet.client_encoding = 'UTF-8'
 				book = Spreadsheet::Workbook.new
 				sheet = book.create_worksheet :name => 'Results'
