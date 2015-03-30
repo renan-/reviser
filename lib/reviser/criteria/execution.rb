@@ -1,5 +1,5 @@
 #
-# @Author Renan Strauss
+# @author Renan Strauss
 #
 # Needed stuff for Checker
 # when it comes to executing

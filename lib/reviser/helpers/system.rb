@@ -1,4 +1,6 @@
 #
+# Wraps methods for system calls
+# (external programs execution)
 # @author Renan Strauss
 #
 require 'open3'
