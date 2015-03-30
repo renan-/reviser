@@ -22,14 +22,13 @@
 require 'open3'
 require 'timeout'
 
-
-#
-# Wraps methods for system calls
-# (external programs execution)
-# @author Renan Strauss
-#
 module Reviser
 	module Helpers
+		#
+		# Wraps methods for system calls
+		# (external programs execution)
+		# @author Renan Strauss
+		#
 		module System
 			#
 			# @return the first executable found

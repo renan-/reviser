@@ -24,17 +24,17 @@ require 'open3'
 require_relative '../result'
 require_relative '../helpers/criteria'
 
-#
-# @author Renan Strauss
-#
-# The Checker is a component that wraps
-# all required tools to do the analysis.
-# It adapts itself dynamically
-# to the configuration
-#
-#
 module Reviser
 	module Components
+		#
+		# @author Renan Strauss
+		#
+		# The Checker is a component that wraps
+		# all required tools to do the analysis.
+		# It adapts itself dynamically
+		# to the configuration
+		#
+		#
 		class Checker < Component
 			include Helpers::Criteria
 
@@ -70,7 +70,7 @@ module Reviser
 			def run
 				@data.each_with_index do |proj, i|
 					path = File.join(Cfg[:dest], proj)
-					puts "\t[#{i+1}/#{@data.size}]\t#{proj}"
+					puts "----[#{i+1}/#{@data.size}]\t#{proj}"
 					Dir.chdir(path) { check proj }
 				end
 		

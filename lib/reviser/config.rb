@@ -21,14 +21,14 @@
 #
 require 'yaml'
 
-#
-# Externalises the configuration
-# Cfg acts like a hash whose entries are config keys
-# associated with their values
-#
-# @author Renan Strauss
-#
 module Reviser
+	#
+	# Externalises the configuration
+	# Cfg acts like a hash whose entries are config keys
+	# associated with their values
+	#
+	# @author Renan Strauss
+	#
 	class Cfg
 		# Path for specialized config files for projects
 		ROOT = File.join(File.dirname(File.dirname(File.dirname(__FILE__))))
@@ -60,6 +60,14 @@ module Reviser
 		# @return true if there is the key in the config
 		def self.has_key?(key)
 			@@mem.has_key? key
+
+		end
+
+		#
+		# @return The specified 
+		def self.workspace_file f
+			path = File.join @@workspace_root, f
+			File.exists?(path) && File.new(path) || nil
 		end
 
 		#
@@ -70,8 +78,7 @@ module Reviser
 		# calling this method
 		#
 		def self.resource path
-			abs = File.join @@workspace_root, RES_DIR, path
-			File.new abs if File.exists? abs
+			self.workspace_file File.join(RES_DIR, path)
 		end
 
 

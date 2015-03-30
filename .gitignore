@@ -10,3 +10,6 @@ projects/
 *.txt
 *.xls
 *.ar
+*.gem
+*.css
+*.js

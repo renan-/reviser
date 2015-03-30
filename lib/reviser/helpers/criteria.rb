@@ -58,7 +58,7 @@ module Reviser
 			# Path of criteria
 			CRITERIA = File.join File.dirname(PWD), 'criteria'
 			# Path of extensions
-			EXTENSIONS = File.join File.dirname(File.dirname(File.dirname(PWD))), 'ext'
+			EXTENSIONS = File.join Cfg::ROOT, 'ext'
 
 			attr_reader :criteria
 			attr_reader :output
@@ -166,12 +166,8 @@ module Reviser
 			#
 			# @author Yann Prono
 			module Labels
-
-				# Current directory of this file
-				PWD = File.dirname __FILE__
-
 				# Path of label.yml file
-				LABELS = File.join File.dirname(File.dirname(File.dirname(PWD))), 'labels.yml'
+				LABELS = 'labels.yml'
 
 				#
 				# Enable to associate a label to a criterion (method).
@@ -180,7 +176,7 @@ module Reviser
 				# @param label Label to link with the method.
 				def self.add meth, label
 					res = "Create"
-					labels = YAML.load File.open(LABELS)
+					labels = YAML.load File.read(Cfg.workspace_file LABELS)
 					if labels.respond_to? '[]'
 						res = "Update" if labels.key? meth
 						labels[meth] = label
@@ -192,7 +188,7 @@ module Reviser
 				# @return Hash all known labels by reviser.
 				# :criterion => label
 				def self.load
-					Labels.populate(YAML.load(File.open(LABELS)))
+					self.populate YAML.load File.read(Cfg.workspace_file LABELS)
 				end
 
 				def self.populate hash

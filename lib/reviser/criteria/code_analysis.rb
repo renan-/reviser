@@ -20,13 +20,13 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-#
-# @author Renan Strauss
-#
-# Basic criteria
-#
 module Reviser
 	module Criteria
+		#
+		# @author Renan Strauss
+		#
+		# Basic criteria
+		#
 		module CodeAnalysis
 			include Helpers::Project
 

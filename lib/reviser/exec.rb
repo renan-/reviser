@@ -26,25 +26,22 @@ require 'colorize'
 require_relative '../reviser'
 require_relative 'helpers/criteria'
 
-#
-# Module used for managing all actions in command line
-# This module enables to user the programm in command line.
-# It use the powerful toolkit Thor for building command line interfaces
-#
-# @author Yann Prono
-#
 module Reviser
+	#
+	# Class used for managing all actions in command line
+	# This class enables the user to interact with the programm in command line.
+	# It use the powerful toolkit Thor for building command line interfaces
+	#
+	# @author Yann Prono
+	#
 	class Exec < Thor
 
-		VERSION = '0.0.3.1'
+		VERSION = '0.0.3.4'
 
 		map '--version' => :version
 		map '-v' => :version
 
 		@@setup = false
-
-		# path of config template file.
-		$template_path = File.join(Cfg::ROOT, 'config.yml')
 
 		def initialize(*args)
 			super
@@ -61,7 +58,7 @@ module Reviser
 			# Import all files and directories
 			init_workspace dir
 			
-			setup File.expand_path(File.join(dir, File.basename($template_path))) unless @@setup
+			setup File.expand_path(File.join(dir, 'config.yml')) unless @@setup
 
 			puts "Customize config.yml to your needs @see docs".yellow
 			puts 'Then simply execute \'reviser work\' to launch analysis.'.yellow
@@ -172,6 +169,8 @@ module Reviser
 			# Initialize workspace copying all files et directories.
 			# @param dir Directory to init.
 			def init_workspace dir
+				FileUtils.mkdir dir unless File.directory? dir
+
 				# First copy directories
 				[Cfg::RES_DIR, Cfg::TYPE_DIR].each do |d|
 					path = File.join(Cfg::ROOT, d)
@@ -184,9 +183,10 @@ module Reviser
 				end
 
 				# Then the config file
-				FileUtils.cp $template_path, dir
-				basename = File.basename($template_path)
-				message('Create', dir == '.' && basename || File.join(dir, basename))
+				['config.yml', 'labels.yml'].each do |tpl|
+					FileUtils.cp File.join(Cfg::ROOT, tpl), dir
+					message('Create', dir == '.' && tpl || File.join(dir, tpl))
+				end
 			end
 
 		end

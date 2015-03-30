@@ -42,18 +42,18 @@ def require_gem gem_name
 	require gem_name
 end
 
-#
-# @author Renan Strauss
-#
-# This class is basically here to give the user
-# a generic and comprehensive way to use and
-# customize the behavior of our tool.
-# The main idea is that the user should not
-# instantiate components himself, nor worry
-# about the data these components exchange.
-# It is the API entry point.
-#
 module Reviser
+	#
+	# @author Renan Strauss
+	#
+	# This class is basically here to give the user
+	# a generic and comprehensive way to use and
+	# customize the behavior of our tool.
+	# The main idea is that the user should not
+	# instantiate components himself, nor worry
+	# about the data these components exchange.
+	# It is the API entry point.
+	#
 	class Reviser
 		@@setup = false
 
@@ -115,7 +115,7 @@ module Reviser
 			# let users load their own components
 			#
 			@@loaded_components.each do |comp, conf|
-				puts "Reviser is now running "+"#{Reviser.titleize comp}".green + "..."
+				puts "[ " + "Running ".yellow + "#{Reviser.titleize comp}".blue + " ]"
 
 				require_relative "reviser/components/#{comp}" unless conf[:local]
 
@@ -126,7 +126,7 @@ module Reviser
 
 				@@loaded_components[comp][:data] = c.work
 				
-				puts 'Done'
+				puts "[ " + "Done".green + " ]"
 			end
 
 			# To handle multiple loads

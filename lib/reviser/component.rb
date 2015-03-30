@@ -21,15 +21,15 @@
 #
 require_relative 'loggers/logger'
 
-#
-# The abstract class Component
-# Even though Ruby doesn't have abstract classes,
-# we force inheriting classes to implement the run
-# method that will be called during reviser's execution
-#
-# @author Renan Strauss
-#
 module Reviser
+	#
+	# The abstract class Component
+	# Even though Ruby doesn't have abstract classes,
+	# we force inheriting classes to implement the run
+	# method that will be called during reviser's execution
+	#
+	# @author Renan Strauss
+	#
 	class Component
 		#
 		# Don't forget to call super in your component's initializer !

@@ -20,15 +20,15 @@
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
 
-#
-# @author Yann Prono
-# @author Renan Strauss
-#
-# Needed stuff for compiled languages
-# such as C, Java, and so on.
-#
 module Reviser
 	module Criteria
+		#
+		# @author Yann Prono
+		# @author Renan Strauss
+		#
+		# Needed stuff for compiled languages
+		# such as C, Java, and so on.
+		#
 		module Compilation
 			include Helpers::System
 			
