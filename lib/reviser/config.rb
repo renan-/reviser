@@ -1,5 +1,5 @@
 #
-#   Reviser => a semi-automatic tool for student's projects evaluation
+#   Reviser => a semi-automatic tool for students projects evaluation
 #
 #   Copyright (C) 2015 Renan Strauss
 #   Copyright (C) 2015 Yann Prono
@@ -111,7 +111,7 @@ module Reviser
 			Cfg[:options] ||= { verbose: true, log_dir:'logs', log_mode: 'org' }
 			Cfg[:timeout] ||= 4
 			Cfg[:out] ||= 'results'
-			Cfg[:out_format] ||= ['html', 'csv', 'xls']
+			Cfg[:out_format] ||= ['csv', 'html']
 			Cfg[:required_files] ||= []
 
 			Cfg[:program_prefix] ||= ''
