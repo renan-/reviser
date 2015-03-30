@@ -1,3 +1,24 @@
+#
+#   Reviser => a semi-automatic tool for student's projects evaluation
+#
+#   Copyright (C) 2015 Renan Strauss
+#   Copyright (C) 2015 Yann Prono
+#   Copyright (C) 2015 Romain Ruez
+#   Copyright (C) 2015 Anthony Cerf
+#
+#   This program is free software: you can redistribute it and/or modify
+#   it under the terms of the GNU General Public License as published by
+#   the Free Software Foundation, either version 3 of the License, or
+#   (at your option) any later version.
+#
+#   This program is distributed in the hope that it will be useful,
+#   but WITHOUT ANY WARRANTY; without even the implied warranty of
+#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#   GNU General Public License for more details.
+#
+#   You should have received a copy of the GNU General Public License
+#   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#
 require 'fileutils'
 require 'rubygems'
 
@@ -91,12 +112,13 @@ module Reviser
 				
 				# Loop to find the core of project
 				#
-				# Basically running through
-				# each level of directories
-				# while there are only directories
-				# in the current directory
+				# Basically running through each level of directories
+				# while there is only one directory in the current directory.
+				# Sometimes needed when archives have a sub-folder with their name.
+				# In case the student created multiple nested folders, we don't
+				# do anything.
 				#
-				while all == directories
+				while all == directories && directories.size == 1
 					level += 1
 					@logger.h2 Logger::DEBUG, "Level += 1\nPath = #{@path}"
 					chdir directories.first
