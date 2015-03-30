@@ -263,8 +263,8 @@ end
 ```
 
 *example/main.rb*
-```
-#!ruby
+
+``` ruby
 require_relative 'my_app'
 
 #
