@@ -24,6 +24,7 @@ To create a new workspace in the current directory, simply run the following com
 	Create		res
 	Create		type
 	Create		config.yml
+	Create		labels.yml
 
 You see reviser has created *res* and *type/example* folders for you.
 Now you'll have to customize *config.yml* to your own needs, and add a *type/your_project.yml*
@@ -93,7 +94,8 @@ By default, labels are generated with the name of the called method. You have th
 	reviser add makefile? 'Existence of makefile'
 	#            method       associated label
 
-Labels are stored in reviser's installation directory, in a file called *labels.yml*. We don't include them in the workspace at this point, but we could later depending on feedback.
+Labels are stored in your workspace, in a file called *labels.yml*.
+You can also edit them by hand if you prefer.
 
 ###Extensions
 Extensions are in fact Criteria we didn't want to include into reviser's core.
