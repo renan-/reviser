@@ -3,4 +3,4 @@
 require 'scrub_rb' unless RUBY_VERSION.split('.')[0] == '2'
 
 # Command line interface
-require_relative '../lib/exec'
+require_relative '../lib/reviser/exec'
