@@ -112,12 +112,13 @@ module Reviser
 				
 				# Loop to find the core of project
 				#
-				# Basically running through
-				# each level of directories
-				# while there are only directories
-				# in the current directory
+				# Basically running through each level of directories
+				# while there is only one directory in the current directory.
+				# Sometimes needed when archives have a sub-folder with their name.
+				# In case the student created multiple nested folders, we don't
+				# do anything.
 				#
-				while all == directories
+				while all == directories && directories.size == 1
 					level += 1
 					@logger.h2 Logger::DEBUG, "Level += 1\nPath = #{@path}"
 					chdir directories.first
