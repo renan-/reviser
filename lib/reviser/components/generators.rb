@@ -100,8 +100,8 @@ module Reviser
 			def html data, ext = '.html'
 				out = '<!DOCTYPE html><html><head>'
 				out += '<meta charset= "UTF-8">'
-				out += "<link rel=\"stylesheet\" href=\"#{Cfg.resource('/css/component.css').to_path}\" />"
-				out += "<link rel=\"stylesheet\" href=\"#{Cfg.resource('/css/normalize.css').to_path}\" />"
+				out += "<link rel=\"stylesheet\" href=\"#{Cfg.resource('reviser/css/component.css').to_path}\" />"
+				out += "<link rel=\"stylesheet\" href=\"#{Cfg.resource('reviser/css/normalize.css').to_path}\" />"
 				out += '<title>Results</title>'
 				out += "</head>\n<body><table><thead><tr>"
 

@@ -91,8 +91,8 @@ module Reviser
 				#
 				# if it's a file, we change the param to its path
 				#
-				file = Cfg.resource(param).to_path
-				if File.exists? file
+				file = Cfg.resource(param)
+				unless file == nil
 					param = file
 				end
 

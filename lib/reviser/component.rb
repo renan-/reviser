@@ -38,7 +38,11 @@ module Reviser
 		# creates a hash for child to easily access config file values
 		#
 		def initialize(data = nil)
-			@data = data
+			#
+			# Deep copy to ensure everything goes well
+			# (we DO NOT want to copy references)
+			#
+			@data = Marshal.load(Marshal.dump(data))
 			
 			ext = options[:log_mode]
 			log_file = File.join(options[:log_dir], "#{self.class.name.split('::').last}.#{ext}")
@@ -71,14 +75,13 @@ module Reviser
 		# Be kind to our childs and let them access
 		# ressources files easily
 		#
+		# Note: you must store your component's files
+		# int res/your_component/
+		#
 		# @return The specified resource path
-		# TODO : put resources in dedicated folders
-		# for each component or extension, so that
-		# the user can omit <lang>/<ext_name>/ when
-		# calling this method
 		#
 		def resource path
-			Cfg::resource path
+			Cfg::resource File.join(self.class.name.split('::').last.underscore, path)
 		end
 
 	protected

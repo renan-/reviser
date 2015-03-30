@@ -27,7 +27,21 @@ require_relative 'reviser/component'
 require_relative 'reviser/config'
 
 require_relative 'reviser/helpers/project'
-require_relative 'reviser/helpers/system'	
+require_relative 'reviser/helpers/system'
+
+class String
+	#
+	# We need this method from Rails to
+	# convert CamelCaseNames to underscore_names
+	#
+  def underscore
+    self.gsub(/::/, '/').
+    gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+    gsub(/([a-z\d])([A-Z])/,'\1_\2').
+    tr("-", "_").
+    downcase
+  end
+end
 
 #
 # Very handy (that's why it's in global scope)

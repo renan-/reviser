@@ -53,8 +53,10 @@ module Reviser
 							arg[project][criterion] = value.send(format.to_sym).to_s.encode! 'utf-8', :invalid => :replace
 						end
 					end
-					
+
 					send format.to_sym, arg
+
+					i += 1
 				end
 			end
 
