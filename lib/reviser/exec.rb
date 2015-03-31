@@ -172,8 +172,10 @@ module Reviser
 
 				# Then the config file
 				['config.yml', 'labels.yml'].each do |tpl|
-					FileUtils.cp File.join(Cfg::ROOT, tpl), dir
-					message('Create', dir == '.' && tpl || File.join(dir, tpl))
+					unless File.exists? File.join(dir, tpl)
+						FileUtils.cp(File.join(Cfg::ROOT, tpl), dir)
+						message('Create', dir == '.' && tpl || File.join(dir, tpl))
+					end
 				end
 			end
 
