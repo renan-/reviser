@@ -45,14 +45,17 @@ module Reviser
 				ext = File.extname filename
 				@basename = File.basename filename, ext
 				ext = ext.delete '.'
+				dirname = File.dirname filename
+				
 				# Include mode aksed by user (config file)
 				begin
 					self.class.send :prepend, Modes.const_get("#{ext.downcase.capitalize}")
+					@logger = ::Logger.new File.open(filename, 'w')
 				rescue => e
+					@logger = ::Logger.new File.open(File.join(dirname,(@basename + '.'+'org')), 'w')
 					self.class.send :include, Modes::Txt
 				end
 
-				@logger = ::Logger.new File.open(filename, 'w')
 				@logger.level = ::Logger::DEBUG
 		  	end
 
