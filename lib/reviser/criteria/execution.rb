@@ -33,6 +33,7 @@ module Reviser
 		# languages
 		#
 		module Execution
+			include Helpers::System
 			#
 			# Determines how to execute the program
 			# thanks to Cfg, then returns its exec
@@ -46,12 +47,7 @@ module Reviser
 							outputs << make_exec(v)
 						end
 					else
-						if Cfg.has_key? :execution_count
-							outputs[Cfg[:execution_value]] = []
-							Cfg[:execution_count].times do
-								outputs << make_exec(Cfg[:execution_value])
-							end
-						else
+						Cfg[:execution_count].times do
 							outputs << make_exec(Cfg[:execution_value])
 						end
 					end
@@ -83,7 +79,7 @@ module Reviser
 			# security
 			#
 			def make_exec param = ''
-				program = (Cfg.has_key? :program_name) && Cfg[:program_name] || find_executable
+				program = (Cfg.has_key? :program_name) && Cfg[:program_name] || find_first_executable
 
 				return 'Program not found' unless program != nil
 

@@ -37,7 +37,7 @@ module Reviser
 			# Yann, execution_count shall be taken in count imo 
 			#
 			def memleaks
-				executable = find_executable
+				executable = find_first_executable
 				program = "#{Cfg[:program_prefix]}#{executable}"
 				param = Cfg.has_key?(:execution_value) ? Cfg[:execution_value].first : ''
 				cmd = "valgrind --leak-check=full --track-origins=yes --show-reachable=yes #{program} #{param}"

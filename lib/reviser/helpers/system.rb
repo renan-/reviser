@@ -33,7 +33,7 @@ module Reviser
 			#
 			# @return the first executable found
 			#
-			def find_executable
+			def find_first_executable
 				Dir['*'].select { |f| File.executable?(f) && !File.directory?(f) }.first
 			end
 
