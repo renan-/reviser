@@ -1,12 +1,12 @@
 Gem::Specification.new do |spec|
   spec.name        = 'reviser'
-  spec.version     = '0.0.3.4'
+  spec.version     = '0.0.4'
   spec.executables << 'reviser'
-  spec.date        = '2015-03-30'
+  spec.date        = '2015-03-31'
   spec.summary     = 'Reviser'
-  spec.description = "A semi-automatic tool for student's projects evaluation"
+  spec.description = "A semi-automatic tool for students' projects evaluation"
   spec.authors     = ['Renan Strauss', 'Yann Prono', 'Anthony Cerf', 'Romain Ruez']
-  spec.email       = 'renan.strauss@gmail.com'
+  spec.email       = ['renan.strauss@gmail.com', 'pronoyann@gmail.com']
   spec.files       = Dir['{bin,ext,lang,lib,res,type}/**/*'] + %w(Gemfile README.md LICENSE config.yml labels.yml .yardopts)
   spec.homepage    = 'http://rubygems.org/gems/reviser'
   spec.license     = 'GPLv3'
