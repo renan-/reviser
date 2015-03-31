@@ -56,9 +56,9 @@ module Reviser
 				rescue => e
 					@logger = ::Logger.new File.open(File.join(dirname,(@basename + '.'+@@default_mode)), 'w')
 					@logger.error("Mode #{ext} doesn\'t exist. Org mode by default.")
-					self.class.send :include, Modes::Txt
+					self.class.send :include, Modes::Org
 				end
-
+				
 				@logger.level = ::Logger::DEBUG
 		  	end
 
