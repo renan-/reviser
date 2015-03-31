@@ -11,7 +11,7 @@ class MyGenerator < Reviser::Component
 	def initialize data
 		super data
 		#
-		# We get the HTML output
+		# We want the HTML output
 		#
 		@data.each do |project, results|
 			results.each do |criterion, value|
@@ -27,6 +27,9 @@ class MyGenerator < Reviser::Component
 		template = resource('html/results_template.html').read
 
 		out = '<thead><tr>'
+		#
+		# Each criterion as headings
+		#
 		@data.values.first.keys.unshift.unshift('Projet').each { |crit| out += "<th>#{crit}</th>" }
 		
 		out += '</tr></thead><tbody>'
@@ -42,10 +45,11 @@ class MyGenerator < Reviser::Component
 
 		#
 		# Kind of a hacky template engine
+		# We replace placeholders with actual values
 		#
 		template.sub! '[DATA]', out
 		template.sub! '[MAINCSS_PATH]', resource('css/main.css').to_path
 
-    File.open('my_results.html', 'w') { |f| f.write template }
+		File.open('my_results.html', 'w') { |f| f.write template }
   end
 end
