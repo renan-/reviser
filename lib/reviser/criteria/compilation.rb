@@ -19,6 +19,7 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
+require 'cgi'
 
 module Reviser
 	module Criteria
@@ -59,7 +60,7 @@ module Reviser
 					result = "#{out[:stdout]}\r#{out[:stderr]}"
 
 					manufacture do |format|
-						format.html { '<div class="console">' + result + '</div>' }
+						format.html { '<div class="console">' + ::CGI.escapeHTML(result) + '</div>' }
 						format.csv { result }
 						format.xls { result }
 					end

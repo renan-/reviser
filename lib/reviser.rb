@@ -144,8 +144,10 @@ module Reviser
 					puts 'Bye bye'
 				rescue Gem::LoadError => e
 					puts 'Missing gem'.light_red + "\t" + e.message
+					exit
 				rescue Exception => ex
 					puts 'Error'.red + "\t" + ex.message
+					exit
 				end
 				
 				puts "[ " + "Done".green + " ]"
