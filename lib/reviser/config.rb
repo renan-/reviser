@@ -117,17 +117,17 @@ module Reviser
 			#
 			# Default values for optional keys
 			#
-			Cfg[:options] ||= { verbose: true, log_dir:'logs', log_mode: 'org' }
-			Cfg[:timeout] ||= 4
-			Cfg[:out] ||= 'results'
-			Cfg[:out_format] ||= ['csv', 'html']
-			Cfg[:required_files] ||= []
+			@@mem[:options] ||= { verbose: true, log_dir:'logs', log_mode: 'org' }
+			@@mem[:timeout] ||= 4
+			@@mem[:out] ||= 'results'
+			@@mem[:out_format] ||= ['csv', 'html']
+			@@mem[:required_files] ||= []
 
-			Cfg[:program_prefix] ||= ''
-			Cfg[:execution_command] ||= ''
-			Cfg[:execution_count] ||= 1
+			@@mem[:program_prefix] ||= ''
+			@@mem[:execution_command] ||= ''
+			@@mem[:execution_count] ||= 1
 
-			Cfg[:create_git_repo] ||= false
+			@@mem[:create_git_repo] ||= false
 		end
 
 	private
