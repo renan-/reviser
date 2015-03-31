@@ -94,7 +94,7 @@ module Reviser
 				#
 				old_param = param
 				begin
-					param = Cfg.resource(param)
+					param = Cfg.resource(param).to_path
 				rescue Errno::ENOENT
 					param = old_param
 				end
