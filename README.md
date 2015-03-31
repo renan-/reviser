@@ -68,7 +68,7 @@ Lives in *config.yml*.
 |*create_git_repo*|Whether to create a git repository for each project or not (requires *git* gem)|Default `false`||
 |*out*|The name of the analysis output file|Default *results*||
 |*out_format*|The formats that will be generated|Default `csv` `html` (`xls` also available, but requires *spreadsheet* gem)||
-|*options*|A hash to set options|`:verbose` `:log_dir` `:log_mode`||
+|*options*|A hash to set options for logging|`:log_dir` `:log_mode`||
 
 ###Project configuration
 Lives in *type/my_project.yml*.
