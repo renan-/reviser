@@ -138,7 +138,15 @@ module Reviser
 				
 				c = eval("#{namespace}#{Reviser.titleize comp}").new param
 
-				@@loaded_components[comp][:data] = c.work
+				begin
+					@@loaded_components[comp][:data] = c.work
+				rescue Interrupt => i
+					puts 'Bye bye'
+				rescue Gem::LoadError => e
+					puts 'Missing gem'.light_red + "\t" + e.message
+				rescue Exception => ex
+					puts 'Error'.red + "\t" + ex.message
+				end
 				
 				puts "[ " + "Done".green + " ]"
 			end

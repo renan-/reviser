@@ -98,20 +98,10 @@ module Reviser
 		desc 'work', 'Run components to analyse computing projects'
 		def work
 			if File.exists? 'config.yml'
-				begin
-					Reviser::load :component => 'archiver'
-					Reviser::load :component => 'organiser', :input_from => 'archiver'
-					Reviser::load :component => 'checker', :input_from => 'organiser'
-					Reviser::load :component => 'generator', :input_from => 'checker'
-
-					Reviser::run
-				rescue Interrupt => i
-					puts 'Bye bye'
-				rescue Gem::LoadError => e
-					message('Missing gem'.light_red, e.message)
-				rescue Exception => e
-					message('Error'.red, e.message)
-				end
+				Reviser::load :component => 'archiver'
+				Reviser::load :component => 'organiser', :input_from => 'archiver'
+				Reviser::load :component => 'checker', :input_from => 'organiser'
+				Reviser::load :component => 'generator', :input_from => 'checker'
 			else
 				message('Error'.red, "'config.yml' file doesn't exist! @see 'reviser init'")
 			end
@@ -119,17 +109,13 @@ module Reviser
 
 		desc 'extract', 'Extract and organise all computing projects'
 		def extract
-			begin
+			if File.exists? 'config.yml'
 				Reviser::load :component => 'archiver'
 				Reviser::load :component => 'organiser', :input_from => 'archiver'
 				
 				Reviser::run
-			rescue Interrupt => i
-				puts 'Bye bye'
-			rescue Gem::LoadError => e
-				message('Missing gem'.yellow, e.message)
-			rescue Exception => e
-				message('Error'.red, e.message)
+			else
+				message('Error'.red, "'config.yml' file doesn't exist! @see 'reviser init'")
 			end
 		end
 
@@ -156,8 +142,8 @@ module Reviser
 
 		no_tasks do
 	  		# A Formatter message for command line
-	  		def message(keyword, desc)
-	  			puts "\t#{keyword}\t\t#{desc}"
+			def message(keyword, desc)
+				puts "\t#{keyword}\t\t#{desc}"
 			end
 
 			def setup(config_file)
@@ -193,4 +179,5 @@ module Reviser
 
 	end
 end
+
 Reviser::Exec.start(ARGV)

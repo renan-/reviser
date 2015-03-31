@@ -91,9 +91,11 @@ module Reviser
 				#
 				# if it's a file, we change the param to its path
 				#
-				file = Cfg.resource(param)
-				unless file == nil
-					param = file.to_path
+				old_param = param
+				begin
+					param = Cfg.resource(param)
+				rescue Errno::ENOENT
+					param = old_param
 				end
 
 				cmd = "#{Cfg[:execute_command]} #{program} #{param}"

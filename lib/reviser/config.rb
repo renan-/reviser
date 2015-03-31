@@ -67,7 +67,9 @@ module Reviser
 		# @return The specified 
 		def self.workspace_file f
 			path = File.join @@workspace_root, f
-			File.exists?(path) && File.new(path) || nil
+			raise Errno::ENOENT, "#{path}".magenta unless File.exists?(path)
+
+			File.new(path)
 		end
 
 		#
