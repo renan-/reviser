@@ -19,9 +19,8 @@
 #   You should have received a copy of the GNU General Public License
 #   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #
-require '../lib/reviser'
+require_relative '../lib/reviser'
 
-require_relative 'my_component'
 require_relative 'my_extension'
 require_relative 'my_generator'
 
@@ -34,6 +33,9 @@ module MyApp
 		#
 		Reviser::setup config_file
 
+		#
+		# You can now use MyExtension's methods for analysis
+		#
 		Reviser::register :extension => 'MyExtension'
 		
 		#
@@ -45,20 +47,21 @@ module MyApp
 		#
 		Reviser::load :component => 'archiver'
 		Reviser::load :component => 'organiser', :input_from => 'archiver'
-
-		#
-		# Tell reviser not to look for our component
-		# in its core ones but to let us include it
-		# ourselves instead
-		#
-		#Reviser::load :component => 'my_component', :input_from => 'archiver', :local => true
-
 		Reviser::load :component => 'checker', :input_from => 'organiser'
-
+		#
 		# We run our custom generator instead :-)
+		#
+		# With :local => true, we tell reviser not to look for our component
+		# in its core ones but to let us include it ourselves instead
+		#
 		Reviser::load :component => 'my_generator', :input_from => 'checker', :local => true
 
-		Reviser::load :component => 'generator', :input_from => 'checker'
+		#
+		# You could still run generator, because checker's output
+		# is saved by Reviser so it can be used by any number of 
+		# different components (they get a deep copy of it)
+		#
+		# Reviser::load :component => 'generator', :input_from => 'checker'
 
 		#
 		# Run reviser

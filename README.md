@@ -62,12 +62,12 @@ Lives in *config.yml*.
 |*src*|Path to the archive containing projects||![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
 |*dest*|Path to a directory where projects will be extracted||![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
 |*projects_names*|Naming convention for projects|`^GROUP_NAME_NAME` `^GROUP_NAME(_NAME)*` `^TP_NAME_FIRSTN`|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
-|*create_git_repo*|Whether to create a git repository for each project or not (requires *git* gem)|Default `false`||
 |*type*|The type of the project|`my_project` (*type/my_project.yml* must exist)|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
 |*criteria*|The criteria you want for analysis|`all_files` `src_files` `lines_count` `comments_count` `compile` `execute`|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
 |*extensions*|The list of extensions you want for analysis|See below||
+|*create_git_repo*|Whether to create a git repository for each project or not (requires *git* gem)|Default `false`||
 |*out*|The name of the analysis output file|Default *results*||
-|*out_format*|The formats that will be generated|Default `csv` `html` (`xls` also available with *spreadsheet* gem)||
+|*out_format*|The formats that will be generated|Default `csv` `html` (`xls` also available, but requires *spreadsheet* gem)||
 |*options*|A hash to set options|`:verbose` `:log_dir` `:log_mode`||
 
 ###Project configuration
@@ -107,7 +107,7 @@ As of now, there are 2 extensions:
 |Extension|Description|Add it to your workspace extensions|
 |------------|--------------|----------------------------------------------|
 |Valgrind|Runs a memcheck through system call to valgrind|`memleaks`|
-|WebValidators|Validates HTML and CSS through W3C API calls|`validate_web`|
+|WebValidators|Validates HTML and CSS through W3C API calls (requires *w3c_validators* gem)|`validate_web`|
 
 ###Working on your own
 
@@ -116,44 +116,102 @@ You'll then need to load your components at the right time, and register your ex
 
 ####Custom components
 
-*example/my_component.rb*
+We're going to show you how to create a custom generator that will generate a nice-looking HTML table using jQuery dataTables.
+
+*example/my_generator.rb*
 
 ``` ruby
-require 'json'
+#
+# This is a simple component showing how to extend Reviser
+# We are going to build a custom HTML generator with jQuery :-)
+#
 require 'reviser'
 
-#
-# Let's build a custom component !
-# It just parses an example JSON file and prints it
-#
-class MyComponent < Reviser::Component 
+class MyGenerator < Reviser::Component
 	#
-	# Don't forget to call super !
-	#
-	# If you told Reviser to take input from another
-	# component, @data will contains it
+	# We're expecting results from Checker as data
 	#
 	def initialize data
 		super data
-
-		@logger.info { "Initialized, got data => #{data}" }
-	end
-
-	#
-	# All components must implement a run method
-	#
-	def run
-		puts 'Hello World from MyComponent, got @data = ' + @data.to_s
-
-		my_resource = resource 'example/data.json'
-		JSON.parse(File.read(my_resource)).each do |k, v|
-			puts "Got #{k} => #{v}"
+		#
+		# We want the HTML output
+		#
+		@data.each do |project, results|
+			results.each do |criterion, value|
+				@data[project][criterion] = value.html
+			end
 		end
 	end
+
+	def run
+		#
+		# Get our template file
+		#
+		template = resource('html/results_template.html').read
+
+		out = '<thead><tr>'
+		#
+		# Each criterion as headings
+		#
+		@data.values.first.keys.unshift.unshift('Projet').each { |crit| out += "<th>#{crit}</th>" }
+		
+		out += '</tr></thead><tbody>'
+ 		# Values for each project as rows
+		@data.keys.each do |proj|
+			out += "<tr><th>#{proj}</th>"
+			@data[proj].each do |k, v|
+				out += "<td>#{v.to_s.strip}</td>"
+			end
+			out += '</tr>'
+		end
+		out += '</tbody>'
+
+		#
+		# Kind of a hacky template engine
+		# We replace placeholders with actual values
+		#
+		template.sub! '[DATA]', out
+		template.sub! '[MAINCSS_PATH]', resource('css/main.css').to_path
+
+		File.open('my_results.html', 'w') { |f| f.write template }
+  end
 end
 ```
 
+*example/res/my_generator/html/results_template.html*
+``` html
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset= "UTF-8">
+		<link rel="stylesheet" type="text/css" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="http://cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.css">
+		<link rel="stylesheet" type="text/css" href="[MAINCSS_PATH]">
+		<script type="text/javascript" src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
+		<script type="text/javascript" src="http://cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js"></script>
+		<script type="text/javascript" src="http://cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+		<title>My results</title>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				$('#results').dataTable({"dom":' <"search"fl><"top">rt<"bottom"ip><"clear">'});
+			});
+		</script>
+	</head>
+	<body>
+		<table id="results">
+			[DATA]
+		</table>
+		<script type="text/javascript">
+			$('#results').removeClass('display').addClass('table table-striped table-bordered');
+		</script>
+	</body>
+</html>
+```
+
 ####Custom extensions
+
+This file shows how to create a custom extension. It's as simple as creating a module.
+In fact, when you register that module as an extension, its methods become available for you to add in *extensions* configuration key.
 
 *example/my_extension.rb*
 
@@ -217,11 +275,13 @@ extensions:
 
 *example/my_app.rb*
 
+This file shows how to plug your custom component into reviser's workflow as well as how to make your custom extension available.
+
 ``` ruby
 require 'reviser'
 
-require_relative 'my_component'
 require_relative 'my_extension'
+require_relative 'my_generator'
 
 module MyApp
 	include Reviser
@@ -232,6 +292,9 @@ module MyApp
 		#
 		Reviser::setup config_file
 
+		#
+		# You can now use MyExtension's methods for analysis
+		#
 		Reviser::register :extension => 'MyExtension'
 		
 		#
@@ -243,16 +306,16 @@ module MyApp
 		#
 		Reviser::load :component => 'archiver'
 		Reviser::load :component => 'organiser', :input_from => 'archiver'
-
-		#
-		# Tell reviser not to look for our component
-		# in its core ones but to let us include it
-		# ourselves instead
-		#
-		Reviser::load :component => 'my_component', :input_from => 'archiver', :local => true
-
 		Reviser::load :component => 'checker', :input_from => 'organiser'
-		Reviser::load :component => 'generator', :input_from => 'checker'
+		#
+		# We run our custom generator instead :-)
+		#
+		# With :local => true, we tell reviser not to look for our component
+		# in its core ones but to let us include it ourselves instead
+		#
+		Reviser::load :component => 'my_generator', :input_from => 'checker', :local => true
+
+		# Reviser::load :component => 'generator', :input_from => 'checker'
 
 		#
 		# Run reviser
