@@ -37,6 +37,7 @@ module Reviser
 			# Only here for compiled language,
 			#
 			def compile
+				raise Exception, "#{Cfg[:language]} is not a compiled language" unless Cfg[:compiled]
 				#
 				# For now, we compile only if there's
 				# no missing file
