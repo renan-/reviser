@@ -50,7 +50,7 @@ module Reviser
 			# For now, we output to stderr if verbose option is not set
 			# In the future, it would be a good idea to always have logs,
 			# but to let the user change the level
-			@logger = Loggers::Logger.new(options[:verbose] && log_file || STDERR)
+			@logger = Loggers::Logger.new log_file
 		end 
 
 		# Place-holder
