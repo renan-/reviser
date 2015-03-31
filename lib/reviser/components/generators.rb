@@ -112,7 +112,7 @@ module Reviser
 				data.keys.each do |proj|
 					out += "<tr><th>#{proj}</th>"
 					data[proj].each do |k, v|
-						out += "<td><pre>#{v}</pre></td>"
+						out += "<td>#{v}</td>"
 					end
 					out += '</tr>'
 				end
