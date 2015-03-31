@@ -102,6 +102,8 @@ module Reviser
 				Reviser::load :component => 'organiser', :input_from => 'archiver'
 				Reviser::load :component => 'checker', :input_from => 'organiser'
 				Reviser::load :component => 'generator', :input_from => 'checker'
+
+				Reviser::run
 			else
 				message('Error'.red, "'config.yml' file doesn't exist! @see 'reviser init'")
 			end
