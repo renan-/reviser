@@ -62,12 +62,12 @@ Lives in *config.yml*.
 |*src*|Path to the archive containing projects||![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
 |*dest*|Path to a directory where projects will be extracted||![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
 |*projects_names*|Naming convention for projects|`^GROUP_NAME_NAME` `^GROUP_NAME(_NAME)*` `^TP_NAME_FIRSTN`|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
-|*create_git_repo*|Whether to create a git repository for each project or not (requires *git* gem)|Default `false`||
 |*type*|The type of the project|`my_project` (*type/my_project.yml* must exist)|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
 |*criteria*|The criteria you want for analysis|`all_files` `src_files` `lines_count` `comments_count` `compile` `execute`|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
 |*extensions*|The list of extensions you want for analysis|See below||
+|*create_git_repo*|Whether to create a git repository for each project or not (requires *git* gem)|Default `false`||
 |*out*|The name of the analysis output file|Default *results*||
-|*out_format*|The formats that will be generated|Default `csv` `html` (`xls` also available with *spreadsheet* gem)||
+|*out_format*|The formats that will be generated|Default `csv` `html` (`xls` also available, but requires *spreadsheet* gem)||
 |*options*|A hash to set options|`:verbose` `:log_dir` `:log_mode`||
 
 ###Project configuration
@@ -107,7 +107,7 @@ As of now, there are 2 extensions:
 |Extension|Description|Add it to your workspace extensions|
 |------------|--------------|----------------------------------------------|
 |Valgrind|Runs a memcheck through system call to valgrind|`memleaks`|
-|WebValidators|Validates HTML and CSS through W3C API calls|`validate_web`|
+|WebValidators|Validates HTML and CSS through W3C API calls (requires *w3c_validators* gem)|`validate_web`|
 
 ###Working on your own
 
