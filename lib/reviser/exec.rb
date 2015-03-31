@@ -36,7 +36,7 @@ module Reviser
 	#
 	class Exec < Thor
 
-		VERSION = '0.0.4.2'
+		VERSION = '0.0.4.3'
 
 		map '--version' => :version
 		map '-v' => :version
