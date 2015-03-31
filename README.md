@@ -59,11 +59,11 @@ Lives in *config.yml*.
 
 |Key   |Description|Values|Required|
 |------|-----------|-----|:--------:|
-|*src*|Path to the archive containing projects||![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
-|*dest*|Path to a directory where projects will be extracted||![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
-|*projects_names*|Naming convention for projects|`^GROUP_NAME_NAME` `^GROUP_NAME(_NAME)*` `^TP_NAME_FIRSTN`|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
-|*type*|The type of the project|`my_project` (*type/my_project.yml* must exist)|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
-|*criteria*|The criteria you want for analysis|`all_files` `src_files` `lines_count` `comments_count` `compile` `execute`|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
+|*src*|Path to the archive containing projects||![checkbox.png](http://i.imgur.com/QicGTBr.png)|
+|*dest*|Path to a directory where projects will be extracted||![checkbox.png](http://i.imgur.com/QicGTBr.png)|
+|*projects_names*|Naming convention for projects|`^GROUP_NAME_NAME` `^GROUP_NAME(_NAME)*` `^TP_NAME_FIRSTN`|![checkbox.png](http://i.imgur.com/QicGTBr.png)|
+|*type*|The type of the project|`my_project` (*type/my_project.yml* must exist)|![checkbox.png](http://i.imgur.com/QicGTBr.png)|
+|*criteria*|The criteria you want for analysis|`all_files` `src_files` `lines_count` `comments_count` `compile` `execute`|![checkbox.png](http://i.imgur.com/QicGTBr.png)|
 |*extensions*|The list of extensions you want for analysis|See below||
 |*create_git_repo*|Whether to create a git repository for each project or not (requires *git* gem)|Default `false`||
 |*out*|The name of the analysis output file|Default *results*||
@@ -75,7 +75,7 @@ Lives in *type/my_project.yml*.
 
 |Key   |Description|Values|Required|
 |------|-----------|-----|:--------:|
-|*language*|The target language|`C` `Java` `HTML` `Ruby`|![checkbox.png](https://bitbucket.org/repo/AyGgAx/images/3281147034-checkbox.png)|
+|*language*|The target language|`C` `Java` `HTML` `Ruby`|![checkbox.png](http://i.imgur.com/QicGTBr.png)|
 |*timeout*|In seconds. Compilation and execution will halt if not completed within the defined timeout|Default *4*||
 |*required_files*|A list of required files|Tip: you can use regular expressions||
 |*preferred_build_command*|The command to build the program with|`make`||
