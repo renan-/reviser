@@ -2,10 +2,8 @@ GEM
   remote: https://rubygems.org/
   specs:
     colorize (0.7.5)
-    redcarpet (3.2.2)
     rubyzip (1.1.7)
     thor (0.19.1)
-    yard (0.8.7.6)
 
 PLATFORMS
   ruby
@@ -14,7 +12,5 @@ PLATFORMS
 
 DEPENDENCIES
   colorize (~> 0.7.5)
-  redcarpet
   rubyzip (~> 1.1.6)
   thor (~> 0.19.1)
-  yard
