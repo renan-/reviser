@@ -38,6 +38,8 @@ module Reviser
 		#
 		class Logger
 
+			@@default_mode = 'org'
+
 			# Creates logger.
 			# The extension determines the mode to use (logger mode).
 			# @param filename [String] name of logger.
@@ -46,13 +48,14 @@ module Reviser
 				@basename = File.basename filename, ext
 				ext = ext.delete '.'
 				dirname = File.dirname filename
-				
+
 				# Include mode aksed by user (config file)
 				begin
 					self.class.send :prepend, Modes.const_get("#{ext.downcase.capitalize}")
 					@logger = ::Logger.new File.open(filename, 'w')
 				rescue => e
-					@logger = ::Logger.new File.open(File.join(dirname,(@basename + '.'+'org')), 'w')
+					@logger = ::Logger.new File.open(File.join(dirname,(@basename + '.'+@@default_mode)), 'w')
+					@logger.error("Mode #{ext} doesn\'t exist. Org mode by default.")
 					self.class.send :include, Modes::Txt
 				end
 
