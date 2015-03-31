@@ -13,3 +13,4 @@ projects/
 *.gem
 *.css
 *.js
+example/logs/

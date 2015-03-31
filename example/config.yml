@@ -78,8 +78,8 @@ criteria:
   - execute
 
 # Extensions you want to use (those in ext/ or the one you've registered)
-#extensions:
-#  - my_criteria
+extensions:
+  - project_size
 
 # Options of all components
 # For the moment, there is just verbose option (for logger)
