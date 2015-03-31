@@ -93,7 +93,7 @@ module Reviser
 				#
 				file = Cfg.resource(param)
 				unless file == nil
-					param = file
+					param = file.to_path
 				end
 
 				cmd = "#{Cfg[:execute_command]} #{program} #{param}"

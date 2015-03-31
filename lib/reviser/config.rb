@@ -84,7 +84,7 @@ module Reviser
 
 		def self.load(cfg_file)
 			@@mem = {}
-			@@workspace_root = File.dirname(cfg_file)
+			@@workspace_root = File.expand_path(File.dirname(cfg_file))
 
 			#
 			# read our main config file
