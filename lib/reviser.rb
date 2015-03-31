@@ -31,16 +31,15 @@ require_relative 'reviser/helpers/system'
 
 class String
 	#
-	# We need this method from Rails to
+	# We need the 'underscore' method from Rails API to
 	# convert CamelCaseNames to underscore_names
 	#
-  def underscore
-    self.gsub(/::/, '/').
-    gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
-    gsub(/([a-z\d])([A-Z])/,'\1_\2').
-    tr("-", "_").
-    downcase
-  end
+	def underscore
+		self.gsub(/([A-Z]+)([A-Z][a-z])/,'\1_\2').
+		gsub(/([a-z\d])([A-Z])/,'\1_\2').
+		tr("-", "_").
+		downcase
+	end
 end
 
 #
