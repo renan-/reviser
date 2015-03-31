@@ -34,7 +34,7 @@ class MyGenerator < Reviser::Component
 		@data.keys.each do |proj|
 			out += "<tr><th>#{proj}</th>"
 			@data[proj].each do |k, v|
-				out += "<td>#{v.to_s.strip.scrub}</td>"
+				out += "<td>#{v.to_s.strip}</td>"
 			end
 			out += '</tr>'
 		end
