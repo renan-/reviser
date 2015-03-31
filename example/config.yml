@@ -84,7 +84,6 @@ extensions:
 # Options of all components
 # For the moment, there is just verbose option (for logger)
 options:
-  :verbose: true
   :log_dir: logs
   # mode of logger	=> [org, txt ...]
   :log_mode: org
