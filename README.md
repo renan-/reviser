@@ -116,6 +116,8 @@ You'll then need to load your components at the right time, and register your ex
 
 ####Custom components
 
+We're going to show you how to create a custom generator that will generate a nice-looking HTML table using jQuery dataTables.
+
 *example/my_generator.rb*
 
 ``` ruby
@@ -208,6 +210,9 @@ end
 
 ####Custom extensions
 
+This file shows how to create a custom extension. It's as simple as creating a module.
+In fact, when you register that module as an extension, its methods become available for you to add in *extensions* configuration key.
+
 *example/my_extension.rb*
 
 ``` ruby
@@ -269,6 +274,8 @@ extensions:
 ```
 
 *example/my_app.rb*
+
+This file shows how to plug your custom component into reviser's workflow as well as how to make your custom extension available.
 
 ``` ruby
 require 'reviser'
