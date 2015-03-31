@@ -1,0 +1,24 @@
+.console {
+	font-family:Courier;
+	white-space: pre;
+	text-align: left;
+	color: #CCCCCC;
+	background: #000000;
+	border: 3px double #CCCCCC;
+	padding: 10px;
+	
+	min-height: 100px;
+	min-width: 100px;
+	max-height: 400px;
+	max-width: 400px;
+	overflow: auto;
+}
+
+body {
+	padding:5px !important;
+	overflow-x:hidden;
+}
+
+.search {
+	margin-right:55px;
+}
