@@ -21,20 +21,12 @@ class MyGenerator < Reviser::Component
 	end
 
 	def run
-		out = '<!DOCTYPE html><html><head>'
-		out += '<meta charset= "UTF-8">'
-		out += "<link rel=\"stylesheet\" type=\"text/css\" href=\"http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css\">"
-		out += "<link rel=\"stylesheet\" type=\"text/css\" href=\"http://cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.css\">"
-		out += "<link rel=\"stylesheet\" type=\"text/css\" href=\"#{resource('css/main.css').to_path}\">"
-		out += "<script type=\"text/javascript\" src=\"http://code.jquery.com/jquery-1.10.2.min.js\"></script>"
-		out += "<script type=\"text/javascript\" src=\"http://cdn.datatables.net/1.10.5/js/jquery.dataTables.min.js\"></script>"
-		out += "<script type=\"text/javascript\" src=\"http://cdn.datatables.net/plug-ins/f2c75b7247b/integration/bootstrap/3/dataTables.bootstrap.js\"></script>"
-		out += '<title>Results</title>'
-		out += "<script type=\"text/javascript\">"
-		out += "$(document).ready(function() { $('#results').dataTable({\"dom\":' <\"search\"fl><\"top\">rt<\"bottom\"ip><\"clear\">'}); });"
-		out += "</script>"
-		out += "</head>\n<body><table id=\"results\"><thead><tr>"
+		#
+		# Get our template file
+		#
+		template = resource('html/results_template.html').read
 
+		out = '<thead><tr>'
 		@data.values.first.keys.unshift.unshift('Projet').each { |crit| out += "<th>#{crit}</th>" }
 		
 		out += '</tr></thead><tbody>'
@@ -46,13 +38,14 @@ class MyGenerator < Reviser::Component
 			end
 			out += '</tr>'
 		end
+		out += '</tbody>'
 
-		out += '</tbody></table>'
-		out += "<script type=\"text/javascript\">"	
-		out += "$('#results').removeClass( 'display' ).addClass('table table-striped table-bordered');"
-		out += "</script>"
-		out += '</body></html>'
+		#
+		# Kind of a hacky template engine
+		#
+		template.sub! '[DATA]', out
+		template.sub! '[MAINCSS_PATH]', resource('css/main.css').to_path
 
-    File.open('my_results.html', 'w') { |f| f.write(out) }
+    File.open('my_results.html', 'w') { |f| f.write template }
   end
 end
