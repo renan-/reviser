@@ -1,0 +1,19 @@
+
+* INFO First extraction - projects.zip 
+* INFO Extraction of sub archives 
+** INFO extracting projects/Xavier Lostetter_51334_TP_Martinez_Lostetter.zip to projects/Xavier Lostetter_51334_TP_Martinez_Lostetter 
+** INFO extracting projects/Oussama Achhab_14887_TP_Achhab.tar.gz to projects/Oussama Achhab_14887_TP_Achhab.tar 
+** INFO extracting projects/Pierrick Vuillemin_63149_TP_VUILLEMIN.zip to projects/Pierrick Vuillemin_63149_TP_VUILLEMIN 
+** INFO extracting projects/Azedine Merabet_82987_TP_Merabet.tar to projects/Azedine Merabet_82987_TP_Merabet 
+** INFO extracting projects/Ronan Cesar_58101_TP_Cesar_Potier.zip to projects/Ronan Cesar_58101_TP_Cesar_Potier 
+** INFO extracting projects/Ourida Loutis_83636_TP_Loutis.zip to projects/Ourida Loutis_83636_TP_Loutis 
+** INFO extracting projects/Gerome Regnault_61117_TP_Regnault.tar.gz to projects/Gerome Regnault_61117_TP_Regnault.tar 
+** INFO extracting projects/Aruna Meyalu_79612_TP_Meyalu.tar.gz to projects/Aruna Meyalu_79612_TP_Meyalu.tar 
+** INFO extracting projects/Morgane Bardet_6786_TP_Bardet.zip to projects/Morgane Bardet_6786_TP_Bardet 
+** INFO extracting projects/Remi Burel_78898_TP_Burel.zip to projects/Remi Burel_78898_TP_Burel 
+** INFO extracting projects/Clotilde Massin_44206_TP_Massin_Jusnel.zip to projects/Clotilde Massin_44206_TP_Massin_Jusnel 
+** INFO extracting projects/Mohamed Mousaoui_78674_TP_Dieng_Mousaoui.zip to projects/Mohamed Mousaoui_78674_TP_Dieng_Mousaoui 
+** INFO extracting projects/Victor Schwartz_31759_TP_GUYOMARD_SCHWARTZ.zip to projects/Victor Schwartz_31759_TP_GUYOMARD_SCHWARTZ 
+** INFO extracting projects/Mickael Guyot_78298_TP_Guyot.tar.gz to projects/Mickael Guyot_78298_TP_Guyot.tar 
+** INFO extracting projects/Nicolas Humbert_27664_TP_HUMBERT.tar.gz to projects/Nicolas Humbert_27664_TP_HUMBERT.tar 
+* INFO [15/15] projects have been processed 

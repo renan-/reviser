@@ -30,4 +30,4 @@ required_files:
 # But if it's a list, execution_count
 # will be replaced by its size
 execution_value:
-- ../../res/labys/labfich11.txt
+- example/labfich11.txt
